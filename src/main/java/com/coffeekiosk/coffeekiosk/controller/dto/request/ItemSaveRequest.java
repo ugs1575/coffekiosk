@@ -6,12 +6,13 @@ import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSaveServiceRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemSaveRequest {
 
 	@NotBlank(message = "상품 이름은 필수입니다.")
