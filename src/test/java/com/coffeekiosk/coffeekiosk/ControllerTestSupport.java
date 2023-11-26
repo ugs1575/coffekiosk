@@ -9,9 +9,6 @@ import com.coffeekiosk.coffeekiosk.controller.ItemApiController;
 import com.coffeekiosk.coffeekiosk.service.ItemService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@WebMvcTest(controllers = {
-	ItemApiController.class,
-})
 public abstract class ControllerTestSupport {
 
 	@Autowired
@@ -19,7 +16,4 @@ public abstract class ControllerTestSupport {
 
 	@Autowired
 	protected ObjectMapper objectMapper;
-
-	@MockBean
-	protected ItemService itemService;
 }
