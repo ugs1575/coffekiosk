@@ -5,10 +5,13 @@ import java.time.LocalDateTime;
 import com.coffeekiosk.coffeekiosk.domain.Item;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemResponse {
 
 	private Long id;

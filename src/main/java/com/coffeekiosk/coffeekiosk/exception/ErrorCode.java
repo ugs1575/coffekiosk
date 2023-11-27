@@ -8,9 +8,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "입력값이 올바르지 않습니다."),
+	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
+	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "허용되지 않는 메서드입니다."),
+	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "적절하지 않은 요청 값입니다."),
+	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "요청 값의 타입이 잘못되었습니다."),
+	ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 데이터를 찾을 수 없습니다."),
 
-	ITEM_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "상품 타입을 찾을 수 없습니다.");
+	ITEM_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않는 상품 타입입니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;

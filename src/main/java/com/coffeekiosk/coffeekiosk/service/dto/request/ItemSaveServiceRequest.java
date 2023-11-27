@@ -5,8 +5,11 @@ import java.time.LocalDateTime;
 import com.coffeekiosk.coffeekiosk.domain.Item;
 import com.coffeekiosk.coffeekiosk.domain.ItemType;
 
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemSaveServiceRequest {
 
 	private String name;
