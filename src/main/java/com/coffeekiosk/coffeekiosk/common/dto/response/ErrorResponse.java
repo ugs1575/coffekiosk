@@ -43,7 +43,7 @@ public class ErrorResponse extends CommonResponse {
 			.map(Object::toString)
 			.orElse("");
 
-		List<FieldError> errors = FieldError.of(e.getName(), value, e.getErrorCode());
+		List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getName(), value, e.getErrorCode());
 		return new ErrorResponse(ErrorCode.INVALID_TYPE_VALUE, errors);
 	}
 
