@@ -25,12 +25,11 @@ public class ItemSaveServiceRequest {
 		this.price = price;
 	}
 
-	public Item toEntity(LocalDateTime lastModifiedDateTime) {
+	public Item toEntity() {
 		return Item.builder()
 			.name(name)
 			.itemType(itemType)
 			.price(price)
-			.lastModifiedDateTime(lastModifiedDateTime)
 			.build();
 	}
 }

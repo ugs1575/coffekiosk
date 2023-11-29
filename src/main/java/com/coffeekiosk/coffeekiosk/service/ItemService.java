@@ -21,7 +21,7 @@ public class ItemService {
 
 	@Transactional
 	public ItemResponse createItem(ItemSaveServiceRequest request, LocalDateTime lastModifiedDateTime) {
-		Item item = request.toEntity(lastModifiedDateTime);
+		Item item = request.toEntity().create(lastModifiedDateTime);
 		Item savedItem = itemRepository.save(item);
 		return ItemResponse.of(savedItem);
 	}

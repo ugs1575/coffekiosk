@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -42,5 +41,18 @@ public class Item extends BaseTimeEntity {
 		this.itemType = itemType;
 		this.price = price;
 		this.lastModifiedDateTime = lastModifiedDateTime;
+	}
+
+	public Item create(LocalDateTime lastModifiedDateTime) {
+		this.lastModifiedDateTime = lastModifiedDateTime;
+		return this;
+	}
+
+	public Item update(Item item, LocalDateTime lastModifiedDateTime) {
+		this.name = item.name;
+		this.itemType = item.itemType;
+		this.price = item.price;
+		this.lastModifiedDateTime = lastModifiedDateTime;
+		return this;
 	}
 }
