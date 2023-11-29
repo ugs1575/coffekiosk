@@ -22,7 +22,7 @@ import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 
 @ContextConfiguration(classes = {GlobalExceptionHandlerTest.TestController.class, GlobalExceptionHandler.class})
 @WebMvcTest(controllers = GlobalExceptionHandlerTest.TestController.class)
-class GlobalExceptionHandlerTest extends ControllerTestSupport{
+class GlobalExceptionHandlerTest extends ControllerTestSupport {
 
 	@DisplayName("맞지 않는 타입이 들어올 경우 예외를 처리한다.")
 	@Test
