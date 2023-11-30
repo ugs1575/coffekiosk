@@ -355,5 +355,19 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.fieldErrors.[0].value").value("0"))
 			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 가격은 양수여야 합니다."));
 	}
+
+	@DisplayName("상품을 삭제한다.")
+	@Test
+	void deleteItem() throws Exception {
+		//when //then
+		mockMvc.perform(
+				delete("/api/items/{itemId}", 1L)
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"));
+	}
 	
 }

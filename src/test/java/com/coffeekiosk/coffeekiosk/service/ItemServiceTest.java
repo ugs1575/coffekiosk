@@ -33,7 +33,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 		itemRepository.deleteAllInBatch();
 	}
 
-	@DisplayName("상품 정보를 받아 저장한다.")
+	@DisplayName("상품 정보를 저장한다.")
 	@Test
 	void saveItem() {
 		//given
@@ -63,7 +63,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 
 	}
 
-	@DisplayName("상품 정보를 받아 수정한다.")
+	@DisplayName("상품 정보를 수정한다.")
 	@Test
 	void updateItem() {
 		//given
@@ -98,6 +98,29 @@ class ItemServiceTest extends IntegrationTestSupport {
 			.containsExactlyInAnyOrder(
 				tuple("케이크", DESSERT, 6000, updatedModifiedDateTime)
 			);
+
+	}
+
+	@DisplayName("상품을 삭제한다.")
+	@Test
+	void deleteItem() {
+		//given
+		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+		Item item = Item.builder()
+			.name("카페라떼")
+			.itemType(COFFEE)
+			.price(5000)
+			.lastModifiedDateTime(lastModifiedDateTime)
+			.build();
+		Item savedItem = itemRepository.save(item);
+
+		//when
+		itemService.deleteItem(savedItem.getId());
+
+		//then
+		List<Item> items = itemRepository.findAll();
+		assertThat(items).hasSize(0)
+			.isEmpty();
 
 	}
 }
