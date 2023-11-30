@@ -1,5 +1,6 @@
 package com.coffeekiosk.coffeekiosk.controller;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
 import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.ItemService;
 
 @WebMvcTest(controllers = ItemApiController.class)
@@ -42,7 +44,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.message").value("OK"));
 	}
 	
-	@DisplayName("상품 등록 시 상품 이름은 필수값입니다.")
+	@DisplayName("상품 등록 시 상품 이름은 필수값이다.")
 	@Test
 	void createItemWithoutName() throws Exception {
 		//given
@@ -66,7 +68,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 이름은 필수입니다."));
 	}
 
-	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상입니다.")
+	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
 	@Test
 	void createItemWithEmptyName() throws Exception {
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -91,7 +93,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 	}
 
-	@DisplayName("상품 등록 시 상품 타입은 필수값입니다.")
+	@DisplayName("상품 등록 시 상품 타입은 필수값이다.")
 	@Test
 	void createItemWithoutItemType() throws Exception {
 		//given
@@ -186,4 +188,172 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.fieldErrors.[0].value").value("0"))
 			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 가격은 양수여야 합니다."));
 	}
+
+	@DisplayName("상품을 수정한다")
+	@Test
+	void updateItem() throws Exception {
+		//given
+		ItemUpdateRequest request = ItemUpdateRequest.builder()
+			.name("카페라떼")
+			.itemType("COFFEE")
+			.price(5000)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				patch("/api/items/{itemId}", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"));
+	}
+
+	@DisplayName("상품 수정 시 상품 이름은 필수값이다.")
+	@Test
+	void updateItemWithoutName() throws Exception {
+		//given
+		ItemUpdateRequest request = ItemUpdateRequest.builder()
+			.itemType("COFFEE")
+			.price(5000)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				patch("/api/items/{itemId}", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors.[0].field").value("name"))
+			.andExpect(jsonPath("$.fieldErrors.[0].value").value(""))
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 이름은 필수입니다."));
+	}
+
+	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
+	@Test
+	void updateItemWithEmptyName() throws Exception {
+		ItemUpdateRequest request = ItemUpdateRequest.builder()
+			.name("")
+			.itemType("COFFEE")
+			.price(5000)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				patch("/api/items/{itemId}", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors.[0].field").value("name"))
+			.andExpect(jsonPath("$.fieldErrors.[0].value").value(""))
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 이름은 필수입니다."));
+
+	}
+
+	@DisplayName("상품 수정 시 상품 타입은 필수값이다.")
+	@Test
+	void updateItemWithoutItemType() throws Exception {
+		//given
+		ItemUpdateRequest request = ItemUpdateRequest.builder()
+			.name("카페라떼")
+			.price(5000)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				patch("/api/items/{itemId}", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors.[0].field").value("itemType"))
+			.andExpect(jsonPath("$.fieldErrors.[0].value").value(""))
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 타입은 필수입니다."));
+	}
+
+	@DisplayName("상품 수정 시 상품 타입은 최소1글자 이상입니다.")
+	@Test
+	void updateItemWithEmptyType() throws Exception {
+		ItemUpdateRequest request = ItemUpdateRequest.builder()
+			.name("카페라떼")
+			.itemType("")
+			.price(5000)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				patch("/api/items/{itemId}", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors.[0].field").value("itemType"))
+			.andExpect(jsonPath("$.fieldErrors.[0].value").value(""))
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 타입은 필수입니다."));
+
+	}
+
+	@DisplayName("상품 수정 시 상품 타입은 유효한 타입이어야합니다.")
+	@Test
+	void updateItemWithInvalidType() throws Exception {
+		//given
+		ItemUpdateRequest request = ItemUpdateRequest.builder()
+			.name("카페라떼")
+			.price(5000)
+			.itemType("coffee2")
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				patch("/api/items/{itemId}", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
+	}
+
+	@DisplayName("상품 수정 시 상품 가격은 양수여야합니다.")
+	@Test
+	void updateItemWithoutPrice() throws Exception {
+		//given
+		ItemUpdateRequest request = ItemUpdateRequest.builder()
+			.name("카페라떼")
+			.itemType("COFFEE")
+			.price(0)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				patch("/api/items/{itemId}", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors.[0].field").value("price"))
+			.andExpect(jsonPath("$.fieldErrors.[0].value").value("0"))
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 가격은 양수여야 합니다."));
+	}
+	
 }
