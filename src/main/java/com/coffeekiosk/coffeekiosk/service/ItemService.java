@@ -38,4 +38,12 @@ public class ItemService {
 		Item updatedItem = item.update(request.toEntity(), updatedModifiedDateTime);
 		return ItemResponse.of(updatedItem);
 	}
+
+	@Transactional
+	public void deleteItem(Long itemId) {
+		Item item = itemRepository.findById(itemId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+
+		itemRepository.deleteById(itemId);
+	}
 }

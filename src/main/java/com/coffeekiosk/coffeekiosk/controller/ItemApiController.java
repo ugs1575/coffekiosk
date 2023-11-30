@@ -2,6 +2,8 @@ package com.coffeekiosk.coffeekiosk.controller;
 
 import java.time.LocalDateTime;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +37,12 @@ public class ItemApiController {
 	public ApiResponse<ItemResponse> updateItem(@PathVariable Long itemId, @RequestBody @Valid ItemUpdateRequest request) {
 		ItemResponse response = itemService.updateItem(itemId, request.toServiceRequest(), LocalDateTime.now());
 		return ApiResponse.ok(response);
+	}
+
+	@DeleteMapping("/items/{itemId}")
+	public ApiResponse<Void> updateItem(@PathVariable Long itemId) {
+		itemService.deleteItem(itemId);
+		return ApiResponse.noContent();
 	}
 
 }
