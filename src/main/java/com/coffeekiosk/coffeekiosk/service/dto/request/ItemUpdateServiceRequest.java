@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ItemSaveServiceRequest {
+public class ItemUpdateServiceRequest {
 
 	private String name;
 
@@ -19,7 +19,7 @@ public class ItemSaveServiceRequest {
 	private int price;
 
 	@Builder
-	private ItemSaveServiceRequest(String name, ItemType itemType, int price) {
+	private ItemUpdateServiceRequest(String name, ItemType itemType, int price) {
 		this.name = name;
 		this.itemType = itemType;
 		this.price = price;
