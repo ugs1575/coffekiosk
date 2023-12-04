@@ -1,6 +1,8 @@
 package com.coffeekiosk.coffeekiosk.service.dto.response;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.coffeekiosk.coffeekiosk.domain.Item;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -42,5 +44,11 @@ public class ItemResponse {
 			.price(item.getPrice())
 			.lastModifiedDateTime(item.getLastModifiedDateTime())
 			.build();
+	}
+
+	public static List<ItemResponse> listOf(List<Item> items) {
+		return items.stream()
+			.map(ItemResponse::of)
+			.collect(Collectors.toList());
 	}
 }

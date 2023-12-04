@@ -10,6 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
@@ -121,6 +122,43 @@ class ItemServiceTest extends IntegrationTestSupport {
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(0)
 			.isEmpty();
+
+	}
+
+	@DisplayName("상품 목록을 조회한다.")
+	@Test
+	void findItems() {
+	    //given
+		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+		Item item1 = itemRepository.save(
+			Item.builder()
+			.name("카페라떼")
+			.itemType(COFFEE)
+			.price(5000)
+			.lastModifiedDateTime(lastModifiedDateTime)
+			.build()
+		);
+
+		Item item2 = itemRepository.save(
+			Item.builder()
+				.name("케이크")
+				.itemType(DESSERT)
+				.price(6000)
+				.lastModifiedDateTime(lastModifiedDateTime)
+				.build()
+		);
+
+		itemRepository.saveAll(List.of(item1, item2));
+
+		PageRequest pageRequest = PageRequest.of(0, 3);
+
+	    //when
+		List<ItemResponse> items = itemService.findItems(pageRequest);
+
+		//then
+		assertThat(items)
+			.extracting("name")
+			.containsExactly(item1.getName(), item2.getName());
 
 	}
 }

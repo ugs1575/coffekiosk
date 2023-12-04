@@ -5,16 +5,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
 import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.ItemService;
+import com.coffeekiosk.coffeekiosk.service.dto.response.ItemResponse;
 
 @WebMvcTest(controllers = ItemApiController.class)
 class ItemApiControllerTest extends ControllerTestSupport {
@@ -368,6 +372,27 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"));
+	}
+
+	@DisplayName("상품 목록을 조회한다.")
+	@Test
+	void findItems() throws Exception {
+		//given
+		List<ItemResponse> result = List.of();
+
+		when(itemService.findItems(PageRequest.of(0, 3))).thenReturn(result);
+
+		//when //then
+		mockMvc.perform(
+				get("/api/items")
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andExpect(jsonPath("$.data").isArray());
+
 	}
 	
 }
