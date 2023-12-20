@@ -69,12 +69,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 	void updateItem() {
 		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item = Item.builder()
-			.name("카페라떼")
-			.itemType(COFFEE)
-			.price(5000)
-			.lastModifiedDateTime(lastModifiedDateTime)
-			.build();
+		Item item = createItem(lastModifiedDateTime);
 		Item savedItem = itemRepository.save(item);
 
 		LocalDateTime updatedModifiedDateTime = LocalDateTime.of(2023, 11, 22, 0, 0);
@@ -107,12 +102,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 	void deleteItem() {
 		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item = Item.builder()
-			.name("카페라떼")
-			.itemType(COFFEE)
-			.price(5000)
-			.lastModifiedDateTime(lastModifiedDateTime)
-			.build();
+		Item item = createItem(lastModifiedDateTime);
 		Item savedItem = itemRepository.save(item);
 
 		//when
@@ -130,23 +120,8 @@ class ItemServiceTest extends IntegrationTestSupport {
 	void findItems() {
 	    //given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item1 = itemRepository.save(
-			Item.builder()
-			.name("카페라떼")
-			.itemType(COFFEE)
-			.price(5000)
-			.lastModifiedDateTime(lastModifiedDateTime)
-			.build()
-		);
-
-		Item item2 = itemRepository.save(
-			Item.builder()
-				.name("케이크")
-				.itemType(DESSERT)
-				.price(6000)
-				.lastModifiedDateTime(lastModifiedDateTime)
-				.build()
-		);
+		Item item1 = itemRepository.save(createItem(lastModifiedDateTime));
+		Item item2 = itemRepository.save(createItem(lastModifiedDateTime));
 
 		itemRepository.saveAll(List.of(item1, item2));
 
@@ -157,8 +132,17 @@ class ItemServiceTest extends IntegrationTestSupport {
 
 		//then
 		assertThat(items)
-			.extracting("name")
-			.containsExactly(item1.getName(), item2.getName());
+			.extracting("id")
+			.containsExactly(item1.getId(), item2.getId());
 
+	}
+
+	private Item createItem(LocalDateTime lastModifiedDateTime) {
+		return Item.builder()
+			.name("카페라떼")
+			.itemType(COFFEE)
+			.price(5000)
+			.lastModifiedDateTime(lastModifiedDateTime)
+			.build();
 	}
 }
