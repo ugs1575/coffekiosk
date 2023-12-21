@@ -13,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
-import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.Item;
 import com.coffeekiosk.coffeekiosk.domain.ItemRepository;
-import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
+import com.coffeekiosk.coffeekiosk.domain.ItemType;
 import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.dto.request.ItemUpdateServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.dto.response.ItemResponse;
 
@@ -53,7 +53,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 		assertThat(itemResponse.getId()).isNotNull();
 		assertThat(itemResponse)
 			.extracting("name", "itemType", "price", "lastModifiedDateTime")
-			.contains("카페라떼", "커피", 5000, lastModifiedDateTime);
+			.contains("카페라떼", COFFEE, 5000, lastModifiedDateTime);
 
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(1)
@@ -69,7 +69,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 	void updateItem() {
 		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item = createItem(lastModifiedDateTime);
+		Item item = createItem("카페라떼", COFFEE, lastModifiedDateTime);
 		Item savedItem = itemRepository.save(item);
 
 		LocalDateTime updatedModifiedDateTime = LocalDateTime.of(2023, 11, 22, 0, 0);
@@ -86,7 +86,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 		assertThat(itemResponse.getId()).isEqualTo(savedItem.getId());
 		assertThat(itemResponse)
 			.extracting("name", "itemType", "price", "lastModifiedDateTime")
-			.contains("케이크", "디저트", 6000, updatedModifiedDateTime);
+			.contains("케이크", DESSERT, 6000, updatedModifiedDateTime);
 
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(1)
@@ -102,7 +102,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 	void deleteItem() {
 		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item = createItem(lastModifiedDateTime);
+		Item item = createItem("카페라떼", COFFEE, lastModifiedDateTime);
 		Item savedItem = itemRepository.save(item);
 
 		//when
@@ -117,30 +117,114 @@ class ItemServiceTest extends IntegrationTestSupport {
 
 	@DisplayName("상품 목록을 조회한다.")
 	@Test
-	void findItems() {
+	void findPagedItems() {
 	    //given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item1 = itemRepository.save(createItem(lastModifiedDateTime));
-		Item item2 = itemRepository.save(createItem(lastModifiedDateTime));
+		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
+		Item item2 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
 
 		itemRepository.saveAll(List.of(item1, item2));
 
-		PageRequest pageRequest = PageRequest.of(0, 3);
+		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
+			.name("")
+			.build();
+		PageRequest pageRequest = PageRequest.of(0, 1);
 
 	    //when
-		List<ItemResponse> items = itemService.findItems(pageRequest);
+		List<ItemResponse> items = itemService.findItems(request, pageRequest);
 
 		//then
 		assertThat(items)
-			.extracting("id")
-			.containsExactly(item1.getId(), item2.getId());
-
+			.extracting("name")
+			.containsExactly(item1.getName());
 	}
 
-	private Item createItem(LocalDateTime lastModifiedDateTime) {
+	@DisplayName("상품 목록을 이름으로 검색한다.")
+	@Test
+	void searchItemsByName() {
+		//given
+		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
+		Item item2 = itemRepository.save(createItem("바닐라라떼", COFFEE, lastModifiedDateTime));
+		Item item3 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
+
+		itemRepository.saveAll(List.of(item1, item2, item3));
+
+		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
+			.name("라떼")
+			.build();
+
+		PageRequest pageRequest = PageRequest.of(0, 3);
+
+		//when
+		List<ItemResponse> items = itemService.findItems(request, pageRequest);
+
+		//then
+		assertThat(items)
+			.hasSize(2)
+			.extracting("name")
+			.containsExactly(item1.getName(), item2.getName());
+	}
+
+	@DisplayName("상품 목록을 상품 타입별로 조회한다.")
+	@Test
+	void searchItemsByType() {
+		//given
+		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
+		Item item2 = itemRepository.save(createItem("바나나케이크", DESSERT, lastModifiedDateTime));
+		Item item3 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
+
+		itemRepository.saveAll(List.of(item1, item2, item3));
+
+		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
+			.itemType(DESSERT)
+			.build();
+
+		PageRequest pageRequest = PageRequest.of(0, 3);
+
+		//when
+		List<ItemResponse> items = itemService.findItems(request, pageRequest);
+
+		//then
+		assertThat(items)
+			.hasSize(2)
+			.extracting("name")
+			.containsExactly(item2.getName(), item3.getName());
+	}
+
+	@DisplayName("상품 목록을 상품타입과 이름으로 조회한다.")
+	@Test
+	void searchItemsByNameAndType() {
+		//given
+		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
+		Item item2 = itemRepository.save(createItem("딸기라떼", COFFEE, lastModifiedDateTime));
+		Item item3 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
+
+		itemRepository.saveAll(List.of(item1, item2, item3));
+
+		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
+			.name("딸기")
+			.itemType(DESSERT)
+			.build();
+
+		PageRequest pageRequest = PageRequest.of(0, 3);
+
+		//when
+		List<ItemResponse> items = itemService.findItems(request, pageRequest);
+
+		//then
+		assertThat(items)
+			.hasSize(1)
+			.extracting("name")
+			.containsExactly(item3.getName());
+	}
+
+	private Item createItem(String name, ItemType type, LocalDateTime lastModifiedDateTime) {
 		return Item.builder()
-			.name("카페라떼")
-			.itemType(COFFEE)
+			.name(name)
+			.itemType(type)
 			.price(5000)
 			.lastModifiedDateTime(lastModifiedDateTime)
 			.build();

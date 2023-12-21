@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.coffeekiosk.coffeekiosk.domain.Item;
+import com.coffeekiosk.coffeekiosk.domain.ItemType;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.querydsl.core.annotations.QueryProjection;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,14 +15,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemResponse {
 
 	private Long id;
 
 	private String name;
 
-	private String itemType;
+	private ItemType itemType;
 
 	private int price;
 
@@ -28,7 +29,8 @@ public class ItemResponse {
 	private LocalDateTime lastModifiedDateTime;
 
 	@Builder
-	private ItemResponse(Long id, String name, String itemType, int price, LocalDateTime lastModifiedDateTime) {
+	@QueryProjection
+	public ItemResponse(Long id, String name, ItemType itemType, int price, LocalDateTime lastModifiedDateTime) {
 		this.id = id;
 		this.name = name;
 		this.itemType = itemType;
@@ -40,7 +42,7 @@ public class ItemResponse {
 		return ItemResponse.builder()
 			.id(item.getId())
 			.name(item.getName())
-			.itemType(item.getItemType().getName())
+			.itemType(item.getItemType())
 			.price(item.getPrice())
 			.lastModifiedDateTime(item.getLastModifiedDateTime())
 			.build();
