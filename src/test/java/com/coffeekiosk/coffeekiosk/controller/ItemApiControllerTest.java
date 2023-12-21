@@ -5,16 +5,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
 import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.ItemService;
+import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSearchServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.dto.response.ItemResponse;
 
 @WebMvcTest(controllers = ItemApiController.class)
 class ItemApiControllerTest extends ControllerTestSupport {
@@ -368,6 +374,63 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"));
+	}
+
+	@DisplayName("상품 목록을 조회한다.")
+	@Test
+	void findItems() throws Exception {
+		//given
+		List<ItemResponse> result = List.of();
+
+		when(itemService.findItems(any(), any())).thenReturn(result);
+
+		//when //then
+		mockMvc.perform(
+				get("/api/items")
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andExpect(jsonPath("$.data").isArray());
+	}
+
+	@DisplayName("상품 목록 검색 시 검색 조건은 빈값으로 검색할 수 있다.")
+	@Test
+	void findItemsWithEmptySearchConditions() throws Exception {
+		//given
+		List<ItemResponse> result = List.of();
+
+		when(itemService.findItems(any(), any())).thenReturn(result);
+
+		//when //then
+		mockMvc.perform(
+				get("/api/items")
+					.queryParam("name", "")
+					.queryParam("itemType", "")
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andExpect(jsonPath("$.data").isArray());
+	}
+
+	@DisplayName("상품 타입으로 목록 검색 시 유효하지 않은 타입으로 검색할 수 없다.")
+	@Test
+	void findItemsWithEmptyType() throws Exception {
+		//when //then
+		mockMvc.perform(
+				get("/api/items")
+					.queryParam("itemType", "test")
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
 	
 }

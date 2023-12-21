@@ -1,8 +1,9 @@
 package com.coffeekiosk.coffeekiosk.service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import com.coffeekiosk.coffeekiosk.domain.Item;
 import com.coffeekiosk.coffeekiosk.domain.ItemRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.dto.request.ItemUpdateServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.dto.response.ItemResponse;
 
@@ -45,5 +47,9 @@ public class ItemService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 
 		itemRepository.deleteById(itemId);
+	}
+
+	public List<ItemResponse> findItems(ItemSearchServiceRequest request, Pageable pageable) {
+		return itemRepository.search(request, pageable).getContent();
 	}
 }

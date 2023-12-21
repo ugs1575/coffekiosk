@@ -1,11 +1,9 @@
 package com.coffeekiosk.coffeekiosk.domain;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,12 +15,7 @@ class ItemTest {
 
 		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-
-		Item item = Item.builder()
-			.name("카페라떼")
-			.itemType(ItemType.COFFEE)
-			.price(5000)
-			.build();
+		Item item = createItem("카페라떼", ItemType.COFFEE, 5000, null);
 
 		//when
 		Item savedItem = item.create(lastModifiedDateTime);
@@ -37,28 +30,27 @@ class ItemTest {
 
 		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+		Item item = createItem("카페라떼", ItemType.COFFEE, 5000, lastModifiedDateTime);
+
 		LocalDateTime updatedModifiedDateTime = LocalDateTime.of(2023, 11, 22, 0, 0);
-
-		Item item = Item.builder()
-			.name("카페라떼")
-			.itemType(ItemType.COFFEE)
-			.price(5000)
-			.lastModifiedDateTime(lastModifiedDateTime)
-			.build();
-
-		Item updateRequest = Item.builder()
-			.name("케이크")
-			.itemType(ItemType.DESSERT)
-			.price(6000)
-			.build();
+		Item updateItem = createItem("케이크", ItemType.DESSERT, 6000, null);
 
 		//when
-		Item updatedItem = item.update(updateRequest, updatedModifiedDateTime);
+		Item updatedItem = item.update(updateItem, updatedModifiedDateTime);
 
 		//then
 		assertThat(updatedItem.getName()).isEqualTo("케이크");
 		assertThat(updatedItem.getItemType()).isEqualTo(ItemType.DESSERT);
 		assertThat(updatedItem.getPrice()).isEqualTo(6000);
 		assertThat(updatedItem.getLastModifiedDateTime()).isEqualTo(updatedModifiedDateTime);
+	}
+
+	private Item createItem(String name, ItemType type, int price, LocalDateTime lastModifiedDateTime) {
+		return Item.builder()
+			.name(name)
+			.itemType(type)
+			.price(price)
+			.lastModifiedDateTime(lastModifiedDateTime)
+			.build();
 	}
 }

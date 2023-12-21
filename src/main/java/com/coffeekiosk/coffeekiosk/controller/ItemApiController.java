@@ -1,9 +1,13 @@
 package com.coffeekiosk.coffeekiosk.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
 import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemSearchRequest;
 import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.ItemService;
 import com.coffeekiosk.coffeekiosk.service.dto.response.ItemResponse;
@@ -43,6 +48,12 @@ public class ItemApiController {
 	public ApiResponse<Void> updateItem(@PathVariable Long itemId) {
 		itemService.deleteItem(itemId);
 		return ApiResponse.noContent();
+	}
+
+	@GetMapping("/items")
+	public ApiResponse<List<ItemResponse>> findItems(ItemSearchRequest itemSearchRequest, @PageableDefault(value = 10) Pageable pageable) {
+		List<ItemResponse> response = itemService.findItems(itemSearchRequest.toServiceRequest(), pageable);
+		return ApiResponse.ok(response);
 	}
 
 }
