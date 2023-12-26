@@ -52,4 +52,11 @@ public class ItemService {
 	public List<ItemResponse> findItems(ItemSearchServiceRequest request, Pageable pageable) {
 		return itemRepository.search(request, pageable).getContent();
 	}
+
+	public ItemResponse findItem(Long itemId) {
+		Item item = itemRepository.findById(itemId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+
+		return ItemResponse.of(item);
+	}
 }
