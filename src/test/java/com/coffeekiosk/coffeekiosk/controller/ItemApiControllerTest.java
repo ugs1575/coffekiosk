@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -432,5 +433,20 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
-	
+
+	@DisplayName("상품 상세정보를 조회한다.")
+	@Test
+	void findItem() throws Exception {
+		//when //then
+		mockMvc.perform(
+				get("/api/items/{itemId}", 1L)
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"));
+	}
+
+
 }

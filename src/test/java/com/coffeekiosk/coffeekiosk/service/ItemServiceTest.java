@@ -221,6 +221,24 @@ class ItemServiceTest extends IntegrationTestSupport {
 			.containsExactly(item3.getName());
 	}
 
+	@DisplayName("상품 상세정보를 조회한다.")
+	@Test
+	void findItemById() {
+		//given
+		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+		Item item = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
+
+		itemRepository.save(item);
+
+		//when
+		ItemResponse itemResponse = itemService.findItem(item.getId());
+
+		//then
+		assertThat(itemResponse)
+			.extracting("name", "itemType", "price", "lastModifiedDateTime")
+			.contains(item.getName(), item.getItemType(), item.getPrice(), lastModifiedDateTime);
+	}
+
 	private Item createItem(String name, ItemType type, LocalDateTime lastModifiedDateTime) {
 		return Item.builder()
 			.name(name)

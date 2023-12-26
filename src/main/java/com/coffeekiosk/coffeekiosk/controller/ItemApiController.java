@@ -56,4 +56,10 @@ public class ItemApiController {
 		return ApiResponse.ok(response);
 	}
 
+	@GetMapping("/items/{itemId}")
+	public ApiResponse<ItemResponse> findItems(@PathVariable Long itemId) {
+		ItemResponse response = itemService.findItem(itemId);
+		return ApiResponse.ok(response);
+	}
+
 }
