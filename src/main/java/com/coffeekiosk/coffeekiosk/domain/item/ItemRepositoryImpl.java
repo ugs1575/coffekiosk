@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.domain;
+package com.coffeekiosk.coffeekiosk.domain.item;
 
 import static com.coffeekiosk.coffeekiosk.domain.QItem.*;
 import static org.springframework.util.StringUtils.*;
@@ -9,9 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
-import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSearchServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.dto.response.ItemResponse;
-import com.coffeekiosk.coffeekiosk.service.dto.response.QItemResponse;
+import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSearchServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
+import com.coffeekiosk.coffeekiosk.service.item.dto.response.QItemResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;

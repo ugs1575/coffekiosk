@@ -1,18 +1,16 @@
-package com.coffeekiosk.coffeekiosk.service.dto.response;
+package com.coffeekiosk.coffeekiosk.service.item.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.coffeekiosk.coffeekiosk.domain.Item;
-import com.coffeekiosk.coffeekiosk.domain.ItemType;
+import com.coffeekiosk.coffeekiosk.domain.item.Item;
+import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 public class ItemResponse {

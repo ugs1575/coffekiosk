@@ -5,23 +5,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
-import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemSaveRequest;
-import com.coffeekiosk.coffeekiosk.controller.dto.request.ItemUpdateRequest;
-import com.coffeekiosk.coffeekiosk.service.ItemService;
-import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSearchServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.dto.response.ItemResponse;
+import com.coffeekiosk.coffeekiosk.controller.item.ItemApiController;
+import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemUpdateRequest;
+import com.coffeekiosk.coffeekiosk.service.item.ItemService;
+import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
 @WebMvcTest(controllers = ItemApiController.class)
 class ItemApiControllerTest extends ControllerTestSupport {

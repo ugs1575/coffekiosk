@@ -1,20 +1,15 @@
-package com.coffeekiosk.coffeekiosk.controller.dto.request;
+package com.coffeekiosk.coffeekiosk.controller.item.dto.request;
 
 import static org.springframework.util.StringUtils.*;
 
-import com.coffeekiosk.coffeekiosk.domain.ItemType;
-import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSearchServiceRequest;
+import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
+import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSearchServiceRequest;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
 @Getter
 @Setter

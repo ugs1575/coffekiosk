@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.domain;
+package com.coffeekiosk.coffeekiosk.domain.item;
 
 import java.time.LocalDateTime;
 

@@ -7,6 +7,9 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.coffeekiosk.coffeekiosk.domain.item.Item;
+import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
+
 class ItemTest {
 
 	@DisplayName("상품을 등록 시 마지막 수정시간을 기록한다.")

@@ -1,6 +1,6 @@
 package com.coffeekiosk.coffeekiosk.service;
 
-import static com.coffeekiosk.coffeekiosk.domain.ItemType.*;
+import static com.coffeekiosk.coffeekiosk.domain.item.ItemType.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
@@ -13,13 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
-import com.coffeekiosk.coffeekiosk.domain.Item;
-import com.coffeekiosk.coffeekiosk.domain.ItemRepository;
-import com.coffeekiosk.coffeekiosk.domain.ItemType;
-import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSaveServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.dto.request.ItemSearchServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.dto.request.ItemUpdateServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.dto.response.ItemResponse;
+import com.coffeekiosk.coffeekiosk.domain.item.Item;
+import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
+import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
+import com.coffeekiosk.coffeekiosk.service.item.ItemService;
+import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSearchServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
 class ItemServiceTest extends IntegrationTestSupport {
 

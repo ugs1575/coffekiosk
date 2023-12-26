@@ -1,6 +1,6 @@
-package com.coffeekiosk.coffeekiosk.service.dto.request;
+package com.coffeekiosk.coffeekiosk.service.item.dto.request;
 
-import com.coffeekiosk.coffeekiosk.domain.ItemType;
+import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 
 import lombok.AccessLevel;
 import lombok.Builder;
