@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.service;
+package com.coffeekiosk.coffeekiosk.service.item;
 
 import static com.coffeekiosk.coffeekiosk.domain.item.ItemType.*;
 import static org.assertj.core.api.Assertions.*;
@@ -16,7 +16,6 @@ import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
-import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceRequest;
@@ -119,7 +118,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 	@DisplayName("상품 목록을 조회한다.")
 	@Test
 	void findPagedItems() {
-	    //given
+		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
 		Item item2 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
@@ -131,7 +130,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 			.build();
 		PageRequest pageRequest = PageRequest.of(0, 1);
 
-	    //when
+		//when
 		List<ItemResponse> items = itemService.findItems(request, pageRequest);
 
 		//then

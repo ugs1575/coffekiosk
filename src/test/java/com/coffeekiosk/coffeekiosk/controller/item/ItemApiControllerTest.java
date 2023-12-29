@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller;
+package com.coffeekiosk.coffeekiosk.controller.item;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -14,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
-import com.coffeekiosk.coffeekiosk.controller.item.ItemApiController;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
@@ -47,7 +46,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"));
 	}
-	
+
 	@DisplayName("상품 등록 시 상품 이름은 필수값이다.")
 	@Test
 	void createItemWithoutName() throws Exception {

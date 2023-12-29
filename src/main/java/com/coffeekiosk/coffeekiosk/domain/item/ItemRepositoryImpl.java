@@ -1,6 +1,6 @@
 package com.coffeekiosk.coffeekiosk.domain.item;
 
-import static com.coffeekiosk.coffeekiosk.domain.QItem.*;
+import static com.coffeekiosk.coffeekiosk.domain.item.QItem.*;
 import static org.springframework.util.StringUtils.*;
 
 import java.util.List;

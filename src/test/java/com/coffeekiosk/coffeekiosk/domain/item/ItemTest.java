@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.domain;
+package com.coffeekiosk.coffeekiosk.domain.item;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -6,9 +6,6 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import com.coffeekiosk.coffeekiosk.domain.item.Item;
-import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 
 class ItemTest {
 
