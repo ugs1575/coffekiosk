@@ -26,24 +26,23 @@ public class ItemService {
 	private final ItemRepository itemRepository;
 
 	@Transactional
-	public ItemResponse createItem(ItemSaveServiceRequest request, LocalDateTime lastModifiedDateTime) {
+	public Long createItem(ItemSaveServiceRequest request, LocalDateTime lastModifiedDateTime) {
 		Item item = request.toEntity().create(lastModifiedDateTime);
 		Item savedItem = itemRepository.save(item);
-		return ItemResponse.of(savedItem);
+		return savedItem.getId();
 	}
 
 	@Transactional
-	public ItemResponse updateItem(Long itemId, ItemUpdateServiceRequest request, LocalDateTime updatedModifiedDateTime) {
+	public void updateItem(Long itemId, ItemUpdateServiceRequest request, LocalDateTime updatedModifiedDateTime) {
 		Item item = itemRepository.findById(itemId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 
-		Item updatedItem = item.update(request.toEntity(), updatedModifiedDateTime);
-		return ItemResponse.of(updatedItem);
+		item.update(request.toEntity(), updatedModifiedDateTime);
 	}
 
 	@Transactional
 	public void deleteItem(Long itemId) {
-		Item item = itemRepository.findById(itemId)
+		itemRepository.findById(itemId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 
 		itemRepository.deleteById(itemId);

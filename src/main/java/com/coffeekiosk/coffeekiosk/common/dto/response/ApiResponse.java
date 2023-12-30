@@ -25,11 +25,16 @@ public class ApiResponse<T> extends CommonResponse {
 	}
 
 	public static <T> ApiResponse<T> ok(T data) {
-		return of(HttpStatus.OK, HttpStatus.OK.name(), data);
+		return of(HttpStatus.OK, data);
 	}
 
 	public static <T> ApiResponse<T> noContent() {
-		return of(HttpStatus.OK, HttpStatus.OK.name(), null);
+		return of(HttpStatus.OK, null);
 	}
+
+	public static ApiResponse<CreatedResponse> created(Long id) {
+		return ok(CreatedResponse.of(id));
+	}
+
 }
 

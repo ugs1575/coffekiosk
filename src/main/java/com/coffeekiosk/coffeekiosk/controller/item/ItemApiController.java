@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
+import com.coffeekiosk.coffeekiosk.common.dto.response.CreatedResponse;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSearchRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemUpdateRequest;
@@ -32,15 +33,15 @@ public class ItemApiController {
 	private final ItemService itemService;
 
 	@PostMapping("/items")
-	public ApiResponse<ItemResponse> createItem(@RequestBody @Valid ItemSaveRequest request) {
-		ItemResponse response = itemService.createItem(request.toServiceRequest(), LocalDateTime.now());
-		return ApiResponse.ok(response);
+	public ApiResponse<CreatedResponse> createItem(@RequestBody @Valid ItemSaveRequest request) {
+		Long itemId = itemService.createItem(request.toServiceRequest(), LocalDateTime.now());
+		return ApiResponse.created(itemId);
 	}
 
 	@PatchMapping("/items/{itemId}")
-	public ApiResponse<ItemResponse> updateItem(@PathVariable Long itemId, @RequestBody @Valid ItemUpdateRequest request) {
-		ItemResponse response = itemService.updateItem(itemId, request.toServiceRequest(), LocalDateTime.now());
-		return ApiResponse.ok(response);
+	public ApiResponse<Void> updateItem(@PathVariable Long itemId, @RequestBody @Valid ItemUpdateRequest request) {
+		itemService.updateItem(itemId, request.toServiceRequest(), LocalDateTime.now());
+		return ApiResponse.noContent();
 	}
 
 	@DeleteMapping("/items/{itemId}")

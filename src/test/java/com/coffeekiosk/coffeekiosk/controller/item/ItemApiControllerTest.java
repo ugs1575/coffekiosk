@@ -35,6 +35,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.price(5000)
 			.build();
 
+		when(itemService.createItem(any(), any())).thenReturn(1L);
+
 		//when //then
 		mockMvc.perform(
 				post("/api/items")
@@ -44,7 +46,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andExpect(jsonPath("$.data.id").value(1L));
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 필수값이다.")

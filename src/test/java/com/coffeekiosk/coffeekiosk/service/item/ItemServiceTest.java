@@ -47,13 +47,10 @@ class ItemServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		ItemResponse itemResponse = itemService.createItem(request, lastModifiedDateTime);
+		Long itemId = itemService.createItem(request, lastModifiedDateTime);
 
 		//then
-		assertThat(itemResponse.getId()).isNotNull();
-		assertThat(itemResponse)
-			.extracting("name", "itemType", "price", "lastModifiedDateTime")
-			.contains("카페라떼", COFFEE, 5000, lastModifiedDateTime);
+		assertThat(itemId).isNotNull();
 
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(1)
@@ -80,14 +77,9 @@ class ItemServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		ItemResponse itemResponse = itemService.updateItem(savedItem.getId(), request, updatedModifiedDateTime);
+		itemService.updateItem(savedItem.getId(), request, updatedModifiedDateTime);
 
 		//then
-		assertThat(itemResponse.getId()).isEqualTo(savedItem.getId());
-		assertThat(itemResponse)
-			.extracting("name", "itemType", "price", "lastModifiedDateTime")
-			.contains("케이크", DESSERT, 6000, updatedModifiedDateTime);
-
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(1)
 			.extracting("name", "itemType", "price", "lastModifiedDateTime")
