@@ -170,7 +170,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
 
-	@DisplayName("상품 등록 시 상품 가격은 양수여야합니다.")
+	@DisplayName("상품 등록 시 상품 가격은 최소 1원입니다.")
 	@Test
 	void createItemWithoutPrice() throws Exception {
 		//given
@@ -192,7 +192,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors.[0].field").value("price"))
 			.andExpect(jsonPath("$.fieldErrors.[0].value").value("0"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 가격은 양수여야 합니다."));
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("최소 상품 가격은 1원입니다."));
 	}
 
 	@DisplayName("상품을 수정한다")
