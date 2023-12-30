@@ -42,7 +42,7 @@ class PointApiControllerTest extends ControllerTestSupport {
 
 	@DisplayName("최소 포인트 충전 금액은 10000원이다.")
 	@Test
-	void updateItemWithoutName() throws Exception {
+	void savePointLessThanMinimum() throws Exception {
 		//given
 		PointSaveRequest request = PointSaveRequest.builder()
 			.amount(9000)
@@ -61,5 +61,28 @@ class PointApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.fieldErrors.[0].field").value("amount"))
 			.andExpect(jsonPath("$.fieldErrors.[0].value").value("9000"))
 			.andExpect(jsonPath("$.fieldErrors.[0].message").value("충전 최소 금액은 10000원 입니다."));
+	}
+
+	@DisplayName("최대 포인트 충전 금액은 550000원이다.")
+	@Test
+	void savePointMoreThanMaximum() throws Exception {
+		//given
+		PointSaveRequest request = PointSaveRequest.builder()
+			.amount(560000)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				post("/api/users/{userId}/points", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors.[0].field").value("amount"))
+			.andExpect(jsonPath("$.fieldErrors.[0].value").value("560000"))
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("충전 최대 금액은 550000원 입니다."));
 	}
 }
