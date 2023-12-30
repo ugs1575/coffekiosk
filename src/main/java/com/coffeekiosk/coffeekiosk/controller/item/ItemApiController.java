@@ -57,7 +57,7 @@ public class ItemApiController {
 	}
 
 	@GetMapping("/items/{itemId}")
-	public ApiResponse<ItemResponse> findItems(@PathVariable Long itemId) {
+	public ApiResponse<ItemResponse> findItem(@PathVariable Long itemId) {
 		ItemResponse response = itemService.findItem(itemId);
 		return ApiResponse.ok(response);
 	}
