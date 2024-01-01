@@ -4,6 +4,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
+import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,5 +46,13 @@ public class User extends BaseTimeEntity {
 
 	public void savePoint(int amount) {
 		this.point += amount;
+	}
+
+	public void deductPoint(int totalPrice) {
+		if (totalPrice > point) {
+			throw new BusinessException(ErrorCode.INSUFFICIENT_POINT);
+		}
+
+		point -= totalPrice;
 	}
 }
