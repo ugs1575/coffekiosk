@@ -14,7 +14,8 @@ public enum ErrorCode {
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "요청 값의 타입이 잘못되었습니다."),
 	ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 데이터를 찾을 수 없습니다."),
 
-	ITEM_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않는 상품 타입입니다.");
+	ITEM_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않는 상품 타입입니다."),
+	INSUFFICIENT_POINT(HttpStatus.BAD_REQUEST, "현재 가지고 있는 포인트가 주문 금액보다 적습니다.");
 
 	private final HttpStatus httpStatus;
 	private final String message;
