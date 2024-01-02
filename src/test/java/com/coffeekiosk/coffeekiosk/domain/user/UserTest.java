@@ -53,4 +53,19 @@ class UserTest {
 
 	}
 
+	@DisplayName("차감될 금액이 보유 포인트보다 많은지 확인한다.")
+	@Test
+	void isMoreThanCurrentPoint() {
+	    //given
+		User user = User.builder()
+			.point(100)
+			.build();
+
+	    //when
+		boolean result = user.isMoreThanCurrentPoint(200);
+
+		//then
+		assertThat(result).isTrue();
+	}
+
 }

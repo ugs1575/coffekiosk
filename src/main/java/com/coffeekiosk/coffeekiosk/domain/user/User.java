@@ -49,10 +49,14 @@ public class User extends BaseTimeEntity {
 	}
 
 	public void deductPoint(int totalPrice) {
-		if (totalPrice > point) {
+		if (isMoreThanCurrentPoint(totalPrice)) {
 			throw new BusinessException(ErrorCode.INSUFFICIENT_POINT);
 		}
 
 		point -= totalPrice;
+	}
+
+	public boolean isMoreThanCurrentPoint(int totalPrice) {
+		return totalPrice > point;
 	}
 }

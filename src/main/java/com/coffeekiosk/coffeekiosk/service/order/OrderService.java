@@ -37,7 +37,7 @@ public class OrderService {
 
 		//in 절로 item 불러와서 있는지 확인
 		List<Item> items = itemRepository.findAllById(request.getItemIds());
-		Map<Long, Item> itemMap = createMapper(items);
+		Map<Long, Item> itemMap = createItemMapBy(items);
 
 		//주문 생성
 		Order order = Order.order(user, orderDateTime);
@@ -51,6 +51,11 @@ public class OrderService {
 		}
 
 		Order savedOrder = orderRepository.save(order);
+		int totalPrice = order.calculateTotalPrice();
+
+		if (user.isMoreThanCurrentPoint(totalPrice)) {
+			throw new BusinessException(ErrorCode.INSUFFICIENT_POINT);
+		}
 
 		user.deductPoint(order.calculateTotalPrice());
 
@@ -72,7 +77,7 @@ public class OrderService {
 		return item;
 	}
 
-	private Map<Long, Item> createMapper(List<Item> items) {
+	private Map<Long, Item> createItemMapBy(List<Item> items) {
 		return items.stream()
 			.collect(Collectors.toMap(Item::getId, i -> i));
 	}

@@ -1,7 +1,6 @@
 package com.coffeekiosk.coffeekiosk.service.order;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
+import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
@@ -93,6 +93,28 @@ class OrderServiceTest extends IntegrationTestSupport {
 
 		List<User> users = userRepository.findAll();
 		assertThat(users.get(0).getPoint()).isEqualTo(6000);
+	}
+
+	@DisplayName("주문 금액보다 보유 포인트가 클 경우 예외가 발생한다.")
+	@Test
+	void createOrderWithInsufficientPoint() {
+		//given
+		LocalDateTime orderDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+
+		User user = createUser(4000);
+
+		Item item = createItem("카페라떼", 5000);
+		itemRepository.save(item);
+
+		OrderItemRequest orderItemRequest = createOrderItemRequest(item, 1);
+		OrderSaveServiceRequest request = OrderSaveServiceRequest.builder()
+			.orderItems(List.of(orderItemRequest))
+			.build();
+
+		//when //then
+		assertThatThrownBy(() -> orderService.order(user.getId(), request, orderDateTime))
+			.isInstanceOf(BusinessException.class)
+			.hasMessage("현재 가지고 있는 포인트가 주문 금액보다 적습니다.");
 
 	}
 
@@ -102,10 +124,6 @@ class OrderServiceTest extends IntegrationTestSupport {
 			.count(count)
 			.build();
 	}
-
-	// @DisplayName("상품을 주문 시 충전 금액보다 많이 주문 할 경우")
-	// @DisplayName("상품을 주문 시 충전 포인트에서 총 주문 금액만큼 차감된다")
-
 
 	private Item createItem(String name, int price) {
 		return Item.builder()
@@ -122,8 +140,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 			.point(point)
 			.build();
 
-		User savedUser = userRepository.save(user);
-		return savedUser;
+		return userRepository.save(user);
 	}
 
 }
