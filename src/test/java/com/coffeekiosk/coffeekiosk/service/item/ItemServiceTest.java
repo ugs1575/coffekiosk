@@ -54,9 +54,9 @@ class ItemServiceTest extends IntegrationTestSupport {
 
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(1)
-			.extracting("name", "itemType", "price", "lastModifiedDateTime")
+			.extracting("id", "name", "itemType", "price", "lastModifiedDateTime")
 			.containsExactlyInAnyOrder(
-				tuple("카페라떼", COFFEE, 5000, lastModifiedDateTime)
+				tuple(itemId, "카페라떼", COFFEE, 5000, lastModifiedDateTime)
 			);
 
 	}
@@ -70,6 +70,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 		Item savedItem = itemRepository.save(item);
 
 		LocalDateTime updatedModifiedDateTime = LocalDateTime.of(2023, 11, 22, 0, 0);
+
 		ItemUpdateServiceRequest request = ItemUpdateServiceRequest.builder()
 			.name("케이크")
 			.itemType(DESSERT)
@@ -82,9 +83,9 @@ class ItemServiceTest extends IntegrationTestSupport {
 		//then
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(1)
-			.extracting("name", "itemType", "price", "lastModifiedDateTime")
+			.extracting("id", "name", "itemType", "price", "lastModifiedDateTime")
 			.containsExactlyInAnyOrder(
-				tuple("케이크", DESSERT, 6000, updatedModifiedDateTime)
+				tuple(savedItem.getId(), "케이크", DESSERT, 6000, updatedModifiedDateTime)
 			);
 
 	}
@@ -123,10 +124,10 @@ class ItemServiceTest extends IntegrationTestSupport {
 		PageRequest pageRequest = PageRequest.of(0, 1);
 
 		//when
-		List<ItemResponse> items = itemService.findItems(request, pageRequest);
+		List<ItemResponse> itemResponses = itemService.findItems(request, pageRequest);
 
 		//then
-		assertThat(items)
+		assertThat(itemResponses)
 			.extracting("name")
 			.containsExactly(item1.getName());
 	}
@@ -149,10 +150,10 @@ class ItemServiceTest extends IntegrationTestSupport {
 		PageRequest pageRequest = PageRequest.of(0, 3);
 
 		//when
-		List<ItemResponse> items = itemService.findItems(request, pageRequest);
+		List<ItemResponse> itemResponses = itemService.findItems(request, pageRequest);
 
 		//then
-		assertThat(items)
+		assertThat(itemResponses)
 			.hasSize(2)
 			.extracting("name")
 			.containsExactly(item1.getName(), item2.getName());
@@ -176,10 +177,10 @@ class ItemServiceTest extends IntegrationTestSupport {
 		PageRequest pageRequest = PageRequest.of(0, 3);
 
 		//when
-		List<ItemResponse> items = itemService.findItems(request, pageRequest);
+		List<ItemResponse> itemResponses = itemService.findItems(request, pageRequest);
 
 		//then
-		assertThat(items)
+		assertThat(itemResponses)
 			.hasSize(2)
 			.extracting("name")
 			.containsExactly(item2.getName(), item3.getName());
@@ -204,10 +205,10 @@ class ItemServiceTest extends IntegrationTestSupport {
 		PageRequest pageRequest = PageRequest.of(0, 3);
 
 		//when
-		List<ItemResponse> items = itemService.findItems(request, pageRequest);
+		List<ItemResponse> itemResponses = itemService.findItems(request, pageRequest);
 
 		//then
-		assertThat(items)
+		assertThat(itemResponses)
 			.hasSize(1)
 			.extracting("name")
 			.containsExactly(item3.getName());
@@ -219,8 +220,6 @@ class ItemServiceTest extends IntegrationTestSupport {
 		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 		Item item = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
-
-		itemRepository.save(item);
 
 		//when
 		ItemResponse itemResponse = itemService.findItem(item.getId());

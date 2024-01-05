@@ -32,12 +32,10 @@ class PointServiceTest extends IntegrationTestSupport {
 
 		//given
 		User user = createUser();
-		PointSaveServiceRequest request1 = PointSaveServiceRequest.builder()
-			.amount(10000)
-			.build();
-		PointSaveServiceRequest request2 = PointSaveServiceRequest.builder()
-			.amount(1000)
-			.build();
+		userRepository.save(user);
+
+		PointSaveServiceRequest request1 = createPointSaveRequest(10000);
+		PointSaveServiceRequest request2 = createPointSaveRequest(1000);
 
 		//when
 		pointService.savePoint(user.getId(), request1);
@@ -45,13 +43,22 @@ class PointServiceTest extends IntegrationTestSupport {
 
 		//then
 		List<User> users = userRepository.findAll();
-		User savedUser = users.get(0);
-		assertThat(savedUser.getPoint()).isEqualTo(11000);
+		assertThat(users).hasSize(1)
+			.extracting("id", "point")
+			.containsExactlyInAnyOrder(
+				tuple(user.getId(), 11000)
+			);
+	}
+
+	private PointSaveServiceRequest createPointSaveRequest(int point) {
+		return PointSaveServiceRequest.builder()
+			.amount(point)
+			.build();
 	}
 
 	private User createUser() {
-		return userRepository.save(User.builder()
+		return User.builder()
 			.name("우경서")
-			.build());
+			.build();
 	}
 }

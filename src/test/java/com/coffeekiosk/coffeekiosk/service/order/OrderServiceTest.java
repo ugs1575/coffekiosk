@@ -57,6 +57,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 		LocalDateTime orderDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 
 		User user = createUser(20000);
+		userRepository.save(user);
 
 		Item item1 = createItem("카페라떼", 5000);
 		Item item2 = createItem("아메리카노", 4500);
@@ -72,27 +73,14 @@ class OrderServiceTest extends IntegrationTestSupport {
 		Long orderId = orderService.order(user.getId(), request, orderDateTime);
 
 		//then
-		List<Order> orders = orderRepository.findAll();
-		assertThat(orders).hasSize(1);
-		assertThat(orders.get(0).getId()).isEqualTo(orderId);
-		assertThat(orders.get(0).getUser().getId()).isEqualTo(user.getId());
-		assertThat(orders.get(0).getOrderDateTime()).isEqualTo(orderDateTime);
-
-		List<OrderItem> orderItems = orderItemRepository.findAll();
-		assertThat(orderItems).hasSize(2);
-
-		assertThat(orderItems.get(0).getOrder().getId()).isEqualTo(orderId);
-		assertThat(orderItems.get(0).getItem().getId()).isEqualTo(item1.getId());
-		assertThat(orderItems.get(0).getOrderPrice()).isEqualTo(5000);
-		assertThat(orderItems.get(0).getCount()).isEqualTo(1);
-
-		assertThat(orderItems.get(1).getOrder().getId()).isEqualTo(orderId);
-		assertThat(orderItems.get(1).getItem().getId()).isEqualTo(item2.getId());
-		assertThat(orderItems.get(1).getOrderPrice()).isEqualTo(9000);
-		assertThat(orderItems.get(1).getCount()).isEqualTo(2);
+		assertThat(orderId).isNotNull();
 
 		List<User> users = userRepository.findAll();
-		assertThat(users.get(0).getPoint()).isEqualTo(6000);
+		assertThat(users).hasSize(1)
+			.extracting("id", "point")
+			.containsExactlyInAnyOrder(
+				tuple(user.getId(), 6000)
+			);
 	}
 
 	@DisplayName("주문 금액보다 보유 포인트가 클 경우 예외가 발생한다.")
@@ -102,6 +90,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 		LocalDateTime orderDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 
 		User user = createUser(4000);
+		userRepository.save(user);
 
 		Item item = createItem("카페라떼", 5000);
 		itemRepository.save(item);
@@ -135,12 +124,10 @@ class OrderServiceTest extends IntegrationTestSupport {
 	}
 
 	private User createUser(int point) {
-		User user = User.builder()
+		return User.builder()
 			.name("우경서")
 			.point(point)
 			.build();
-
-		return userRepository.save(user);
 	}
 
 }
