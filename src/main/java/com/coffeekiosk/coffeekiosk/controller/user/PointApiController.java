@@ -13,14 +13,14 @@ import com.coffeekiosk.coffeekiosk.service.user.PointService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api")
+@RequestMapping("/api/users/{userId}")
 @RequiredArgsConstructor
 @RestController
 public class PointApiController {
 
 	private final PointService pointService;
 
-	@PostMapping("/users/{userId}/points")
+	@PostMapping("/points")
 	public ApiResponse<Void> savePoint(@PathVariable Long userId, @RequestBody @Valid PointSaveRequest request) {
 		pointService.savePoint(userId, request.toServiceRequest());
 		return ApiResponse.noContent();

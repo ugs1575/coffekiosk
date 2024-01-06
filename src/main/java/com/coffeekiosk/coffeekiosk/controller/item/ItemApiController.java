@@ -25,38 +25,38 @@ import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api")
+@RequestMapping("/api/items")
 @RequiredArgsConstructor
 @RestController
 public class ItemApiController {
 
 	private final ItemService itemService;
 
-	@PostMapping("/items")
+	@PostMapping
 	public ApiResponse<CreatedResponse> createItem(@RequestBody @Valid ItemSaveRequest request) {
 		Long itemId = itemService.createItem(request.toServiceRequest(), LocalDateTime.now());
 		return ApiResponse.created(itemId);
 	}
 
-	@PatchMapping("/items/{itemId}")
+	@PatchMapping("/{itemId}")
 	public ApiResponse<Void> updateItem(@PathVariable Long itemId, @RequestBody @Valid ItemUpdateRequest request) {
 		itemService.updateItem(itemId, request.toServiceRequest(), LocalDateTime.now());
 		return ApiResponse.noContent();
 	}
 
-	@DeleteMapping("/items/{itemId}")
+	@DeleteMapping("/{itemId}")
 	public ApiResponse<Void> updateItem(@PathVariable Long itemId) {
 		itemService.deleteItem(itemId);
 		return ApiResponse.noContent();
 	}
 
-	@GetMapping("/items")
+	@GetMapping
 	public ApiResponse<List<ItemResponse>> findItems(ItemSearchRequest itemSearchRequest, @PageableDefault(value = 10) Pageable pageable) {
 		List<ItemResponse> response = itemService.findItems(itemSearchRequest.toServiceRequest(), pageable);
 		return ApiResponse.ok(response);
 	}
 
-	@GetMapping("/items/{itemId}")
+	@GetMapping("/{itemId}")
 	public ApiResponse<ItemResponse> findItem(@PathVariable Long itemId) {
 		ItemResponse response = itemService.findItem(itemId);
 		return ApiResponse.ok(response);

@@ -11,14 +11,14 @@ import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 @RestController
 public class UserApiController {
 
 	private final UserService userService;
 
-	@GetMapping("/users/{userId}")
+	@GetMapping("/{userId}")
 	public ApiResponse<UserResponse> findUser(@PathVariable Long userId) {
 		UserResponse response = userService.findUser(userId);
 		return ApiResponse.ok(response);
