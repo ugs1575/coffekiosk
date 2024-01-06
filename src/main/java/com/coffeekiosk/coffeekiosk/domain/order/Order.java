@@ -3,6 +3,7 @@ package com.coffeekiosk.coffeekiosk.domain.order;
 import static jakarta.persistence.FetchType.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
@@ -47,14 +48,20 @@ public class Order extends BaseTimeEntity {
 		this.orderDateTime = orderDateTime;
 	}
 
-	public static Order order(User user, LocalDateTime orderDateTime) {
-		return Order.builder()
+	public static Order order(User user, List<OrderItem> orderItems, LocalDateTime orderDateTime) {
+		Order order = Order.builder()
 			.user(user)
 			.orderDateTime(orderDateTime)
 			.build();
+
+		for (OrderItem orderItem : orderItems) {
+			order.addOrderItem(orderItem);
+		}
+
+		return order;
 	}
 
-	public void setOrderItem(OrderItem orderItem) {
+	public void addOrderItem(OrderItem orderItem) {
 		orderItems.addOrderItem(orderItem);
 		orderItem.setOrder(this);
 	}

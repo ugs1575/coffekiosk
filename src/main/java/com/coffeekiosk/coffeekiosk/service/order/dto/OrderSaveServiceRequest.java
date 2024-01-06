@@ -12,18 +12,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderSaveServiceRequest {
 
-	private List<OrderItemRequest> orderItems;
+	private List<OrderItemSaveServiceRequest> orderItems;
 
 	@Builder
-	private OrderSaveServiceRequest(List<OrderItemRequest> orderItems) {
+	private OrderSaveServiceRequest(List<OrderItemSaveServiceRequest> orderItems) {
 		this.orderItems = orderItems;
 	}
 
 	public List<Long> getItemIds() {
 		return orderItems.stream()
-			.map(OrderItemRequest::getItemId)
+			.map(OrderItemSaveServiceRequest::getItemId)
 			.collect(Collectors.toList());
 	}
-
-	//todo: 중복되는 Item id 가 있는지 체크
 }

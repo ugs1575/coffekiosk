@@ -15,13 +15,12 @@ import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
-import com.coffeekiosk.coffeekiosk.domain.order.Order;
 import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
-import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemRequest;
+import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
 
 class OrderServiceTest extends IntegrationTestSupport {
@@ -63,8 +62,8 @@ class OrderServiceTest extends IntegrationTestSupport {
 		Item item2 = createItem("아메리카노", 4500);
 		itemRepository.saveAll(List.of(item1, item2));
 
-		OrderItemRequest request1 = createOrderItemRequest(item1, 1);
-		OrderItemRequest request2 = createOrderItemRequest(item2, 2);
+		OrderItemSaveServiceRequest request1 = createOrderItemRequest(item1, 1);
+		OrderItemSaveServiceRequest request2 = createOrderItemRequest(item2, 2);
 		OrderSaveServiceRequest request = OrderSaveServiceRequest.builder()
 			.orderItems(List.of(request1, request2))
 			.build();
@@ -95,7 +94,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 		Item item = createItem("카페라떼", 5000);
 		itemRepository.save(item);
 
-		OrderItemRequest orderItemRequest = createOrderItemRequest(item, 1);
+		OrderItemSaveServiceRequest orderItemRequest = createOrderItemRequest(item, 1);
 		OrderSaveServiceRequest request = OrderSaveServiceRequest.builder()
 			.orderItems(List.of(orderItemRequest))
 			.build();
@@ -107,8 +106,8 @@ class OrderServiceTest extends IntegrationTestSupport {
 
 	}
 
-	private OrderItemRequest createOrderItemRequest(Item item, int count) {
-		return OrderItemRequest.builder()
+	private OrderItemSaveServiceRequest createOrderItemRequest(Item item, int count) {
+		return OrderItemSaveServiceRequest.builder()
 			.itemId(item.getId())
 			.count(count)
 			.build();

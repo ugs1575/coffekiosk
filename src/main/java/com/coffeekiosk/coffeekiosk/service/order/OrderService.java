@@ -1,6 +1,7 @@
 package com.coffeekiosk.coffeekiosk.service.order;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,7 +18,7 @@ import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -35,22 +36,27 @@ public class OrderService {
 	public Long order(Long userId, OrderSaveServiceRequest request, LocalDateTime orderDateTime) {
 		User user = findUser(userId);
 
-		//in 절로 item 불러와서 있는지 확인
 		List<Item> items = itemRepository.findAllById(request.getItemIds());
 		Map<Long, Item> itemMap = createItemMapBy(items);
 
-		//주문 생성
-		Order order = Order.order(user, orderDateTime);
+		List<OrderItem> orderItems = new ArrayList<>();
+		for (OrderItemSaveServiceRequest itemRequest : request.getOrderItems()) {
+			Item item = findItem(itemMap, itemRequest.getItemId());
 
-		//주문상품 생성
-		for (OrderItemRequest orderItemRequest : request.getOrderItems()) {
-			Item item = findItem(itemMap, orderItemRequest.getItemId());
-
-			OrderItem orderItem = OrderItem.createOrderItem(item, orderItemRequest.getCount());
-			order.setOrderItem(orderItem);
+			OrderItem orderItem = OrderItem.createOrderItem(item, itemRequest.getCount());
+			orderItems.add(orderItem);
 		}
 
+		Order order = Order.order(user, orderItems, orderDateTime);
+
+		deductPoint(user, order);
+
 		Order savedOrder = orderRepository.save(order);
+
+		return savedOrder.getId();
+	}
+
+	private void deductPoint(User user, Order order) {
 		int totalPrice = order.calculateTotalPrice();
 
 		if (user.isMoreThanCurrentPoint(totalPrice)) {
@@ -58,8 +64,6 @@ public class OrderService {
 		}
 
 		user.deductPoint(order.calculateTotalPrice());
-
-		return savedOrder.getId();
 	}
 
 	private User findUser(Long userId) {
