@@ -33,6 +33,7 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private String name;
 
+	@Column(nullable = false)
 	private int point;
 
 	@Column(nullable = false, columnDefinition = "boolean default false")

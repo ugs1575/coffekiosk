@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,13 +27,16 @@ public class Item extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(nullable = false)
 	private String name;
 
 	@Enumerated(EnumType.STRING)
 	private ItemType itemType;
 
+	@Column(nullable = false)
 	private int price;
 
+	@Column(nullable = false)
 	private LocalDateTime lastModifiedDateTime;
 
 	@Builder
