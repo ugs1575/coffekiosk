@@ -50,7 +50,7 @@ public class ErrorResponse extends CommonResponse {
 			.map(Object::toString)
 			.orElse("");
 
-		List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getName(), value, ErrorCode.INVALID_TYPE_VALUE.getMessage());
+		List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getName(), ErrorCode.INVALID_TYPE_VALUE.getMessage());
 		return new ErrorResponse(ErrorCode.INVALID_TYPE_VALUE, errors);
 	}
 
@@ -67,12 +67,10 @@ public class ErrorResponse extends CommonResponse {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	static class FieldError {
 		private String field;
-		private String value;
 		private String message;
 
-		private FieldError(String field, String value, String message) {
+		private FieldError(String field, String message) {
 			this.field = field;
-			this.value = value;
 			this.message = message;
 		}
 
@@ -81,16 +79,15 @@ public class ErrorResponse extends CommonResponse {
 				.stream()
 				.map(error -> new FieldError(
 						error.getField(),
-						error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
 						error.getDefaultMessage()
 					)
 				)
 				.collect(Collectors.toList());
 		}
 
-		public static List<FieldError> of(String field, String value, String message) {
+		public static List<FieldError> of(String field, String message) {
 			List<FieldError> fieldErrors = new ArrayList<>();
-			fieldErrors.add(new FieldError(field, value, message));
+			fieldErrors.add(new FieldError(field, message));
 			return fieldErrors;
 		}
 	}

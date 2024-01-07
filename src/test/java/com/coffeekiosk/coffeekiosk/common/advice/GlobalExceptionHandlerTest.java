@@ -56,7 +56,6 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("요청 값의 타입이 잘못되었습니다."))
 			.andExpect(jsonPath("$.fieldErrors.[0].field").value("id"))
-			.andExpect(jsonPath("$.fieldErrors.[0].value").value("test"))
 			.andExpect(jsonPath("$.fieldErrors.[0].message").value("요청 값의 타입이 잘못되었습니다."));
 	}
 

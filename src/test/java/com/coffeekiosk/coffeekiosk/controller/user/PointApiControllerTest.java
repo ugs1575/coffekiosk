@@ -59,7 +59,6 @@ class PointApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors.[0].field").value("amount"))
-			.andExpect(jsonPath("$.fieldErrors.[0].value").value("9000"))
 			.andExpect(jsonPath("$.fieldErrors.[0].message").value("충전 최소 금액은 10000원 입니다."));
 	}
 
@@ -82,7 +81,6 @@ class PointApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors.[0].field").value("amount"))
-			.andExpect(jsonPath("$.fieldErrors.[0].value").value("560000"))
 			.andExpect(jsonPath("$.fieldErrors.[0].message").value("충전 최대 금액은 550000원 입니다."));
 	}
 }
