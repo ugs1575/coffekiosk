@@ -12,15 +12,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderSaveServiceRequest {
 
-	private List<OrderItemSaveServiceRequest> orderItems;
+	private List<OrderItemSaveServiceRequest> orderList;
 
 	@Builder
-	private OrderSaveServiceRequest(List<OrderItemSaveServiceRequest> orderItems) {
-		this.orderItems = orderItems;
+	private OrderSaveServiceRequest(List<OrderItemSaveServiceRequest> orderList) {
+		this.orderList = orderList;
 	}
 
 	public List<Long> getItemIds() {
-		return orderItems.stream()
+		return orderList.stream()
 			.map(OrderItemSaveServiceRequest::getItemId)
 			.collect(Collectors.toList());
 	}

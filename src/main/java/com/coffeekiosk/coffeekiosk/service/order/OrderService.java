@@ -40,7 +40,7 @@ public class OrderService {
 		Map<Long, Item> itemMap = createItemMapBy(items);
 
 		List<OrderItem> orderItems = new ArrayList<>();
-		for (OrderItemSaveServiceRequest itemRequest : request.getOrderItems()) {
+		for (OrderItemSaveServiceRequest itemRequest : request.getOrderList()) {
 			Item item = findItem(itemMap, itemRequest.getItemId());
 
 			OrderItem orderItem = OrderItem.createOrderItem(item, itemRequest.getCount());

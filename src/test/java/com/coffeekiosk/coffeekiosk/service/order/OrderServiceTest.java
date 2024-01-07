@@ -65,7 +65,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 		OrderItemSaveServiceRequest request1 = createOrderItemRequest(item1, 1);
 		OrderItemSaveServiceRequest request2 = createOrderItemRequest(item2, 2);
 		OrderSaveServiceRequest request = OrderSaveServiceRequest.builder()
-			.orderItems(List.of(request1, request2))
+			.orderList(List.of(request1, request2))
 			.build();
 
 		//when
@@ -96,7 +96,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 
 		OrderItemSaveServiceRequest orderItemRequest = createOrderItemRequest(item, 1);
 		OrderSaveServiceRequest request = OrderSaveServiceRequest.builder()
-			.orderItems(List.of(orderItemRequest))
+			.orderList(List.of(orderItemRequest))
 			.build();
 
 		//when //then
