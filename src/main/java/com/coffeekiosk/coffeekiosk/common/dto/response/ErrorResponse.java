@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,6 +31,11 @@ public class ErrorResponse extends CommonResponse {
 		this.fieldErrors = new ArrayList<>();
 	}
 
+	private ErrorResponse(ErrorCode errorCode, String message) {
+		super(errorCode.getHttpStatus(), message);
+		this.fieldErrors = new ArrayList<>();
+	}
+
 	public static ErrorResponse of(ErrorCode errorCode) {
 		return new ErrorResponse(errorCode);
 
@@ -43,8 +50,17 @@ public class ErrorResponse extends CommonResponse {
 			.map(Object::toString)
 			.orElse("");
 
-		List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getName(), value, e.getErrorCode());
+		List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getName(), value, ErrorCode.INVALID_TYPE_VALUE.getMessage());
 		return new ErrorResponse(ErrorCode.INVALID_TYPE_VALUE, errors);
+	}
+
+	public static ErrorResponse of(HttpMessageNotReadableException e) {
+		if (e.getCause() instanceof MismatchedInputException mismatchedInputException) {
+			String fieldName = mismatchedInputException.getPath().get(0).getFieldName();
+			return new ErrorResponse(ErrorCode.INVALID_JSON_FORMAT, fieldName + " 필드 값의 타입이 잘못되었습니다.");
+		}
+
+		return new ErrorResponse(ErrorCode.INVALID_JSON_FORMAT);
 	}
 
 	@Getter

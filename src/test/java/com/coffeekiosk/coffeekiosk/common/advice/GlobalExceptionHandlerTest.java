@@ -20,9 +20,27 @@ import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 
+import jakarta.validation.Valid;
+
 @ContextConfiguration(classes = {GlobalExceptionHandlerTest.TestController.class, GlobalExceptionHandler.class})
 @WebMvcTest(controllers = GlobalExceptionHandlerTest.TestController.class)
 class GlobalExceptionHandlerTest extends ControllerTestSupport {
+	
+	@DisplayName("request body 형식에 맞지 않을 경우 예외를 처리한다.")
+	@Test
+	void handleHttpMessageNotReadableException() throws Exception {
+		String requestJson = "{\"id\":\"test\"}";
+
+		mockMvc.perform(
+				post("/exception")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(requestJson)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("id 필드 값의 타입이 잘못되었습니다."));
+	}
 
 	@DisplayName("맞지 않는 타입이 들어올 경우 예외를 처리한다.")
 	@Test
@@ -39,7 +57,7 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.message").value("요청 값의 타입이 잘못되었습니다."))
 			.andExpect(jsonPath("$.fieldErrors.[0].field").value("id"))
 			.andExpect(jsonPath("$.fieldErrors.[0].value").value("test"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("typeMismatch"));
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("요청 값의 타입이 잘못되었습니다."));
 	}
 
 	@DisplayName("잘못된 Http 메서드로 요청이 왔을 때 예외 처리한다.")
@@ -70,7 +88,7 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 	void handleException() throws Exception {
 		mockMvc.perform(
 				post("/exception")
-					.accept(MediaType.APPLICATION_JSON)
+					.contentType(MediaType.APPLICATION_JSON)
 					.content(objectMapper.writeValueAsString(new TestDto(1)))
 			)
 			.andDo(print())
@@ -103,7 +121,7 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 		}
 
 		@PostMapping
-		public String executeException(@RequestBody TestDto testDto) {
+		public String executeException(@Valid @RequestBody TestDto testDto) {
 			throw new RuntimeException();
 		}
 	}
