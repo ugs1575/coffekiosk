@@ -3,6 +3,7 @@ package com.coffeekiosk.coffeekiosk.controller.order.dto.request;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.coffeekiosk.coffeekiosk.controller.order.dto.request.validator.UniqueItemIdConstraint;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
 
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 public class OrderSaveRequest {
 
 	@NotEmpty(message = "주문 목록은 필수입니다.")
+	@UniqueItemIdConstraint
 	private List<@Valid OrderItemSaveRequest> orderList;
 
 	@Builder
