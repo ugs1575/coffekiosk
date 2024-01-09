@@ -20,6 +20,7 @@ import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -64,6 +65,13 @@ public class OrderService {
 		}
 
 		user.deductPoint(order.calculateTotalPrice());
+	}
+
+	public OrderResponse findOrder(Long orderId) {
+		Order order = orderRepository.findByIdFetchJoin(orderId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
+
+		return OrderResponse.of(order);
 	}
 
 	private User findUser(Long userId) {

@@ -41,33 +41,30 @@ public class Order extends BaseTimeEntity {
 	@Embedded
 	private OrderItems orderItems = OrderItems.empty();
 
+	@Column(nullable = false)
 	private LocalDateTime orderDateTime;
 
 	@Builder
-	private Order(User user, LocalDateTime orderDateTime) {
+	private Order(User user, List<OrderItem> orderItems, LocalDateTime orderDateTime) {
 		this.user = user;
 		this.orderDateTime = orderDateTime;
+		orderItems.forEach(this::addOrderItem);
 	}
 
 	public static Order order(User user, List<OrderItem> orderItems, LocalDateTime orderDateTime) {
-		Order order = Order.builder()
+		return Order.builder()
 			.user(user)
+			.orderItems(orderItems)
 			.orderDateTime(orderDateTime)
 			.build();
-
-		for (OrderItem orderItem : orderItems) {
-			order.addOrderItem(orderItem);
-		}
-
-		return order;
-	}
-
-	public void addOrderItem(OrderItem orderItem) {
-		orderItems.addOrderItem(orderItem);
-		orderItem.setOrder(this);
 	}
 
 	public int calculateTotalPrice() {
 		return orderItems.calculateTotalPrice();
+	}
+
+	private void addOrderItem(OrderItem orderItem) {
+		orderItems.addOrderItem(orderItem);
+		orderItem.addOrder(this);
 	}
 }
