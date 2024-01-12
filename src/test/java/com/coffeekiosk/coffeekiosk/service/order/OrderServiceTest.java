@@ -130,7 +130,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 		Order savedOrder = orderRepository.save(order);
 
 		//when
-		OrderResponse orderResponse = orderService.findOrder(order.getId());
+		OrderResponse orderResponse = orderService.findOrder(order.getId(), user.getId());
 
 		//then
 		assertThat(orderResponse)

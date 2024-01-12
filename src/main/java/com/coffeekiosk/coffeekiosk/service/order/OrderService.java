@@ -67,8 +67,8 @@ public class OrderService {
 		user.deductPoint(order.calculateTotalPrice());
 	}
 
-	public OrderResponse findOrder(Long orderId) {
-		Order order = orderRepository.findByIdFetchJoin(orderId)
+	public OrderResponse findOrder(Long orderId, Long userId) {
+		Order order = orderRepository.findByIdFetchJoin(orderId, userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 
 		return OrderResponse.of(order);
