@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSearchServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
-import com.coffeekiosk.coffeekiosk.service.item.dto.response.QItemResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,16 +25,9 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
 	}
 
 	@Override
-	public Page<ItemResponse> search(ItemSearchServiceRequest request, Pageable pageable) {
-		List<ItemResponse> content = queryFactory
-			.select(new QItemResponse(
-				item.id.as("itemId"),
-				item.name,
-				item.itemType,
-				item.price,
-				item.lastModifiedDateTime
-			))
-			.from(item)
+	public Page<Item> search(ItemSearchServiceRequest request, Pageable pageable) {
+		List<Item> content = queryFactory
+			.selectFrom(item)
 			.where(
 				nameEq(request.getName()),
 				itemTypeEq(request.getItemType())
