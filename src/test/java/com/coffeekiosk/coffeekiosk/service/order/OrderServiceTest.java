@@ -15,13 +15,17 @@ import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
+import com.coffeekiosk.coffeekiosk.domain.order.Order;
 import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
+import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
+import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 class OrderServiceTest extends IntegrationTestSupport {
 
@@ -104,6 +108,57 @@ class OrderServiceTest extends IntegrationTestSupport {
 			.isInstanceOf(BusinessException.class)
 			.hasMessage("현재 가지고 있는 포인트가 주문 금액보다 적습니다.");
 
+	}
+
+	@DisplayName("주문 상세 정보를 조회한다.")
+	@Test
+	void findOrderById() {
+		//given
+		User user = createUser(10000);
+		userRepository.save(user);
+
+		Item item1 = createItem("카페라떼", 5000);
+		Item item2 = createItem("아메리카노", 4500);
+		itemRepository.saveAll(List.of(item1, item2));
+
+		OrderItem orderItem1 = createOrderItem(item1, 1);
+		OrderItem orderItem2 = createOrderItem(item2, 1);
+
+		LocalDateTime orderDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+
+		Order order = createOrder(user, List.of(orderItem1, orderItem2), orderDateTime);
+		Order savedOrder = orderRepository.save(order);
+
+		//when
+		OrderResponse orderResponse = orderService.findOrder(order.getId(), user.getId());
+
+		//then
+		assertThat(orderResponse)
+			.extracting("id", "totalPrice", "orderDateTime")
+			.contains(savedOrder.getId(), 9500, orderDateTime);
+
+		assertThat(orderResponse.getOrderItems())
+			.extracting("id", "itemId", "itemName", "itemPrice", "count", "orderPrice")
+			.containsExactlyInAnyOrder(
+				tuple(orderItem1.getId(), item1.getId(), item1.getName(), item1.getPrice(), orderItem1.getCount(), orderItem1.getOrderPrice()),
+				tuple(orderItem2.getId(), item2.getId(), item2.getName(), item2.getPrice(), orderItem2.getCount(), orderItem2.getOrderPrice())
+			);
+
+	}
+
+	private Order createOrder(User user, List<OrderItem> orderItems, LocalDateTime orderDateTime) {
+		return Order.builder()
+			.user(user)
+			.orderItems(orderItems)
+			.orderDateTime(orderDateTime)
+			.build();
+	}
+
+	private OrderItem createOrderItem(Item item, int count) {
+		return OrderItem.builder()
+			.item(item)
+			.count(count)
+			.build();
 	}
 
 	private OrderItemSaveServiceRequest createOrderItemRequest(Item item, int count) {

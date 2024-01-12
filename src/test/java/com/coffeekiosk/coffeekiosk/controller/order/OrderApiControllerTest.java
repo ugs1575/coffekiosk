@@ -156,4 +156,19 @@ class OrderApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.fieldErrors.[0].field").value("orderList[0].count"))
 			.andExpect(jsonPath("$.fieldErrors.[0].message").value("최소 주문 상품 수는 1개 이상이어야 합니다."));
 	}
+	
+	@DisplayName("주문 상세내역을 조회한다.")
+	@Test
+	void findOrder() throws Exception {
+		//when //then
+		mockMvc.perform(
+				get("/api/users/{userId}/orders/{orderId}", 1L, 1L)
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"));
+	    
+	}
 }
