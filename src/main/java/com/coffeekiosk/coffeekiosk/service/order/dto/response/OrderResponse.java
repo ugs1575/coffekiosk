@@ -2,8 +2,11 @@ package com.coffeekiosk.coffeekiosk.service.order.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.order.Order;
+import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -37,5 +40,11 @@ public class OrderResponse {
 			.orderItems(OrderItemResponse.listOf(order.getOrderItems()))
 			.orderDateTime(order.getOrderDateTime())
 			.build();
+	}
+
+	public static List<OrderResponse> listOf(List<Order> orders) {
+		return orders.stream()
+			.map(OrderResponse::of)
+			.collect(Collectors.toList());
 	}
 }

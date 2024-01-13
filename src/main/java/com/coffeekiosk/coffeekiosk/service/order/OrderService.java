@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -72,6 +74,11 @@ public class OrderService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 
 		return OrderResponse.of(order);
+	}
+
+	public List<OrderResponse> findOrders(Long userId, OrderSearchServiceRequest request, Pageable pageable) {
+		List<Order> orders = orderRepository.findOrders(userId, request, pageable);
+		return OrderResponse.listOf(orders);
 	}
 
 	private User findUser(Long userId) {

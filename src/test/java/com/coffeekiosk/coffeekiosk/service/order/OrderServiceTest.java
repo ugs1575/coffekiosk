@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
@@ -25,6 +26,7 @@ import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 class OrderServiceTest extends IntegrationTestSupport {
@@ -144,6 +146,49 @@ class OrderServiceTest extends IntegrationTestSupport {
 				tuple(orderItem2.getId(), item2.getId(), item2.getName(), item2.getPrice(), orderItem2.getCount(), orderItem2.getOrderPrice())
 			);
 
+	}
+	
+	@DisplayName("주어진 검색 기간 내 주문 목록을 페이징 하여 최신 순으로 조회한다.")
+	@Test
+	void findPagedOrders() {
+		//given
+		User user = createUser(30000);
+		userRepository.save(user);
+
+		Item item = createItem("카페라떼", 5000);
+		itemRepository.save(item);
+
+		LocalDateTime orderDateTime1 = LocalDateTime.of(2023, 11, 21, 0, 0);
+		OrderItem orderItem1 = createOrderItem(item, 1);
+		Order order1 = createOrder(user, List.of(orderItem1), orderDateTime1);
+
+		LocalDateTime orderDateTime2 = LocalDateTime.of(2023, 12, 1, 0, 0);
+		OrderItem orderItem2 = createOrderItem(item, 1);
+		Order order2 = createOrder(user, List.of(orderItem2), orderDateTime2);
+
+		LocalDateTime orderDateTime3 = LocalDateTime.of(2023, 12, 21, 0, 0);
+		OrderItem orderItem3 = createOrderItem(item, 1);
+		Order order3 = createOrder(user, List.of(orderItem3), orderDateTime3);
+
+		orderRepository.saveAll(List.of(order1, order2, order3));
+
+		OrderSearchServiceRequest request = OrderSearchServiceRequest.builder()
+			.startDate(orderDateTime1)
+			.endDate(orderDateTime2)
+			.build();
+
+		PageRequest pageRequest = PageRequest.of(0, 3);
+
+		//when
+		List<OrderResponse> orderResponses = orderService.findOrders(user.getId(), request, pageRequest);
+
+		//then
+		assertThat(orderResponses)
+			.extracting("id", "orderDateTime")
+			.containsExactly(
+				tuple(order2.getId(), orderDateTime2),
+				tuple(order1.getId(), orderDateTime1)
+			);
 	}
 
 	private Order createOrder(User user, List<OrderItem> orderItems, LocalDateTime orderDateTime) {
