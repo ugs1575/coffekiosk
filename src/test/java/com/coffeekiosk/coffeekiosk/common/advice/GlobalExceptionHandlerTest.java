@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
@@ -25,6 +26,21 @@ import jakarta.validation.Valid;
 @ContextConfiguration(classes = {GlobalExceptionHandlerTest.TestController.class, GlobalExceptionHandler.class})
 @WebMvcTest(controllers = GlobalExceptionHandlerTest.TestController.class)
 class GlobalExceptionHandlerTest extends ControllerTestSupport {
+
+	@DisplayName("request parameter 값이 누락될 경우 예외를 처리한다.")
+	@Test
+	void handleMissingServletRequestParameterException() throws Exception {
+		mockMvc.perform(
+				get("/exception")
+					.accept(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("요청 파라미터를 누락하였습니다."))
+			.andExpect(jsonPath("$.fieldErrors.[0].field").value("name"))
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("요청 파라미터를 누락하였습니다."));
+	}
 	
 	@DisplayName("request body 형식에 맞지 않을 경우 예외를 처리한다.")
 	@Test
@@ -39,10 +55,12 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("id 필드 값의 타입이 잘못되었습니다."));
+			.andExpect(jsonPath("$.message").value("JSON 형식이 잘못되었습니다."))
+			.andExpect(jsonPath("$.fieldErrors.[0].field").value("id"))
+			.andExpect(jsonPath("$.fieldErrors.[0].message").value("JSON 형식이 잘못되었습니다."));
 	}
 
-	@DisplayName("맞지 않는 타입이 들어올 경우 예외를 처리한다.")
+	@DisplayName("요청 값에 맞지 않는 타입이 들어올 경우 예외를 처리한다.")
 	@Test
 	void handleMethodArgumentTypeMismatchException() throws Exception {
 		String input = "test";
@@ -114,6 +132,11 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 	@RestController
 	@RequestMapping("/exception")
 	static class TestController {
+
+		@GetMapping
+		public void executeMissingServletRequestParameterException(@RequestParam String name) {
+		}
+
 		@GetMapping("/{id}")
 		public String executeBusinessException(@PathVariable Long id) {
 			throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);

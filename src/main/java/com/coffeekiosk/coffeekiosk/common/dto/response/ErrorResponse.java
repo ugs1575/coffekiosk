@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
@@ -46,10 +47,6 @@ public class ErrorResponse extends CommonResponse {
 	}
 
 	public static ErrorResponse of(MethodArgumentTypeMismatchException e) {
-		String value = Optional.ofNullable(e.getValue())
-			.map(Object::toString)
-			.orElse("");
-
 		List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getName(), ErrorCode.INVALID_TYPE_VALUE.getMessage());
 		return new ErrorResponse(ErrorCode.INVALID_TYPE_VALUE, errors);
 	}
@@ -57,10 +54,16 @@ public class ErrorResponse extends CommonResponse {
 	public static ErrorResponse of(HttpMessageNotReadableException e) {
 		if (e.getCause() instanceof MismatchedInputException mismatchedInputException) {
 			String fieldName = mismatchedInputException.getPath().get(0).getFieldName();
-			return new ErrorResponse(ErrorCode.INVALID_JSON_FORMAT, fieldName + " 필드 값의 타입이 잘못되었습니다.");
+			List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(fieldName, ErrorCode.INVALID_JSON_FORMAT.getMessage());
+			return new ErrorResponse(ErrorCode.INVALID_JSON_FORMAT, errors);
 		}
 
 		return new ErrorResponse(ErrorCode.INVALID_JSON_FORMAT);
+	}
+
+	public static ErrorResponse of(MissingServletRequestParameterException e) {
+		List<ErrorResponse.FieldError> errors = ErrorResponse.FieldError.of(e.getParameterName(), ErrorCode.MISSING_REQUEST_PARAM.getMessage());
+		return new ErrorResponse(ErrorCode.MISSING_REQUEST_PARAM, errors);
 	}
 
 	@Getter

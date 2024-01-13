@@ -108,7 +108,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 
 	}
 
-	@DisplayName("상품 목록을 조회한다.")
+	@DisplayName("상품 목록을 페이징 하여 조회한다.")
 	@Test
 	void findPagedItems() {
 		//given
@@ -121,6 +121,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
 			.name("")
 			.build();
+
 		PageRequest pageRequest = PageRequest.of(0, 1);
 
 		//when

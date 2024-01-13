@@ -15,6 +15,7 @@ public enum ErrorCode {
 	INVALID_JSON_FORMAT(HttpStatus.BAD_REQUEST, "JSON 형식이 잘못되었습니다."),
 	INVALID_INPUT_VALUE(HttpStatus.BAD_REQUEST, "적절하지 않은 요청 값입니다."),
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "요청 값의 타입이 잘못되었습니다."),
+	MISSING_REQUEST_PARAM(HttpStatus.BAD_REQUEST, "요청 파라미터를 누락하였습니다."),
 
 	ENTITY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 데이터를 찾을 수 없습니다."),
 

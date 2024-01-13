@@ -1,6 +1,5 @@
 package com.coffeekiosk.coffeekiosk.controller.order;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -16,10 +15,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
-import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderSaveRequest;
 import com.coffeekiosk.coffeekiosk.service.order.OrderService;
+import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 @WebMvcTest(controllers = OrderApiController.class)
 class OrderApiControllerTest extends ControllerTestSupport {
@@ -170,5 +169,27 @@ class OrderApiControllerTest extends ControllerTestSupport {
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"));
 	    
+	}
+
+	@DisplayName("상품 목록 조회을 조회할 수 있다.")
+	@Test
+	void findOrders() throws Exception {
+		//given
+		List<OrderResponse> result = List.of();
+
+		when(orderService.findOrders(any(), any(), any())).thenReturn(result);
+
+		//when //then
+		mockMvc.perform(
+				get("/api/users/{userId}/orders", 1L)
+					.queryParam("endDate", "2023-11-21T00:00:00")
+					.queryParam("startDate", "2023-11-22T00:00:00")
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andExpect(jsonPath("$.data").isArray());
 	}
 }
