@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
 import com.coffeekiosk.coffeekiosk.common.dto.response.CreatedResponse;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderSaveRequest;
+import com.coffeekiosk.coffeekiosk.service.order.OptimisticLockOrderFacade;
+import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;
 import com.coffeekiosk.coffeekiosk.service.order.OrderService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
@@ -29,17 +31,19 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class OrderApiController {
 
-	private final OrderService orderService;
+	private final OrderHistoryService orderHistoryService;
+	private final OptimisticLockOrderFacade orderFacade;
 
 	@PostMapping
-	public ApiResponse<CreatedResponse> createOrder(@PathVariable Long userId, @RequestBody @Valid OrderSaveRequest request) {
-		Long orderId = orderService.order(userId, request.toServiceRequest(), LocalDateTime.now());
+	public ApiResponse<CreatedResponse> createOrder(@PathVariable Long userId, @RequestBody @Valid OrderSaveRequest request) throws
+		InterruptedException {
+		Long orderId = orderFacade.order(userId, request.toServiceRequest(), LocalDateTime.now());
 		return ApiResponse.created(orderId);
 	}
 
 	@GetMapping("/{orderId}")
 	public ApiResponse<OrderResponse> findOrder(@PathVariable Long userId, @PathVariable Long orderId) {
-		OrderResponse response = orderService.findOrder(orderId, userId);
+		OrderResponse response = orderHistoryService.findOrder(orderId, userId);
 		return ApiResponse.ok(response);
 	}
 
@@ -55,7 +59,7 @@ public class OrderApiController {
 			.endDate(endDate)
 			.build();
 
-		List<OrderResponse> response = orderService.findOrders(userId, request, pageable);
+		List<OrderResponse> response = orderHistoryService.findOrders(userId, request, pageable);
 		return ApiResponse.ok(response);
 	}
 }

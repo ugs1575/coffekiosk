@@ -17,14 +17,18 @@ import org.springframework.http.MediaType;
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderSaveRequest;
-import com.coffeekiosk.coffeekiosk.service.order.OrderService;
+import com.coffeekiosk.coffeekiosk.service.order.OptimisticLockOrderFacade;
+import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 @WebMvcTest(controllers = OrderApiController.class)
 class OrderApiControllerTest extends ControllerTestSupport {
 
 	@MockBean
-	protected OrderService orderService;
+	protected OptimisticLockOrderFacade orderFacade;
+
+	@MockBean
+	protected OrderHistoryService orderHistoryService;
 
 	@DisplayName("상품을 주문한다.")
 	@Test
@@ -38,7 +42,7 @@ class OrderApiControllerTest extends ControllerTestSupport {
 			.orderList(List.of(itemRequest))
 			.build();
 
-		when(orderService.order(any(), any(), any())).thenReturn(1L);
+		when(orderFacade.order(any(), any(), any())).thenReturn(1L);
 
 		//when //then
 		mockMvc.perform(
@@ -177,7 +181,7 @@ class OrderApiControllerTest extends ControllerTestSupport {
 		//given
 		List<OrderResponse> result = List.of();
 
-		when(orderService.findOrders(any(), any(), any())).thenReturn(result);
+		when(orderHistoryService.findOrders(any(), any(), any())).thenReturn(result);
 
 		//when //then
 		mockMvc.perform(
