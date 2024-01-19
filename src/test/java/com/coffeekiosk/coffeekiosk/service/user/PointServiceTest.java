@@ -34,7 +34,7 @@ class PointServiceTest extends IntegrationTestSupport {
 		User user = createUser();
 		userRepository.save(user);
 
-		PointSaveServiceRequest request1 = createPointSaveRequest(10000);
+		PointSaveServiceRequest request1 = createPointSaveRequest(1000);
 		PointSaveServiceRequest request2 = createPointSaveRequest(1000);
 
 		//when
@@ -46,7 +46,7 @@ class PointServiceTest extends IntegrationTestSupport {
 		assertThat(users).hasSize(1)
 			.extracting("id", "point")
 			.containsExactlyInAnyOrder(
-				tuple(user.getId(), 11000)
+				tuple(user.getId(), 2000)
 			);
 	}
 

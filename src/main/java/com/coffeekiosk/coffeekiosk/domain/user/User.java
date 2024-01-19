@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,6 +36,9 @@ public class User extends BaseTimeEntity {
 
 	@Column(nullable = false)
 	private int point;
+
+	@Version
+	private Long version;
 
 	@Column(columnDefinition = "boolean default false")
 	private boolean deleted;
