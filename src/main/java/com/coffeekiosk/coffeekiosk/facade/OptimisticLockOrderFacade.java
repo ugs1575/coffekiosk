@@ -1,10 +1,11 @@
-package com.coffeekiosk.coffeekiosk.service.order;
+package com.coffeekiosk.coffeekiosk.facade;
 
 import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.service.order.OrderService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
 
 import lombok.RequiredArgsConstructor;

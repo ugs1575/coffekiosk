@@ -22,13 +22,15 @@ import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
+import com.coffeekiosk.coffeekiosk.facade.OptimisticLockOrderFacade;
+import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
 
 class OrderServiceTest extends IntegrationTestSupport {
 
 	@Autowired
-	private OptimisticLockOrderFacade orderFacade;
+	private RedissonLockOrderFacade orderFacade;
 
 	@Autowired
 	private OrderRepository orderRepository;
@@ -135,8 +137,6 @@ class OrderServiceTest extends IntegrationTestSupport {
 						.build();
 
 					orderFacade.order(user.getId(), request, orderDateTime);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
 				} finally {
 					latch.countDown();
 				}

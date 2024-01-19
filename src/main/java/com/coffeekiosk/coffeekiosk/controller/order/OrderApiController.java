@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
 import com.coffeekiosk.coffeekiosk.common.dto.response.CreatedResponse;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderSaveRequest;
-import com.coffeekiosk.coffeekiosk.service.order.OptimisticLockOrderFacade;
+import com.coffeekiosk.coffeekiosk.facade.OptimisticLockOrderFacade;
+import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;
-import com.coffeekiosk.coffeekiosk.service.order.OrderService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
@@ -32,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class OrderApiController {
 
 	private final OrderHistoryService orderHistoryService;
-	private final OptimisticLockOrderFacade orderFacade;
+	private final RedissonLockOrderFacade orderFacade;
 
 	@PostMapping
 	public ApiResponse<CreatedResponse> createOrder(@PathVariable Long userId, @RequestBody @Valid OrderSaveRequest request) throws
