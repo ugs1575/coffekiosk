@@ -17,7 +17,8 @@ import org.springframework.http.MediaType;
 import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderSaveRequest;
-import com.coffeekiosk.coffeekiosk.service.order.OptimisticLockOrderFacade;
+import com.coffeekiosk.coffeekiosk.facade.OptimisticLockOrderFacade;
+import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
@@ -25,7 +26,7 @@ import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 class OrderApiControllerTest extends ControllerTestSupport {
 
 	@MockBean
-	protected OptimisticLockOrderFacade orderFacade;
+	protected RedissonLockOrderFacade orderFacade;
 
 	@MockBean
 	protected OrderHistoryService orderHistoryService;
