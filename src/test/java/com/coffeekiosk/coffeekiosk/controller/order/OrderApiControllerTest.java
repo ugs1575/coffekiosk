@@ -77,8 +77,8 @@ class OrderApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("orderList"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("주문 목록은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("orderList"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("주문 목록은 필수입니다."));
 	}
 
 	@DisplayName("상품 주문시 상품 아이디는 필수 값이다.")
@@ -103,8 +103,8 @@ class OrderApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("orderList[0].itemId"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 아이디는 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("orderList[0].itemId"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 아이디는 필수입니다."));
 	}
 
 	@DisplayName("상품 주문시 상품 아이디는 최소 1 이상이다.")
@@ -130,8 +130,8 @@ class OrderApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("orderList[0].itemId"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 아이디는 양수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("orderList[0].itemId"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 아이디는 양수입니다."));
 	}
 
 	@DisplayName("상품 주문시 상품 개수는 최소 1개 이상이다.")
@@ -157,8 +157,8 @@ class OrderApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("orderList[0].count"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("최소 주문 상품 수는 1개 이상이어야 합니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("orderList[0].count"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 주문 상품 수는 1개 이상이어야 합니다."));
 	}
 	
 	@DisplayName("주문 상세내역을 조회한다.")

@@ -69,8 +69,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 이름은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
@@ -92,8 +92,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 이름은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
 
 	}
 
@@ -116,8 +116,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 타입은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
 	}
 
 	@DisplayName("상품 등록 시 상품 타입은 최소1글자 이상입니다.")
@@ -139,8 +139,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 타입은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
 
 	}
 
@@ -186,8 +186,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("price"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("최소 상품 가격은 1원입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 상품 가격은 1원입니다."));
 	}
 
 	@DisplayName("상품을 수정한다")
@@ -231,8 +231,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 이름은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
@@ -254,8 +254,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 이름은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
 
 	}
 
@@ -278,8 +278,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 타입은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
 	}
 
 	@DisplayName("상품 수정 시 상품 타입은 최소1글자 이상입니다.")
@@ -301,8 +301,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 타입은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
 
 	}
 
@@ -348,8 +348,8 @@ class ItemApiControllerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("price"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("상품 가격은 양수여야 합니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 가격은 양수여야 합니다."));
 	}
 
 	@DisplayName("상품을 삭제한다.")

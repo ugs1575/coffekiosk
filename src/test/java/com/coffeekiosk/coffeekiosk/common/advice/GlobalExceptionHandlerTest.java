@@ -38,8 +38,8 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("요청 파라미터를 누락하였습니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("요청 파라미터를 누락하였습니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("요청 파라미터를 누락하였습니다."));
 	}
 	
 	@DisplayName("request body 형식에 맞지 않을 경우 예외를 처리한다.")
@@ -56,8 +56,8 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("JSON 형식이 잘못되었습니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("id"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("JSON 형식이 잘못되었습니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("id"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("JSON 형식이 잘못되었습니다."));
 	}
 
 	@DisplayName("요청 값에 맞지 않는 타입이 들어올 경우 예외를 처리한다.")
@@ -73,8 +73,8 @@ class GlobalExceptionHandlerTest extends ControllerTestSupport {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("요청 값의 타입이 잘못되었습니다."))
-			.andExpect(jsonPath("$.fieldErrors.[0].field").value("id"))
-			.andExpect(jsonPath("$.fieldErrors.[0].message").value("요청 값의 타입이 잘못되었습니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("id"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("요청 값의 타입이 잘못되었습니다."));
 	}
 
 	@DisplayName("잘못된 Http 메서드로 요청이 왔을 때 예외 처리한다.")

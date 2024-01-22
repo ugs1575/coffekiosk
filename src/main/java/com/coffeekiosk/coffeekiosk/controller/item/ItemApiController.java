@@ -45,7 +45,7 @@ public class ItemApiController {
 	}
 
 	@DeleteMapping("/{itemId}")
-	public ApiResponse<Void> updateItem(@PathVariable Long itemId) {
+	public ApiResponse<Void> deleteItem(@PathVariable Long itemId) {
 		itemService.deleteItem(itemId);
 		return ApiResponse.noContent();
 	}
