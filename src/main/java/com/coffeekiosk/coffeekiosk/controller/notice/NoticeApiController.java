@@ -29,15 +29,15 @@ public class NoticeApiController {
 	private final NoticeService noticeService;
 
 	@PostMapping("/users/{userId}/notices")
-	public ApiResponse<CreatedResponse> createNotice(@PathVariable Long userId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
-		Long saveId = noticeService.createNotice(userId, request.toServiceRequest(), LocalDateTime.now());
-		return ApiResponse.created(saveId);
+	public ApiResponse<NoticeResponse> createNotice(@PathVariable Long userId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
+		NoticeResponse response = noticeService.createNotice(userId, request.toServiceRequest(), LocalDateTime.now());
+		return ApiResponse.ok(response);
 	}
 
 	@PatchMapping("/notices/{noticeId}")
-	public ApiResponse<Void> updateNotice(@PathVariable Long noticeId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
-		noticeService.updateNotice(noticeId, request.toServiceRequest());
-		return ApiResponse.noContent();
+	public ApiResponse<NoticeResponse> updateNotice(@PathVariable Long noticeId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
+		NoticeResponse response = noticeService.updateNotice(noticeId, request.toServiceRequest());
+		return ApiResponse.ok(response);
 	}
 
 	@GetMapping("/notices/{noticeId}")
