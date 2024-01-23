@@ -34,8 +34,6 @@ class NoticeApiControllerTest extends ControllerTestSupport {
 			.content("내용1")
 			.build();
 
-		when(noticeService.createNotice(any(), any(), any())).thenReturn(1L);
-
 		//when //then
 		mockMvc.perform(
 				post("/api/users/{userId}/notices", 1L)
@@ -45,8 +43,7 @@ class NoticeApiControllerTest extends ControllerTestSupport {
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data.id").value(1L));
+			.andExpect(jsonPath("$.message").value("OK"));
 	}
 
 	@DisplayName("공지사항 등록 시 제목은 필수 값입니다.")

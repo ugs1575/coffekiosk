@@ -3,6 +3,11 @@ package com.coffeekiosk.coffeekiosk.service.notice;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +21,10 @@ import com.coffeekiosk.coffeekiosk.service.notice.request.NoticeSaveUpdateServic
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@CacheConfig(cacheNames = "notices")
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
@@ -26,36 +34,51 @@ public class NoticeService {
 
 	private final NoticeRepository noticeRepository;
 
+	@CacheEvict(key = "'all'")
 	@Transactional
-	public Long createNotice(Long userId, NoticeSaveUpdateServiceRequest request, LocalDateTime registeredDateTime) {
+	public NoticeResponse createNotice(Long userId, NoticeSaveUpdateServiceRequest request, LocalDateTime registeredDateTime) {
+		log.info("create notice");
 		User user = findUser(userId);
 
 		Notice notice = request.toEntity(user, registeredDateTime);
 		Notice savedNotice = noticeRepository.save(notice);
 
-		return savedNotice.getId();
+		return NoticeResponse.of(savedNotice);
 	}
 
+	@CachePut(key = "#noticeId")
+	@CacheEvict(key = "'all'")
 	@Transactional
-	public void updateNotice(Long noticeId, NoticeSaveUpdateServiceRequest request) {
+	public NoticeResponse updateNotice(Long noticeId, NoticeSaveUpdateServiceRequest request) {
+		log.info("update notice");
 		Notice notice = findNotice(noticeId);
 
 		notice.update(request.getTitle(), request.getContent());
+
+		return NoticeResponse.of(notice);
 	}
 
-
+	@Cacheable(key = "#noticeId", unless = "#result == null")
 	public NoticeResponse findById(Long noticeId) {
+		log.info("get notice");
 		Notice notice = findNotice(noticeId);
 		return NoticeResponse.of(notice);
 	}
 
+	@Cacheable(key = "'all'")
 	public List<NoticeResponse> findNotices() {
+		log.info("get notice list");
 		List<Notice> notices = noticeRepository.findAll();
 		return NoticeResponse.listOf(notices);
 	}
 
+	@Caching(evict = {
+		@CacheEvict(key = "'all'"),
+		@CacheEvict(key = "#noticeId")
+	})
 	@Transactional
 	public void delete(Long noticeId) {
+		log.info("delete notice");
 		Notice notice = findNotice(noticeId);
 		noticeRepository.deleteById(notice.getId());
 	}

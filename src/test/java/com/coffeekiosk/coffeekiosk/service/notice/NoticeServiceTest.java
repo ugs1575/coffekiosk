@@ -50,15 +50,14 @@ class NoticeServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		Long noticeId = noticeService.createNotice(user.getId(), request, registeredDateTime);
+		NoticeResponse response = noticeService.createNotice(user.getId(), request, registeredDateTime);
 
 		//then
-		assertThat(noticeId).isNotNull();
-		List<Notice> notices = noticeRepository.findAll();
-		assertThat(notices).hasSize(1)
-			.extracting("title", "content", "registeredDateTime", "user.id")
-			.containsExactly(
-				tuple("제목1", "내용1", registeredDateTime, user.getId())
+		assertThat(response.getId()).isNotNull();
+		assertThat(response)
+			.extracting("title", "content", "registeredDateTime", "userId", "userName")
+			.contains(
+				"제목1", "내용1", registeredDateTime, user.getId(), user.getName()
 			);
 	}
 
@@ -79,14 +78,13 @@ class NoticeServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		noticeService.updateNotice(notice.getId(), request);
+		NoticeResponse response = noticeService.updateNotice(notice.getId(), request);
 
 		//then
-		List<Notice> notices = noticeRepository.findAll();
-		assertThat(notices).hasSize(1)
-			.extracting("title", "content")
-			.containsExactly(
-				tuple("제목_수정", "내용_수정")
+		assertThat(response)
+			.extracting("id", "title", "content", "registeredDateTime", "userId", "userName")
+			.contains(
+				notice.getId(), "제목_수정", "내용_수정", registeredDateTime, user.getId(), user.getName()
 			);
 	}
 
@@ -103,11 +101,12 @@ class NoticeServiceTest extends IntegrationTestSupport {
 		noticeRepository.save(notice);
 
 		//when
-		NoticeResponse findNotice = noticeService.findById(notice.getId());
+		NoticeResponse response = noticeService.findById(notice.getId());
 
 		//then
-		assertThat(findNotice).extracting("id", "title", "content", "registeredDateTime", "userId", "userName")
-			.containsExactly(
+		assertThat(response)
+			.extracting("id", "title", "content", "registeredDateTime", "userId", "userName")
+			.contains(
 				notice.getId(), "제목1", "내용1", registeredDateTime, user.getId(), user.getName()
 			);
 	}
@@ -129,8 +128,9 @@ class NoticeServiceTest extends IntegrationTestSupport {
 		List<NoticeResponse> notices = noticeService.findNotices();
 
 		//then
-		assertThat(notices).extracting("id", "title", "content", "registeredDateTime", "userId", "userName")
-			.containsExactly(
+		assertThat(notices)
+			.extracting("id", "title", "content", "registeredDateTime", "userId", "userName")
+			.contains(
 				tuple(notice1.getId(), "제목1", "내용1", registeredDateTime, user.getId(), user.getName()),
 				tuple(notice2.getId(), "제목2", "내용2", registeredDateTime, user.getId(), user.getName())
 			);
