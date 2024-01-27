@@ -1,6 +1,7 @@
 package com.coffeekiosk.coffeekiosk.service.notice;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.cache.annotation.CacheConfig;
@@ -64,7 +65,7 @@ public class NoticeService {
 	@Cacheable(key = "'all'")
 	public List<NoticeResponse> findNotices() {
 		List<Notice> notices = noticeRepository.findAll();
-		return NoticeResponse.listOf(notices);
+		return Collections.unmodifiableList(NoticeResponse.listOf(notices));
 	}
 
 	@Caching(evict = {
