@@ -52,10 +52,10 @@ class OrderApiControllerTest extends ControllerTestSupport {
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data.id").value(1L));
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.code").value("201"))
+			.andExpect(jsonPath("$.message").value("CREATED"))
+			.andExpect(header().string("Location", "/api/users/1/orders/1"));
 	}
 
 	@DisplayName("상품 주문시 주문 목록은 필수 값이다.")

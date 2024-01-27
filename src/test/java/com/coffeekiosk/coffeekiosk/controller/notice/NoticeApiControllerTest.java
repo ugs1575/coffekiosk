@@ -49,10 +49,10 @@ class NoticeApiControllerTest extends ControllerTestSupport {
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data.id").value(1L));
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.code").value("201"))
+			.andExpect(jsonPath("$.message").value("CREATED"))
+			.andExpect(header().string("Location", "/api/notices/1"));
 	}
 
 	@DisplayName("공지사항 등록 시 제목은 필수 값입니다.")

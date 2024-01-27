@@ -44,10 +44,10 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data.id").value(1L));
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.code").value("201"))
+			.andExpect(jsonPath("$.message").value("CREATED"))
+			.andExpect(header().string("Location", "/api/items/1"));
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 필수값이다.")

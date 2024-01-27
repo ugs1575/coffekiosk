@@ -1,8 +1,10 @@
 package com.coffeekiosk.coffeekiosk.controller.notice;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
-import com.coffeekiosk.coffeekiosk.common.dto.response.CreatedResponse;
 import com.coffeekiosk.coffeekiosk.controller.notice.dto.request.NoticeSaveUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
@@ -29,9 +30,9 @@ public class NoticeApiController {
 	private final NoticeService noticeService;
 
 	@PostMapping("/users/{userId}/notices")
-	public ApiResponse<CreatedResponse> createNotice(@PathVariable Long userId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
+	public ResponseEntity<ApiResponse<Void>> createNotice(@PathVariable Long userId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
 		NoticeResponse response = noticeService.createNotice(userId, request.toServiceRequest(), LocalDateTime.now());
-		return ApiResponse.created(response.getId());
+		return ResponseEntity.created(URI.create("/api/notices/" + response.getId())).body(ApiResponse.created());
 	}
 
 	@PatchMapping("/notices/{noticeId}")

@@ -1,10 +1,12 @@
 package com.coffeekiosk.coffeekiosk.controller.item;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
-import com.coffeekiosk.coffeekiosk.common.dto.response.CreatedResponse;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSearchRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemUpdateRequest;
@@ -33,9 +34,9 @@ public class ItemApiController {
 	private final ItemService itemService;
 
 	@PostMapping
-	public ApiResponse<CreatedResponse> createItem(@RequestBody @Valid ItemSaveRequest request) {
+	public ResponseEntity<ApiResponse<Void>> createItem(@RequestBody @Valid ItemSaveRequest request) {
 		Long itemId = itemService.createItem(request.toServiceRequest(), LocalDateTime.now());
-		return ApiResponse.created(itemId);
+		return ResponseEntity.created(URI.create("/api/items/" + itemId)).body(ApiResponse.created());
 	}
 
 	@PatchMapping("/{itemId}")

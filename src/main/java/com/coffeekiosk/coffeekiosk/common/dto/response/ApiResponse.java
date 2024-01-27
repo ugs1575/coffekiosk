@@ -32,8 +32,8 @@ public class ApiResponse<T> extends CommonResponse {
 		return of(HttpStatus.OK, null);
 	}
 
-	public static ApiResponse<CreatedResponse> created(Long id) {
-		return ok(CreatedResponse.of(id));
+	public static <T> ApiResponse<T> created() {
+		return of(HttpStatus.CREATED, null);
 	}
 
 }
