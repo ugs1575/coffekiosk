@@ -29,25 +29,25 @@ public class NoticeApiController {
 	private final NoticeService noticeService;
 
 	@PostMapping("/users/{userId}/notices")
-	public ApiResponse<NoticeResponse> createNotice(@PathVariable Long userId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
+	public ApiResponse<CreatedResponse> createNotice(@PathVariable Long userId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
 		NoticeResponse response = noticeService.createNotice(userId, request.toServiceRequest(), LocalDateTime.now());
-		return ApiResponse.ok(response);
+		return ApiResponse.created(response.getId());
 	}
 
 	@PatchMapping("/notices/{noticeId}")
-	public ApiResponse<NoticeResponse> updateNotice(@PathVariable Long noticeId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
-		NoticeResponse response = noticeService.updateNotice(noticeId, request.toServiceRequest());
-		return ApiResponse.ok(response);
+	public ApiResponse<Void> updateNotice(@PathVariable Long noticeId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
+		noticeService.updateNotice(noticeId, request.toServiceRequest());
+		return ApiResponse.noContent();
 	}
 
 	@GetMapping("/notices/{noticeId}")
-	public ApiResponse<NoticeResponse> findPost(@PathVariable Long noticeId) {
+	public ApiResponse<NoticeResponse> findNotice(@PathVariable Long noticeId) {
 		NoticeResponse response = noticeService.findById(noticeId);
 		return ApiResponse.ok(response);
 	}
 
 	@GetMapping("/notices")
-	public ApiResponse<List<NoticeResponse>> findPosts() {
+	public ApiResponse<List<NoticeResponse>> findNotices() {
 		List<NoticeResponse> response = noticeService.findNotices();
 		return ApiResponse.ok(response);
 	}
