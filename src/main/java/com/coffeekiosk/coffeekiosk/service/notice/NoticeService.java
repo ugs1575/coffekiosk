@@ -23,7 +23,6 @@ import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @CacheConfig(cacheNames = "notices")
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -37,7 +36,6 @@ public class NoticeService {
 	@CacheEvict(key = "'all'")
 	@Transactional
 	public NoticeResponse createNotice(Long userId, NoticeSaveUpdateServiceRequest request, LocalDateTime registeredDateTime) {
-		log.info("create notice");
 		User user = findUser(userId);
 
 		Notice notice = request.toEntity(user, registeredDateTime);
@@ -50,7 +48,6 @@ public class NoticeService {
 	@CacheEvict(key = "'all'")
 	@Transactional
 	public NoticeResponse updateNotice(Long noticeId, NoticeSaveUpdateServiceRequest request) {
-		log.info("update notice");
 		Notice notice = findNotice(noticeId);
 
 		notice.update(request.getTitle(), request.getContent());
@@ -60,14 +57,12 @@ public class NoticeService {
 
 	@Cacheable(key = "#noticeId", unless = "#result == null")
 	public NoticeResponse findById(Long noticeId) {
-		log.info("get notice");
 		Notice notice = findNotice(noticeId);
 		return NoticeResponse.of(notice);
 	}
 
 	@Cacheable(key = "'all'")
 	public List<NoticeResponse> findNotices() {
-		log.info("get notice list");
 		List<Notice> notices = noticeRepository.findAll();
 		return NoticeResponse.listOf(notices);
 	}
@@ -78,7 +73,6 @@ public class NoticeService {
 	})
 	@Transactional
 	public void delete(Long noticeId) {
-		log.info("delete notice");
 		Notice notice = findNotice(noticeId);
 		noticeRepository.deleteById(notice.getId());
 	}
