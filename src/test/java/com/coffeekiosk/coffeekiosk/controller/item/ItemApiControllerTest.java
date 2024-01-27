@@ -202,7 +202,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				patch("/api/items/{itemId}", 1L)
+				put("/api/items/{itemId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -223,7 +223,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				patch("/api/items/{itemId}", 1L)
+				put("/api/items/{itemId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -246,7 +246,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				patch("/api/items/{itemId}", 1L)
+				put("/api/items/{itemId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -270,7 +270,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				patch("/api/items/{itemId}", 1L)
+				put("/api/items/{itemId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -293,7 +293,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				patch("/api/items/{itemId}", 1L)
+				put("/api/items/{itemId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -318,7 +318,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				patch("/api/items/{itemId}", 1L)
+				put("/api/items/{itemId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -340,7 +340,7 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				patch("/api/items/{itemId}", 1L)
+				put("/api/items/{itemId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
