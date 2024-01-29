@@ -9,9 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.user.dto.request.PointSaveRequest;
+import com.coffeekiosk.coffeekiosk.docs.user.PointDocumentation;
 import com.coffeekiosk.coffeekiosk.service.user.PointService;
 
 @WebMvcTest(controllers = PointApiController.class)
@@ -30,14 +32,15 @@ class PointApiControllerTest extends RestDocsSupport {
 
 	    //when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/points", 1L)
+				RestDocumentationRequestBuilders.post("/api/users/{userId}/points", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(print())
+			.andDo(PointDocumentation.savePoint());
 	}
 
 	@DisplayName("최소 포인트 충전 금액은 10000원이다.")
@@ -54,12 +57,12 @@ class PointApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("amount"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("충전 최소 금액은 10000원 입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("충전 최소 금액은 10000원 입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("최대 포인트 충전 금액은 550000원이다.")
@@ -76,11 +79,11 @@ class PointApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("amount"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("충전 최대 금액은 550000원 입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("충전 최대 금액은 550000원 입니다."))
+			.andDo(print());
 	}
 }
