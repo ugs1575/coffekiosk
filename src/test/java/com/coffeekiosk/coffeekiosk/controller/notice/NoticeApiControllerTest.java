@@ -14,13 +14,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
-import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
+import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.notice.dto.request.NoticeSaveUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 
 @WebMvcTest(controllers = NoticeApiController.class)
-class NoticeApiControllerTest extends ControllerTestSupport {
+class NoticeApiControllerTest extends RestDocsSupport {
 
 	@MockBean
 	protected NoticeService noticeService;

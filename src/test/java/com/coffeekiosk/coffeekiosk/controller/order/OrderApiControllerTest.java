@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
-import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
+import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderSaveRequest;
 import com.coffeekiosk.coffeekiosk.facade.OptimisticLockOrderFacade;
@@ -23,7 +23,7 @@ import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 @WebMvcTest(controllers = OrderApiController.class)
-class OrderApiControllerTest extends ControllerTestSupport {
+class OrderApiControllerTest extends RestDocsSupport {
 
 	@MockBean
 	protected RedissonLockOrderFacade orderFacade;

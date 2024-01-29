@@ -10,11 +10,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
-import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
+import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.service.user.UserService;
 
 @WebMvcTest(controllers = UserApiController.class)
-class UserApiControllerTest extends ControllerTestSupport {
+class UserApiControllerTest extends RestDocsSupport {
 
 	@MockBean
 	protected UserService userService;

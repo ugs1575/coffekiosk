@@ -1,0 +1,12 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= 커피주문 REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+include::api/item/item.adoc[]

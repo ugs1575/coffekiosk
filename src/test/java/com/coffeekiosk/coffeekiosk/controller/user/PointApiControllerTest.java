@@ -10,12 +10,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 
-import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
+import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.user.dto.request.PointSaveRequest;
 import com.coffeekiosk.coffeekiosk.service.user.PointService;
 
 @WebMvcTest(controllers = PointApiController.class)
-class PointApiControllerTest extends ControllerTestSupport {
+class PointApiControllerTest extends RestDocsSupport {
 
 	@MockBean
 	protected PointService pointService;
