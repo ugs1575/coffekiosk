@@ -20,7 +20,7 @@ public class OrderResponse {
 
 	private int totalPrice;
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
 	private LocalDateTime orderDateTime;
 
 	private List<OrderItemResponse> orderItems;
