@@ -1,0 +1,10 @@
+[[notice-find]]
+=== 공지사항 상세조회
+
+==== HTTP Request
+include::{snippets}/notice/find/http-request.adoc[]
+include::{snippets}/notice/find/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/notice/find/http-response.adoc[]
+include::{snippets}/notice/find/response-fields.adoc[]

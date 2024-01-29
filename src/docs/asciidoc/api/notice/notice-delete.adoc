@@ -1,0 +1,10 @@
+[[notice-delete]]
+=== 공지사항 삭제
+
+==== HTTP Request
+include::{snippets}/notice/delete/http-request.adoc[]
+include::{snippets}/notice/delete/path-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/notice/delete/http-response.adoc[]
+include::{snippets}/notice/delete/response-fields.adoc[]

@@ -12,8 +12,6 @@ import lombok.Getter;
 @Getter
 public class OrderItemResponse {
 
-	private Long id;
-
 	private Long itemId;
 
 	private String itemName;
@@ -25,8 +23,7 @@ public class OrderItemResponse {
 	private int orderPrice;
 
 	@Builder
-	private OrderItemResponse(Long id, Long itemId, String itemName, int itemPrice, int count, int orderPrice) {
-		this.id = id;
+	private OrderItemResponse(Long itemId, String itemName, int itemPrice, int count, int orderPrice) {
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
@@ -36,7 +33,6 @@ public class OrderItemResponse {
 
 	public static OrderItemResponse of(OrderItem orderItem) {
 		return OrderItemResponse.builder()
-			.id(orderItem.getId())
 			.itemId(orderItem.getItem().getId())
 			.itemName(orderItem.getItem().getName())
 			.itemPrice(orderItem.getItem().getPrice())

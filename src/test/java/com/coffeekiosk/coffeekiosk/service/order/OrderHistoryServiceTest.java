@@ -79,10 +79,10 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 			.contains(savedOrder.getId(), 9500, orderDateTime);
 
 		assertThat(orderResponse.getOrderItems())
-			.extracting("id", "itemId", "itemName", "itemPrice", "count", "orderPrice")
+			.extracting( "itemId", "itemName", "itemPrice", "count", "orderPrice")
 			.containsExactlyInAnyOrder(
-				tuple(orderItem1.getId(), item1.getId(), item1.getName(), item1.getPrice(), orderItem1.getCount(), orderItem1.getOrderPrice()),
-				tuple(orderItem2.getId(), item2.getId(), item2.getName(), item2.getPrice(), orderItem2.getCount(), orderItem2.getOrderPrice())
+				tuple(item1.getId(), item1.getName(), item1.getPrice(), orderItem1.getCount(), orderItem1.getOrderPrice()),
+				tuple(item2.getId(), item2.getName(), item2.getPrice(), orderItem2.getCount(), orderItem2.getOrderPrice())
 			);
 
 	}

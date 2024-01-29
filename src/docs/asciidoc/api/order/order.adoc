@@ -1,0 +1,7 @@
+[[Order-API]]
+== Order API
+
+include::order-create.adoc[]
+include::order-findAll.adoc[]
+include::order-find.adoc[]
+

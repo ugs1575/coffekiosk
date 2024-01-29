@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -13,14 +14,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
-import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
+import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.notice.dto.request.NoticeSaveUpdateRequest;
+import com.coffeekiosk.coffeekiosk.docs.notice.NoticeDocumentation;
 import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 
 @WebMvcTest(controllers = NoticeApiController.class)
-class NoticeApiControllerTest extends ControllerTestSupport {
+class NoticeApiControllerTest extends RestDocsSupport {
 
 	@MockBean
 	protected NoticeService noticeService;
@@ -44,15 +47,16 @@ class NoticeApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/notices", 1L)
+				RestDocumentationRequestBuilders.post("/api/users/{userId}/notices", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.code").value("201"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
-			.andExpect(header().string("Location", "/api/notices/1"));
+			.andExpect(header().string("Location", "/api/notices/1"))
+			.andDo(print())
+			.andDo(NoticeDocumentation.createNotice());
 	}
 
 	@DisplayName("공지사항 등록 시 제목은 필수 값입니다.")
@@ -69,13 +73,12 @@ class NoticeApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("title"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."));
-
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("공지사항을 수정한다")
@@ -89,14 +92,15 @@ class NoticeApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				patch("/api/notices/{noticeId}", 1L)
+				RestDocumentationRequestBuilders.patch("/api/notices/{noticeId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(print())
+			.andDo(NoticeDocumentation.updateNotice());
 	}
 
 	@DisplayName("공지사항 수정 시 제목은 필수 값입니다.")
@@ -113,12 +117,12 @@ class NoticeApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("title"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."))
+			.andDo(print());
 
 	}
 
@@ -127,46 +131,70 @@ class NoticeApiControllerTest extends ControllerTestSupport {
 	void deleteNotice() throws Exception {
 		//when //then
 		mockMvc.perform(
-				delete("/api/notices/{noticeId}", 1L)
+				RestDocumentationRequestBuilders.delete("/api/notices/{noticeId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(print())
+			.andDo(NoticeDocumentation.deleteNotice());
 	}
 
 	@DisplayName("공지사항 목록을 조회한다.")
 	@Test
 	void findNotices() throws Exception {
 		//given
-		List<NoticeResponse> result = List.of();
+		NoticeResponse response = NoticeResponse.builder()
+			.id(1L)
+			.title("개업 이벤트")
+			.content("모든 메뉴 10% 할인")
+			.registeredDateTime(LocalDateTime.now())
+			.userId(1L)
+			.userName("우경서")
+			.build();
+
+		List<NoticeResponse> result = List.of(response);
 
 		when(noticeService.findNotices()).thenReturn(result);
 
 		//when //then
 		mockMvc.perform(
-				get("/api/notices")
+				RestDocumentationRequestBuilders.get("/api/notices")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data").isArray());
+			.andExpect(jsonPath("$.data").isArray())
+			.andDo(print())
+			.andDo(NoticeDocumentation.findNotices());
 	}
 
 	@DisplayName("공지사항을 조회한다.")
 	@Test
 	void findNotice() throws Exception {
+		//given
+		NoticeResponse response = NoticeResponse.builder()
+			.id(1L)
+			.title("개업 이벤트")
+			.content("모든 메뉴 10% 할인")
+			.registeredDateTime(LocalDateTime.now())
+			.userId(1L)
+			.userName("우경서")
+			.build();
+
+		when(noticeService.findById(any())).thenReturn(response);
+
 		//when //then
 		mockMvc.perform(
-				get("/api/notices/{noticeId}", 1L)
+				RestDocumentationRequestBuilders.get("/api/notices/{noticeId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(print())
+			.andDo(NoticeDocumentation.findNotice());
 	}
 }

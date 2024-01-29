@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -12,15 +13,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
-import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
+import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemUpdateRequest;
+import com.coffeekiosk.coffeekiosk.docs.item.ItemDocumentation;
+import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
 @WebMvcTest(controllers = ItemApiController.class)
-class ItemApiControllerTest extends ControllerTestSupport {
+class ItemApiControllerTest extends RestDocsSupport {
 
 	@MockBean
 	protected ItemService itemService;
@@ -39,15 +43,16 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/items")
+				RestDocumentationRequestBuilders.post("/api/items")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.code").value("201"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
-			.andExpect(header().string("Location", "/api/items/1"));
+			.andExpect(header().string("Location", "/api/items/1"))
+			.andDo(print())
+			.andDo(ItemDocumentation.createItem());
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 필수값이다.")
@@ -65,12 +70,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
@@ -88,12 +93,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."))
+			.andDo(print());
 
 	}
 
@@ -112,12 +117,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품 등록 시 상품 타입은 최소1글자 이상입니다.")
@@ -135,12 +140,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."))
+			.andDo(print());
 
 	}
 
@@ -160,10 +165,10 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
+			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품 등록 시 상품 가격은 최소 1원입니다.")
@@ -182,12 +187,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 상품 가격은 1원입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 상품 가격은 1원입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품을 수정한다")
@@ -202,14 +207,15 @@ class ItemApiControllerTest extends ControllerTestSupport {
 
 		//when //then
 		mockMvc.perform(
-				put("/api/items/{itemId}", 1L)
+				RestDocumentationRequestBuilders.put("/api/items/{itemId}", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(print())
+			.andDo(ItemDocumentation.updateItem());
 	}
 
 	@DisplayName("상품 수정 시 상품 이름은 필수값이다.")
@@ -227,12 +233,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
@@ -250,12 +256,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."))
+			.andDo(print());
 
 	}
 
@@ -274,12 +280,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품 수정 시 상품 타입은 최소1글자 이상입니다.")
@@ -297,12 +303,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."))
+			.andDo(print());
 
 	}
 
@@ -322,10 +328,10 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
+			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품 수정 시 상품 가격은 양수여야합니다.")
@@ -344,12 +350,12 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 가격은 양수여야 합니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 가격은 양수여야 합니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품을 삭제한다.")
@@ -357,33 +363,47 @@ class ItemApiControllerTest extends ControllerTestSupport {
 	void deleteItem() throws Exception {
 		//when //then
 		mockMvc.perform(
-				delete("/api/items/{itemId}", 1L)
+				RestDocumentationRequestBuilders.delete("/api/items/{itemId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(print())
+			.andDo(ItemDocumentation.deleteItem());
 	}
 
 	@DisplayName("상품 목록을 조회한다.")
 	@Test
 	void findItems() throws Exception {
 		//given
-		List<ItemResponse> result = List.of();
+		ItemResponse itemResponse = ItemResponse.builder()
+			.id(1L)
+			.name("아이스아메리카노")
+			.itemType(ItemType.COFFEE)
+			.price(1000)
+			.lastModifiedDateTime(LocalDateTime.now())
+			.build();
+
+		List<ItemResponse> result = List.of(itemResponse);
 
 		when(itemService.findItems(any(), any())).thenReturn(result);
 
 		//when //then
 		mockMvc.perform(
-				get("/api/items")
+				RestDocumentationRequestBuilders.get("/api/items")
 					.contentType(MediaType.APPLICATION_JSON)
+					.queryParam("page", "0")
+					.queryParam("size", "1")
+					.queryParam("name", "아이스")
+					.queryParam("itemType", "COFFEE")
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data").isArray());
+			.andExpect(jsonPath("$.data").isArray())
+			.andDo(print())
+			.andDo(ItemDocumentation.findItems());
 	}
 
 	@DisplayName("상품 목록 검색 시 검색 조건은 빈값으로 검색할 수 있다.")
@@ -401,11 +421,11 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.queryParam("itemType", "")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data").isArray());
+			.andExpect(jsonPath("$.data").isArray())
+			.andDo(print());
 	}
 
 	@DisplayName("상품 타입으로 목록 검색 시 유효하지 않은 타입으로 검색할 수 없다.")
@@ -417,24 +437,36 @@ class ItemApiControllerTest extends ControllerTestSupport {
 					.queryParam("itemType", "test")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
+			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."))
+			.andDo(print());
 	}
 
 	@DisplayName("상품 상세정보를 조회한다.")
 	@Test
 	void findItem() throws Exception {
+		//given
+		ItemResponse itemResponse = ItemResponse.builder()
+			.id(1L)
+			.name("아이스아메리카노")
+			.itemType(ItemType.COFFEE)
+			.price(1000)
+			.lastModifiedDateTime(LocalDateTime.now())
+			.build();
+
+		when(itemService.findItem(any())).thenReturn(itemResponse);
+
 		//when //then
 		mockMvc.perform(
-				get("/api/items/{itemId}", 1L)
+				RestDocumentationRequestBuilders.get("/api/items/{itemId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(print())
+			.andDo(ItemDocumentation.findItem());
 	}
 
 

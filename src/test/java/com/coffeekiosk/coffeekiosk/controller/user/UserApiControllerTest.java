@@ -1,5 +1,6 @@
 package com.coffeekiosk.coffeekiosk.controller.user;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -9,12 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
-import com.coffeekiosk.coffeekiosk.ControllerTestSupport;
+import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.docs.user.UserDocumentation;
 import com.coffeekiosk.coffeekiosk.service.user.UserService;
+import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
 
 @WebMvcTest(controllers = UserApiController.class)
-class UserApiControllerTest extends ControllerTestSupport {
+class UserApiControllerTest extends RestDocsSupport {
 
 	@MockBean
 	protected UserService userService;
@@ -22,15 +26,25 @@ class UserApiControllerTest extends ControllerTestSupport {
 	@DisplayName("상품 상세정보를 조회한다.")
 	@Test
 	void findItem() throws Exception {
+		//given
+		UserResponse response = UserResponse.builder()
+			.id(1L)
+			.name("우경서")
+			.point(10000)
+			.build();
+
+		when(userService.findUser(any())).thenReturn(response);
+
 		//when //then
 		mockMvc.perform(
-				get("/api/users/{userId}", 1L)
+				RestDocumentationRequestBuilders.get("/api/users/{userId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
-			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(print())
+			.andDo(UserDocumentation.findUser());
 	}
 
 }
