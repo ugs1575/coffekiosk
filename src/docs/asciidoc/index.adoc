@@ -10,3 +10,4 @@ endif::[]
 :sectlinks:
 
 include::api/item/item.adoc[]
+include::api/notice/notice.adoc[]

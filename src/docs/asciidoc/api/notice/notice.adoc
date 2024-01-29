@@ -1,0 +1,9 @@
+[[Notice-API]]
+== Notice API
+
+include::notice-create.adoc[]
+include::notice-update.adoc[]
+include::notice-findAll.adoc[]
+include::notice-find.adoc[]
+include::notice-delete.adoc[]
+

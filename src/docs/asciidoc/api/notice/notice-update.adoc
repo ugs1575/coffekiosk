@@ -1,0 +1,11 @@
+[[notice-update]]
+=== 공지사항 수정
+
+==== HTTP Request
+include::{snippets}/notice/update/http-request.adoc[]
+include::{snippets}/notice/update/path-parameters.adoc[]
+include::{snippets}/notice/update/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/notice/update/http-response.adoc[]
+include::{snippets}/notice/update/response-fields.adoc[]
