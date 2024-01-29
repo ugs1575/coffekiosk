@@ -1,0 +1,10 @@
+[[order-findAll]]
+=== 주문 리스트 조회
+
+==== HTTP Request
+include::{snippets}/order/findAll/http-request.adoc[]
+include::{snippets}/order/findAll/query-parameters.adoc[]
+
+==== HTTP Response
+include::{snippets}/order/findAll/http-response.adoc[]
+include::{snippets}/order/findAll/response-fields.adoc[]

@@ -11,3 +11,4 @@ endif::[]
 
 include::api/item/item.adoc[]
 include::api/notice/notice.adoc[]
+include::api/order/order.adoc[]
