@@ -13,6 +13,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Path;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,6 +68,10 @@ public class ErrorResponse extends CommonResponse {
 		return new ErrorResponse(ErrorCode.MISSING_REQUEST_PARAM, errors);
 	}
 
+	public static ErrorResponse of(ErrorCode errorCode, ConstraintViolationException e) {
+		return new ErrorResponse(errorCode, FieldError.of(e));
+	}
+
 	@Getter
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	static class FieldError {
@@ -75,6 +81,17 @@ public class ErrorResponse extends CommonResponse {
 		private FieldError(String field, String message) {
 			this.field = field;
 			this.message = message;
+		}
+
+		private static List<FieldError> of(ConstraintViolationException e) {
+			return e.getConstraintViolations()
+				.stream()
+				.map(error -> new FieldError(
+						error.getPropertyPath().toString(),
+						error.getMessage()
+					)
+				)
+				.collect(Collectors.toList());
 		}
 
 		private static List<FieldError> of(BindingResult bindingResult) {

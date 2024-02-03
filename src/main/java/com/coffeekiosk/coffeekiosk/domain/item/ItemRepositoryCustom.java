@@ -1,5 +1,7 @@
 package com.coffeekiosk.coffeekiosk.domain.item;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -7,5 +9,5 @@ import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSearchServiceReq
 
 public interface ItemRepositoryCustom {
 
-	Page<Item> search(ItemSearchServiceRequest request, Pageable pageable);
+	List<Item> search(Long itemId, ItemSearchServiceRequest request, int pageSize);
 }

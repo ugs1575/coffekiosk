@@ -14,6 +14,7 @@ import com.coffeekiosk.coffeekiosk.common.dto.response.ErrorResponse;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -57,6 +58,13 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
 		ErrorCode errorCode = e.getErrorCode();
 		ErrorResponse response = ErrorResponse.of(errorCode);
+		return new ResponseEntity<>(response, errorCode.getHttpStatus());
+	}
+
+	@ExceptionHandler(ConstraintViolationException.class)
+	protected ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+		ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
+		ErrorResponse response = ErrorResponse.of(errorCode, e);
 		return new ResponseEntity<>(response, errorCode.getHttpStatus());
 	}
 

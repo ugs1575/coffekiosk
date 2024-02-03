@@ -49,8 +49,8 @@ public class ItemService {
 		itemRepository.deleteById(itemId);
 	}
 
-	public List<ItemResponse> findItems(ItemSearchServiceRequest request, Pageable pageable) {
-		List<Item> items = itemRepository.search(request, pageable).getContent();
+	public List<ItemResponse> findItems(Long itemId, ItemSearchServiceRequest request, int pageSize) {
+		List<Item> items = itemRepository.search(itemId, request, pageSize);
 		return ItemResponse.listOf(items);
 	}
 
