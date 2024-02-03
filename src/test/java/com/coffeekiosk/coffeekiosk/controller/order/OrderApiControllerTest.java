@@ -57,11 +57,11 @@ class OrderApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.code").value("201"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
 			.andExpect(header().string("Location", "/api/users/1/orders/1"))
-			.andDo(print())
 			.andDo(OrderDocumentation.createOrder());
 	}
 
@@ -79,12 +79,12 @@ class OrderApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("orderList"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("주문 목록은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("주문 목록은 필수입니다."));
 	}
 
 	@DisplayName("상품 주문시 상품 아이디는 필수 값이다.")
@@ -104,12 +104,12 @@ class OrderApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("orderList[0].itemId"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 아이디는 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 아이디는 필수입니다."));
 	}
 
 	@DisplayName("상품 주문시 상품 아이디는 최소 1 이상이다.")
@@ -131,12 +131,12 @@ class OrderApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("orderList[0].itemId"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 아이디는 양수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 아이디는 양수입니다."));
 	}
 
 	@DisplayName("상품 주문시 상품 개수는 최소 1개 이상이다.")
@@ -157,12 +157,12 @@ class OrderApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("orderList[0].count"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 주문 상품 수는 1개 이상이어야 합니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 주문 상품 수는 1개 이상이어야 합니다."));
 	}
 	
 	@DisplayName("주문 상세내역을 조회한다.")
@@ -191,10 +191,10 @@ class OrderApiControllerTest extends RestDocsSupport {
 				RestDocumentationRequestBuilders.get("/api/users/{userId}/orders/{orderId}", 1L, 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(print())
 			.andDo(OrderDocumentation.findOrder());
 	    
 	}
@@ -231,11 +231,11 @@ class OrderApiControllerTest extends RestDocsSupport {
 					.queryParam("size", "1")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andExpect(jsonPath("$.data").isArray())
-			.andDo(print())
 			.andDo(OrderDocumentation.findOrders());
 	}
 }

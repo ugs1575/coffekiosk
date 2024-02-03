@@ -40,10 +40,10 @@ class UserApiControllerTest extends RestDocsSupport {
 				RestDocumentationRequestBuilders.get("/api/users/{userId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(print())
 			.andDo(UserDocumentation.findUser());
 	}
 

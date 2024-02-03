@@ -47,11 +47,11 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.code").value("201"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
 			.andExpect(header().string("Location", "/api/items/1"))
-			.andDo(print())
 			.andDo(ItemDocumentation.createItem());
 	}
 
@@ -70,12 +70,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
@@ -93,12 +93,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
 
 	}
 
@@ -117,12 +117,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
 	}
 
 	@DisplayName("상품 등록 시 상품 타입은 최소1글자 이상입니다.")
@@ -140,12 +140,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
 
 	}
 
@@ -165,10 +165,10 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
 
 	@DisplayName("상품 등록 시 상품 가격은 최소 1원입니다.")
@@ -187,12 +187,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 상품 가격은 1원입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 상품 가격은 1원입니다."));
 	}
 
 	@DisplayName("상품을 수정한다")
@@ -211,10 +211,10 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(print())
 			.andDo(ItemDocumentation.updateItem());
 	}
 
@@ -233,12 +233,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
 	}
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
@@ -256,12 +256,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
 
 	}
 
@@ -280,12 +280,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
 	}
 
 	@DisplayName("상품 수정 시 상품 타입은 최소1글자 이상입니다.")
@@ -303,12 +303,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
 
 	}
 
@@ -328,10 +328,10 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
 
 	@DisplayName("상품 수정 시 상품 가격은 양수여야합니다.")
@@ -350,12 +350,12 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 가격은 양수여야 합니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 가격은 양수여야 합니다."));
 	}
 
 	@DisplayName("상품을 삭제한다.")
@@ -366,10 +366,10 @@ class ItemApiControllerTest extends RestDocsSupport {
 				RestDocumentationRequestBuilders.delete("/api/items/{itemId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(print())
 			.andDo(ItemDocumentation.deleteItem());
 	}
 
@@ -398,11 +398,11 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.queryParam("name", "아이스")
 					.queryParam("itemType", "COFFEE")
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andExpect(jsonPath("$.data").isArray())
-			.andDo(print())
 			.andDo(ItemDocumentation.findItems());
 	}
 
@@ -421,11 +421,11 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.queryParam("itemType", "")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data").isArray())
-			.andDo(print());
+			.andExpect(jsonPath("$.data").isArray());
 	}
 
 	@DisplayName("상품 타입으로 목록 검색 시 유효하지 않은 타입으로 검색할 수 없다.")
@@ -437,10 +437,10 @@ class ItemApiControllerTest extends RestDocsSupport {
 					.queryParam("itemType", "test")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
-			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
 
 	@DisplayName("상품 목록 최대 요청 사이즈는 100이다.")
@@ -479,10 +479,10 @@ class ItemApiControllerTest extends RestDocsSupport {
 				RestDocumentationRequestBuilders.get("/api/items/{itemId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(print())
 			.andDo(ItemDocumentation.findItem());
 	}
 

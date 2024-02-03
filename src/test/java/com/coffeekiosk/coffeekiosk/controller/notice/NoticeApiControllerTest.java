@@ -51,11 +51,11 @@ class NoticeApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.code").value("201"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
 			.andExpect(header().string("Location", "/api/notices/1"))
-			.andDo(print())
 			.andDo(NoticeDocumentation.createNotice());
 	}
 
@@ -73,12 +73,12 @@ class NoticeApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("title"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."));
 	}
 
 	@DisplayName("공지사항을 수정한다")
@@ -96,10 +96,10 @@ class NoticeApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(print())
 			.andDo(NoticeDocumentation.updateNotice());
 	}
 
@@ -117,12 +117,12 @@ class NoticeApiControllerTest extends RestDocsSupport {
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("title"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."))
-			.andDo(print());
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."));
 
 	}
 
@@ -134,10 +134,10 @@ class NoticeApiControllerTest extends RestDocsSupport {
 				RestDocumentationRequestBuilders.delete("/api/notices/{noticeId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(print())
 			.andDo(NoticeDocumentation.deleteNotice());
 	}
 
@@ -163,11 +163,11 @@ class NoticeApiControllerTest extends RestDocsSupport {
 				RestDocumentationRequestBuilders.get("/api/notices")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andExpect(jsonPath("$.data").isArray())
-			.andDo(print())
 			.andDo(NoticeDocumentation.findNotices());
 	}
 
@@ -191,10 +191,10 @@ class NoticeApiControllerTest extends RestDocsSupport {
 				RestDocumentationRequestBuilders.get("/api/notices/{noticeId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
+			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andDo(print())
 			.andDo(NoticeDocumentation.findNotice());
 	}
 }
