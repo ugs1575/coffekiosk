@@ -387,7 +387,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 		List<ItemResponse> result = List.of(itemResponse);
 
-		when(itemService.findItems(any(), any())).thenReturn(result);
+		when(itemService.findItems(any(), any(), anyInt())).thenReturn(result);
 
 		//when //then
 		mockMvc.perform(
@@ -412,7 +412,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 		//given
 		List<ItemResponse> result = List.of();
 
-		when(itemService.findItems(any(), any())).thenReturn(result);
+		when(itemService.findItems(any(), any(), anyInt())).thenReturn(result);
 
 		//when //then
 		mockMvc.perform(
@@ -441,6 +441,23 @@ class ItemApiControllerTest extends RestDocsSupport {
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."))
 			.andDo(print());
+	}
+
+	@DisplayName("상품 목록 최대 요청 사이즈는 100이다.")
+	@Test
+	void findItemsMaxValue() throws Exception {
+		//when //then
+		mockMvc.perform(
+				get("/api/items")
+					.contentType(MediaType.APPLICATION_JSON)
+					.queryParam("pageSize", "101")
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("findItems.pageSize"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("최대 페이지 사이즈는 100입니다."));
 	}
 
 	@DisplayName("상품 상세정보를 조회한다.")

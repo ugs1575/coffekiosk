@@ -97,7 +97,6 @@ class NoticeServiceTest extends IntegrationTestSupport {
 
 		LocalDateTime registeredDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 		Notice notice = createNotice("제목1", "내용1",  user,  registeredDateTime);
-
 		noticeRepository.save(notice);
 
 		//when

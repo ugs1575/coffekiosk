@@ -10,7 +10,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
@@ -108,29 +107,49 @@ class ItemServiceTest extends IntegrationTestSupport {
 
 	}
 
-	@DisplayName("상품 목록을 페이징 하여 조회한다.")
+	@DisplayName("상품 목록을 첫페이지를 조회한다.")
 	@Test
-	void findPagedItems() {
+	void findItemsFirstPage() {
 		//given
-		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
-		Item item2 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
-
-		itemRepository.saveAll(List.of(item1, item2));
+		for (int i = 1; i <= 30; i++) {
+			LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, i, 0, 0);
+			itemRepository.save(createItem("카페라떼" + i, COFFEE, lastModifiedDateTime));
+		}
 
 		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
-			.name("")
 			.build();
 
-		PageRequest pageRequest = PageRequest.of(0, 1);
-
 		//when
-		List<ItemResponse> itemResponses = itemService.findItems(request, pageRequest);
+		List<ItemResponse> itemResponses = itemService.findItems(null, request, 10);
 
 		//then
-		assertThat(itemResponses)
-			.extracting("name")
-			.containsExactly(item1.getName());
+		assertThat(itemResponses).hasSize(10);
+		assertThat(itemResponses.get(0).getName()).isEqualTo("카페라떼30");
+		assertThat(itemResponses.get(9).getName()).isEqualTo("카페라떼21");
+	}
+
+	@DisplayName("상품 목록을 두번째 페이지를 조회한다.")
+	@Test
+	void findItemsSecondPage() {
+		//given
+		for (int i = 1; i <= 30; i++) {
+			LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, i, 0, 0);
+			itemRepository.save(createItem("카페라떼" + i, COFFEE, lastModifiedDateTime));
+		}
+
+		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
+			.build();
+
+		List<Item> all = itemRepository.findAll();
+		Item item = all.get(20);
+
+		//when
+		List<ItemResponse> itemResponses = itemService.findItems(item.getId(), request, 10);
+
+		//then
+		assertThat(itemResponses).hasSize(10);
+		assertThat(itemResponses.get(0).getName()).isEqualTo(all.get(19).getName());
+		assertThat(itemResponses.get(9).getName()).isEqualTo(all.get(10).getName());
 	}
 
 	@DisplayName("상품 목록을 이름으로 검색한다.")
@@ -138,53 +157,44 @@ class ItemServiceTest extends IntegrationTestSupport {
 	void searchItemsByName() {
 		//given
 		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
-		Item item2 = itemRepository.save(createItem("바닐라라떼", COFFEE, lastModifiedDateTime));
-		Item item3 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
-
-		itemRepository.saveAll(List.of(item1, item2, item3));
+		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, LocalDateTime.of(2023, 11, 21, 0, 0)));
+		Item item2 = itemRepository.save(createItem("바닐라라떼", COFFEE, LocalDateTime.of(2023, 11, 22, 0, 0)));
+		Item item3 = itemRepository.save(createItem("딸기케이크", DESSERT, LocalDateTime.of(2023, 11, 23, 0, 0)));
 
 		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
 			.name("라떼")
 			.build();
 
-		PageRequest pageRequest = PageRequest.of(0, 3);
-
 		//when
-		List<ItemResponse> itemResponses = itemService.findItems(request, pageRequest);
+		List<ItemResponse> itemResponses = itemService.findItems(null, request, 10);
 
 		//then
 		assertThat(itemResponses)
 			.hasSize(2)
 			.extracting("name")
-			.containsExactly(item1.getName(), item2.getName());
+			.containsExactly(item2.getName(), item1.getName());
 	}
 
 	@DisplayName("상품 목록을 상품 타입별로 조회한다.")
 	@Test
 	void searchItemsByType() {
 		//given
-		LocalDateTime lastModifiedDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, lastModifiedDateTime));
-		Item item2 = itemRepository.save(createItem("바나나케이크", DESSERT, lastModifiedDateTime));
-		Item item3 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
-
-		itemRepository.saveAll(List.of(item1, item2, item3));
+		Item item1 = itemRepository.save(createItem("카페라떼", COFFEE, LocalDateTime.of(2023, 11, 21, 0, 0)));
+		Item item2 = itemRepository.save(createItem("바나나케이크", DESSERT, LocalDateTime.of(2023, 11, 22, 0, 0)));
+		Item item3 = itemRepository.save(createItem("딸기케이크", DESSERT, LocalDateTime.of(2023, 11, 23, 0, 0)));
 
 		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
 			.itemType(DESSERT)
 			.build();
 
-		PageRequest pageRequest = PageRequest.of(0, 3);
-
 		//when
-		List<ItemResponse> itemResponses = itemService.findItems(request, pageRequest);
+		List<ItemResponse> itemResponses = itemService.findItems(null, request, 10);
 
 		//then
 		assertThat(itemResponses)
 			.hasSize(2)
 			.extracting("name")
-			.containsExactly(item2.getName(), item3.getName());
+			.containsExactly(item3.getName(), item2.getName());
 	}
 
 	@DisplayName("상품 목록을 상품타입과 이름으로 조회한다.")
@@ -196,17 +206,13 @@ class ItemServiceTest extends IntegrationTestSupport {
 		Item item2 = itemRepository.save(createItem("딸기라떼", COFFEE, lastModifiedDateTime));
 		Item item3 = itemRepository.save(createItem("딸기케이크", DESSERT, lastModifiedDateTime));
 
-		itemRepository.saveAll(List.of(item1, item2, item3));
-
 		ItemSearchServiceRequest request = ItemSearchServiceRequest.builder()
 			.name("딸기")
 			.itemType(DESSERT)
 			.build();
 
-		PageRequest pageRequest = PageRequest.of(0, 3);
-
 		//when
-		List<ItemResponse> itemResponses = itemService.findItems(request, pageRequest);
+		List<ItemResponse> itemResponses = itemService.findItems(null, request, 10);
 
 		//then
 		assertThat(itemResponses)

@@ -25,26 +25,25 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
 	}
 
 	@Override
-	public Page<Item> search(ItemSearchServiceRequest request, Pageable pageable) {
-		List<Item> content = queryFactory
+	public List<Item> search(Long itemId, ItemSearchServiceRequest request, int pageSize) {
+		return queryFactory
 			.selectFrom(item)
 			.where(
+				ltItemId(itemId),
 				nameEq(request.getName()),
 				itemTypeEq(request.getItemType())
 			)
-			.offset(pageable.getOffset())
-			.limit(pageable.getPageSize())
+			.orderBy(item.id.desc())
+			.limit(pageSize)
 			.fetch();
+	}
 
-		JPAQuery<Long> countQuery = queryFactory
-			.select(item.count())
-			.from(item)
-			.where(
-				nameEq(request.getName()),
-				itemTypeEq(request.getItemType())
-			);
+	private BooleanExpression ltItemId(Long itemId) {
+		if (itemId == null) {
+			return null;
+		}
 
-		return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
+		return item.id.lt(itemId);
 	}
 
 	private BooleanExpression nameEq(String keyword) {
