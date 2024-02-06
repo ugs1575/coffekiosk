@@ -16,8 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
-import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSaveRequest;
-import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemUpdateRequest;
+import com.coffeekiosk.coffeekiosk.controller.item.api.ItemApiController;
+import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemUpdateRequest;
 import com.coffeekiosk.coffeekiosk.docs.item.ItemDocumentation;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;

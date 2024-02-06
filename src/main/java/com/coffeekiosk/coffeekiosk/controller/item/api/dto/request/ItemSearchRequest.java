@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller.item.dto.request;
+package com.coffeekiosk.coffeekiosk.controller.item.api.dto.request;
 
 import static org.springframework.util.StringUtils.*;
 

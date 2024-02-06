@@ -1,31 +1,25 @@
-package com.coffeekiosk.coffeekiosk.controller.item;
+package com.coffeekiosk.coffeekiosk.controller.item.form;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
-import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSearchRequest;
-import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
+import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemSearchRequest;
+import com.coffeekiosk.coffeekiosk.controller.item.form.dto.request.ItemSaveForm;
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Controller
@@ -71,10 +65,7 @@ public class ItemFormController {
 	}
 
 	@GetMapping("/item/{itemId}")
-	public String findItem(
-		Model model,
-		@PathVariable Long itemId
-	) {
+	public String findItem(Model model, @PathVariable Long itemId) {
 		try {
 			ItemResponse item = itemService.findItem(itemId);
 			model.addAttribute("item", item);
@@ -84,6 +75,25 @@ public class ItemFormController {
 		}
 
 		return "item/detailForm";
+	}
+
+	@GetMapping("/item/new")
+	public String createForm(Model model) {
+		model.addAttribute("itemSaveForm", new ItemSaveForm());
+		return "item/createForm";
+	}
+
+	@PostMapping("/item/new")
+	public String create(@Valid ItemSaveForm itemSaveForm, BindingResult result, RedirectAttributes redirectAttributes) {
+
+		if (result.hasErrors()) {
+			return "item/createForm";
+		}
+
+		Long itemId = itemService.createItem(itemSaveForm.toServiceRequest(), LocalDateTime.now());
+		redirectAttributes.addAttribute("itemId", itemId);
+		redirectAttributes.addAttribute("status", true);
+		return "redirect:/item/{itemId}";
 	}
 
 	private boolean isLastPage(int responseSize, int pageSize) {
