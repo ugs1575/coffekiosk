@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSearchRequest;
+import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
@@ -66,6 +68,22 @@ public class ItemFormController {
 		model.addAttribute("items", items);
 		model.addAttribute("lastPage", lastPage);
 		return "item/listForm :: #itemList";
+	}
+
+	@GetMapping("/item/{itemId}")
+	public String findItem(
+		Model model,
+		@PathVariable Long itemId
+	) {
+		try {
+			ItemResponse item = itemService.findItem(itemId);
+			model.addAttribute("item", item);
+			model.addAttribute("status", true);
+		} catch (BusinessException e) {
+			model.addAttribute("status", false);
+		}
+
+		return "item/detailForm";
 	}
 
 	private boolean isLastPage(int responseSize, int pageSize) {
