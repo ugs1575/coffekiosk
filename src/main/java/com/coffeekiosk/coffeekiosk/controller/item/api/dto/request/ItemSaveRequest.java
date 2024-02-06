@@ -3,6 +3,7 @@ package com.coffeekiosk.coffeekiosk.controller.item.api.dto.request;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSaveServiceRequest;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
@@ -20,7 +21,7 @@ public class ItemSaveRequest {
 	@NotBlank(message = "상품 타입은 필수입니다.")
 	private String itemType;
 
-	@Positive(message = "최소 상품 가격은 1원입니다.")
+	@Min(value = 1, message = "최소 상품 가격은 1원입니다.")
 	private int price;
 
 	@Builder

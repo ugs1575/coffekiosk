@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/common :: head('게시판')}"> </head>
+    <body>
+        <nav
+            class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+            th:replace="~{fragments/common :: menu('item')}"
+        ></nav>
+
+        <div class="container">
+            <div class="text-center">
+                <h2 style="margin-bottom:50px;margin-top:50px" th:text="'존재하지 않는 상품입니다.'"></h2>
+                <a type="button" class="btn btn-secondary" th:href="@{/item/list}">
+                    취소
+                </a>
+            </div>
+        </div>
+    </body>
+</html>

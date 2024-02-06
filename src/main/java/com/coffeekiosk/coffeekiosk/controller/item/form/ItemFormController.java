@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemSearchRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.form.dto.request.ItemSaveForm;
+import com.coffeekiosk.coffeekiosk.controller.item.form.dto.request.ItemUpdateForm;
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
@@ -69,12 +70,10 @@ public class ItemFormController {
 		try {
 			ItemResponse item = itemService.findItem(itemId);
 			model.addAttribute("item", item);
-			model.addAttribute("status", true);
+			return "item/detailForm";
 		} catch (BusinessException e) {
-			model.addAttribute("status", false);
+			return "item/error";
 		}
-
-		return "item/detailForm";
 	}
 
 	@GetMapping("/item/new")
@@ -92,7 +91,28 @@ public class ItemFormController {
 
 		Long itemId = itemService.createItem(itemSaveForm.toServiceRequest(), LocalDateTime.now());
 		redirectAttributes.addAttribute("itemId", itemId);
-		redirectAttributes.addAttribute("status", true);
+		return "redirect:/item/{itemId}";
+	}
+
+	@GetMapping("/item/{itemId}/edit")
+	public String update(Model model, @PathVariable Long itemId) {
+		try {
+			ItemResponse item = itemService.findItem(itemId);
+			model.addAttribute("itemUpdateForm", item);
+			return "item/updateForm";
+		}catch (BusinessException e) {
+			return "item/error";
+		}
+	}
+
+	@PostMapping("/item/{itemId}/edit")
+	public String update(Model model, @PathVariable Long itemId, @Valid ItemUpdateForm itemUpdateForm, BindingResult result) {
+		if (result.hasErrors()) {
+			model.addAttribute("itemUpdateForm", itemUpdateForm);
+			return "item/updateForm";
+		}
+
+		itemService.updateItem(itemId, itemUpdateForm.toServiceRequest(), LocalDateTime.now());
 		return "redirect:/item/{itemId}";
 	}
 
