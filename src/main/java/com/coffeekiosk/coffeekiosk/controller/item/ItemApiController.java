@@ -61,7 +61,8 @@ public class ItemApiController {
 	public ApiResponse<List<ItemResponse>> findItems(
 		Long itemId,
 		ItemSearchRequest itemSearchRequest,
-		@Max(value = 100, message = "최대 페이지 사이즈는 100입니다.") @RequestParam(value = "pageSize", defaultValue = "10") int pageSize
+		@Max(value = 100, message = "최대 페이지 사이즈는 100입니다.")
+		@RequestParam(value = "pageSize", defaultValue = "10") int pageSize
 	) {
 		List<ItemResponse> response = itemService.findItems(itemId, itemSearchRequest.toServiceRequest(), pageSize);
 		return ApiResponse.ok(response);

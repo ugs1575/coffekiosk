@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{fragments/common :: head('게시판')}">
+    </head>
+    <body>
+        <nav
+            class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+            th:replace="~{fragments/common :: menu('item')}"
+        ></nav>
+
+        <div class="container">
+            <h1>상품 목록</h1>
+            <form
+                class="form-inline d-flex justify-content-end"
+                method="GET"
+                th:action="@{/item/list}"
+            >
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="name" class="sr-only">검색</label>
+                    <input
+                        type="text"
+                        class="form-control mr-sm-2"
+                        id="name"
+                        name="name"
+                        placeholder="상품명"
+                        th:value="${param.name}"
+                    />
+                    <label for="itemType" class="sr-only">검색</label>
+                    <select class="form-control" id="itemType" name="itemType1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+<!--                    <select class="custom-select" th:each="itemType: ${itemTypes}">-->
+<!--                        <option selected>상품구분</option>-->
+<!--                        <option th:text="${itemType.name}">커피</option>-->
+<!--                    </select>-->
+                </div>
+                <button type="submit" class="btn btn-light mb-2 mr-2">검색</button>
+                <a type="button" class="btn btn-light mb-2" th:href="@{/item/new}">새 상픔 등록</a>
+            </form>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">상품명</th>
+                        <th scope="col">상품구분</th>
+                        <th scope="col">가격</th>
+                        <th scope="col">최근 수정일</th>
+                    </tr>
+                </thead>
+                <tbody id="itemBody">
+                    <tr id="itemList" th:each="item : ${items}">
+                        <input type="hidden" th:value="${item.id}">
+                        <input type="hidden" th:value="${lastPage}">
+                        <td>
+                            <a th:text="${item.name}" th:href="@{/item/{itemId}(itemId=${item.id})}">아이스아메리카노</a
+                            >
+                        </td>
+                        <td th:text="${item.itemType.name}">커피</td>
+                        <td th:text="${item.price}">1000</td>
+                        <td th:text="${#temporals.format(item.lastModifiedDateTime, 'yyyy-MM-dd HH:mm:ss')}">@mdo</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center">
+                <button class="btn btn-link" id="seeMore">더보기</button>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function(){
+                var isLastPage = $('tr:last').find('input:first').next().val();
+
+                if (isLastPage == 'true') {
+                   $('#seeMore').remove();
+                }
+
+                $("#seeMore").click(function(){
+                    var name = $('#name').val();
+                    var lastId = $('tr:last').find('input:first').val();
+
+                     $.ajax({
+                        type: "get",
+                        url: "/item/nextPage?itemId=" + lastId + "&name=" + name,
+                        data: {},
+                        success: (fragment)=>{
+                            $('#itemBody').append(fragment);
+
+                            lastId = $('tr:last').find('input:first').val();
+                            isLastPage = $('tr:last').find('input:first').next().val();
+
+                            if (isLastPage == 'true') {
+                               $('#seeMore').remove();
+                            }
+
+                             console.log(lastId);
+                        },
+                        error: (error)=>{
+                        }
+                    })
+                });
+            });
+        </script>
+    </body>
+</html>
+
+
