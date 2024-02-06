@@ -116,6 +116,12 @@ public class ItemFormController {
 		return "redirect:/item/{itemId}";
 	}
 
+	@PostMapping("/item/{itemId}/delete")
+	public String delete(Model model, @PathVariable Long itemId) {
+		itemService.deleteItem(itemId);
+		return "redirect:/item/list";
+	}
+
 	private boolean isLastPage(int responseSize, int pageSize) {
 		if (responseSize == pageSize + 1) {
 			return false;

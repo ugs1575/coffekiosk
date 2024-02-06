@@ -57,42 +57,54 @@
                 <button class="btn btn-link" id="seeMore">더보기</button>
             </div>
         </div>
-
-        <script>
-            $(document).ready(function(){
-                var isLastPage = $('tr:last').find('input:first').next().val();
-
-                if (isLastPage == 'true') {
-                   $('#seeMore').remove();
-                }
-
-                $("#seeMore").click(function(){
-                    var name = $('#name').val();
-                    var lastId = $('tr:last').find('input:first').val();
-
-                     $.ajax({
-                        type: "get",
-                        url: "/item/nextPage?itemId=" + lastId + "&name=" + name,
-                        data: {},
-                        success: (fragment)=>{
-                            $('#itemBody').append(fragment);
-
-                            lastId = $('tr:last').find('input:first').val();
-                            isLastPage = $('tr:last').find('input:first').next().val();
-
-                            if (isLastPage == 'true') {
-                               $('#seeMore').remove();
-                            }
-
-                             console.log(lastId);
-                        },
-                        error: (error)=>{
-                        }
-                    })
-                });
-            });
-        </script>
     </body>
 </html>
+
+
+<script>
+$(document).ready(function(){
+    var lastId, isLastPage;
+
+    checkLastPage();
+
+    openNextPage();
+
+    function checkLastPage() {
+        lastId = $('tr:last').find('input:first').val();
+        isLastPage = $('tr:last').find('input:first').next().val();
+
+        removeSeeMoreBtn();
+    }
+
+    function openNextPage() {
+        $("#seeMore").click(function(){
+            var name = $('#name').val();
+
+            $.ajax({
+            type: "get",
+            url: "/item/nextPage?itemId=" + lastId + "&name=" + name,
+            data: {},
+                success: (fragment)=>{
+                    $('#itemBody').append(fragment);
+
+                    checkLastPage();
+
+                    console.log(lastId);
+                },
+                error: (error)=>{
+                }
+            })
+        });
+    }
+
+    function removeSeeMoreBtn() {
+        if (isLastPage == 'true') {
+            $('#seeMore').remove();
+        }
+    }
+});
+
+
+</script>
 
 

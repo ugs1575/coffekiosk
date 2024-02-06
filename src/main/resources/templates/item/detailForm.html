@@ -8,7 +8,7 @@
         ></nav>
 
         <div class="container">
-            <form th:object="${item}">
+            <form th:object="${item}" th:action="@{/item/{itemId}/delete(itemId=*{id})}" method="POST" onsubmit="return deleteItem();">
                 <h1 style="margin-bottom:50px">상품 상세</h1>
                 <div class="form-group">
                     <label th:for="name">상품명</label>
@@ -30,6 +30,9 @@
                     <a type="button" class="btn btn-primary" th:href="@{/item/{itemId}/edit(itemId=*{id})}">
                         수정
                     </a>
+                    <button type="submit" class="btn btn-danger">
+                        삭제
+                    </button>
                     <a type="button" class="btn btn-secondary" th:href="@{/item/list}">
                         취소
                     </a>
@@ -38,3 +41,13 @@
         </div>
     </body>
 </html>
+
+<script>
+    function deleteItem() {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            return true;
+        }
+
+        return false;
+    }
+</script>
