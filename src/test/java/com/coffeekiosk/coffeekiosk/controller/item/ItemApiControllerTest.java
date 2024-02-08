@@ -16,8 +16,9 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
-import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemSaveRequest;
-import com.coffeekiosk.coffeekiosk.controller.item.dto.request.ItemUpdateRequest;
+import com.coffeekiosk.coffeekiosk.controller.item.api.ItemApiController;
+import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemUpdateRequest;
 import com.coffeekiosk.coffeekiosk.docs.item.ItemDocumentation;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
@@ -355,7 +356,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 			.andExpect(jsonPath("$.code").value("400"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
-			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 가격은 양수여야 합니다."));
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 상품 가격은 1원입니다."));
 	}
 
 	@DisplayName("상품을 삭제한다.")

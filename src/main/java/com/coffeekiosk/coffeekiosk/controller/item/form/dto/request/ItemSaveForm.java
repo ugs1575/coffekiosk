@@ -1,18 +1,21 @@
-package com.coffeekiosk.coffeekiosk.controller.item.dto.request;
+package com.coffeekiosk.coffeekiosk.controller.item.form.dto.request;
 
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceRequest;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ItemSaveRequest {
+@Setter
+@NoArgsConstructor
+public class ItemSaveForm {
 
 	@NotBlank(message = "상품 이름은 필수입니다.")
 	private String name;
@@ -20,11 +23,12 @@ public class ItemSaveRequest {
 	@NotBlank(message = "상품 타입은 필수입니다.")
 	private String itemType;
 
+	@NotNull(message = "상품 가격은 필수입니다.")
 	@Positive(message = "최소 상품 가격은 1원입니다.")
-	private int price;
+	private Integer price;
 
 	@Builder
-	private ItemSaveRequest(String name, String itemType, int price) {
+	private ItemSaveForm(String name, String itemType, int price) {
 		this.name = name;
 		this.itemType = itemType;
 		this.price = price;
@@ -38,4 +42,5 @@ public class ItemSaveRequest {
 			.build();
 
 	}
+
 }
