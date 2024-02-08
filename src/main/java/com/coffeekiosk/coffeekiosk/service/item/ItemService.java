@@ -35,17 +35,13 @@ public class ItemService {
 
 	@Transactional
 	public void updateItem(Long itemId, ItemUpdateServiceRequest request, LocalDateTime updatedModifiedDateTime) {
-		Item item = itemRepository.findById(itemId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
-
+		Item item = findItemById(itemId);
 		item.update(request.toEntity(), updatedModifiedDateTime);
 	}
 
 	@Transactional
 	public void deleteItem(Long itemId) {
-		itemRepository.findById(itemId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
-
+		findItemById(itemId);
 		itemRepository.deleteById(itemId);
 	}
 
@@ -55,9 +51,12 @@ public class ItemService {
 	}
 
 	public ItemResponse findItem(Long itemId) {
-		Item item = itemRepository.findById(itemId)
-			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
-
+		Item item = findItemById(itemId);
 		return ItemResponse.of(item);
+	}
+
+	private Item findItemById(Long itemId) {
+		return itemRepository.findById(itemId)
+			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 	}
 }
