@@ -10,22 +10,19 @@
 
         <div class="container">
             <h1>상품 목록</h1>
-            <form class="form-inline d-flex justify-content-end" method="GET" th:action="@{/item/list}">
+            <form class="form-inline d-flex justify-content-end" method="GET" th:object="${itemSearchRequest}" th:action="@{/item/list}">
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="name" class="sr-only">검색</label>
-                    <input type="text" class="form-control mr-sm-2" id="name" name="name" placeholder="상품명" th:value="${param.name}"/>
-                    <label for="itemType" class="sr-only">검색</label>
-                    <select class="form-control" id="itemType" name="itemType1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <input type="text" class="form-control mr-sm-2" id="name" name="name" placeholder="상품명" th:field="*{name}"/>
+<!--                    <label for="itemType" class="sr-only">검색</label>-->
+                    <select class="form-control" name="itemType" th:field="*{itemType}">
+                        <option value="">상품구분</option>
+                        <option th:each=
+                                        "type : ${T(com.coffeekiosk.coffeekiosk.domain.item.ItemType).values()}"
+                                th:value="${type}"
+                                th:text="${type.name}">option
+                        </option>
                     </select>
-<!--                    <select class="custom-select" th:each="itemType: ${itemTypes}">-->
-<!--                        <option selected>상품구분</option>-->
-<!--                        <option th:text="${itemType.name}">커피</option>-->
-<!--                    </select>-->
                 </div>
                 <button type="submit" class="btn btn-light mb-2 mr-2">검색</button>
                 <a type="button" class="btn btn-light mb-2" th:href="@{/item/new}">새 상픔 등록</a>
