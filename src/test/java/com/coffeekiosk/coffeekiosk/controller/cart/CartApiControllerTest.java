@@ -15,6 +15,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.cart.dto.request.CartSaveRequest;
+import com.coffeekiosk.coffeekiosk.docs.cart.CartDocumentation;
 import com.coffeekiosk.coffeekiosk.service.cart.CartService;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
 
@@ -51,7 +52,8 @@ class CartApiControllerTest extends RestDocsSupport {
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(CartDocumentation.updateCart());
 
 	}
 
@@ -66,7 +68,8 @@ class CartApiControllerTest extends RestDocsSupport {
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
-			.andExpect(jsonPath("$.message").value("OK"));
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(CartDocumentation.deleteCart());
 
 	}
 
@@ -92,7 +95,8 @@ class CartApiControllerTest extends RestDocsSupport {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
-			.andExpect(jsonPath("$.data").isArray());
+			.andExpect(jsonPath("$.data").isArray())
+			.andDo(CartDocumentation.findCarts());
 
 	}
 }

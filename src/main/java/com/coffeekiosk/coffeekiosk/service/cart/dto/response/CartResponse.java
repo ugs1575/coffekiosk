@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
-import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
 import lombok.Builder;
 import lombok.Getter;
