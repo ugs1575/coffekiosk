@@ -27,7 +27,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("장바구니에 상품을 담는다")
 	@Test
-	void updateCart() throws Exception {
+	void updateCartItem() throws Exception {
 	    //given
 		CartSaveRequest request = CartSaveRequest.builder()
 			.itemId(1L)
@@ -41,7 +41,7 @@ class CartApiControllerTest extends RestDocsSupport {
 			.count(1)
 			.build();
 
-		when(cartService.updateCart(any(), any())).thenReturn(response);
+		when(cartService.updateCartItem(any(), any())).thenReturn(response);
 
 		//when //then
 		mockMvc.perform(
@@ -59,7 +59,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("장바구니에 담긴 상품을 삭제한다.")
 	@Test
-	void deleteCart() throws Exception {
+	void deleteCartItem() throws Exception {
 		//when //then
 		mockMvc.perform(
 				RestDocumentationRequestBuilders.delete("/api/users/{userId}/carts/{cartId}", 1L, 1L)
@@ -75,7 +75,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("장바구니에 담긴 상품 목록을 조회한다.")
 	@Test
-	void findCarts() throws Exception {
+	void findCartItems() throws Exception {
 		//given
 		CartResponse response = CartResponse.builder()
 			.id(1L)
@@ -84,7 +84,7 @@ class CartApiControllerTest extends RestDocsSupport {
 			.count(1)
 			.build();
 
-		when(cartService.findCarts(any())).thenReturn(List.of(response));
+		when(cartService.findCartItems(any())).thenReturn(List.of(response));
 
 		//when //then
 		mockMvc.perform(

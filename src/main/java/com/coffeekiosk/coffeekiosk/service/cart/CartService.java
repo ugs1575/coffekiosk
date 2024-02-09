@@ -29,7 +29,7 @@ public class CartService {
 	private final CartRepository cartRepository;
 
 	@Transactional
-	public CartResponse updateCart(Long userId, CartSaveServiceRequest request) {
+	public CartResponse updateCartItem(Long userId, CartSaveServiceRequest request) {
 		Item item = findItem(request.getItemId());
 		User user = findUser(userId);
 
@@ -46,13 +46,13 @@ public class CartService {
 	}
 
 	@Transactional
-	public void deleteCart(Long id, Long userId) {
+	public void deleteCartItem(Long id, Long userId) {
 		cartRepository.deleteByIdAndUserId(id, userId);
 	}
 
-	public List<CartResponse> findCarts(Long userId) {
-		List<Cart> carts = cartRepository.findAllByUserIdFetchJoin(userId);
-		return CartResponse.listOf(carts);
+	public List<CartResponse> findCartItems(Long userId) {
+		List<Cart> cartItems = cartRepository.findAllByUserIdFetchJoin(userId);
+		return CartResponse.listOf(cartItems);
 	}
 
 	private User findUser(Long userId) {

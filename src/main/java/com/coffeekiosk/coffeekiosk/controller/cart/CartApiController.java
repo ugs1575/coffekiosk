@@ -26,19 +26,19 @@ public class CartApiController {
 	private final CartService cartService;
 
 	@PostMapping
-	public ApiResponse<CartResponse> updateCart(@PathVariable Long userId, @RequestBody @Valid CartSaveRequest request) {
-		CartResponse response = cartService.updateCart(userId, request.toServiceRequest());
+	public ApiResponse<CartResponse> updateCartItem(@PathVariable Long userId, @RequestBody @Valid CartSaveRequest request) {
+		CartResponse response = cartService.updateCartItem(userId, request.toServiceRequest());
 		return ApiResponse.ok(response);
 	}
 	@DeleteMapping("/{cartId}")
-	public ApiResponse<Void> deleteCart(@PathVariable Long userId, @PathVariable Long cartId) {
-		cartService.deleteCart(cartId, userId);
+	public ApiResponse<Void> deleteCartItem(@PathVariable Long userId, @PathVariable Long cartId) {
+		cartService.deleteCartItem(cartId, userId);
 		return ApiResponse.noContent();
 	}
 
 	@GetMapping
-	public ApiResponse<List<CartResponse>> findCarts(@PathVariable Long userId) {
-		List<CartResponse> response = cartService.findCarts(userId);
+	public ApiResponse<List<CartResponse>> findCartItems(@PathVariable Long userId) {
+		List<CartResponse> response = cartService.findCartItems(userId);
 		return ApiResponse.ok(response);
 	}
 }

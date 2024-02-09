@@ -44,7 +44,7 @@ class CartServiceTest extends IntegrationTestSupport {
 
 	@DisplayName("기존에 장바구니에 담긴 상품이면 수량만 수정한다.")
 	@Test
-	void updateCartCount() {
+	void updateCartItemCount() {
 		//given
 		Item item = createItem();
 		Item savedItem = itemRepository.save(item);
@@ -61,7 +61,7 @@ class CartServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		CartResponse cartResponse = cartService.updateCart(savedUser.getId(), request);
+		CartResponse cartResponse = cartService.updateCartItem(savedUser.getId(), request);
 
 		//then
 		assertThat(cartResponse)
@@ -85,7 +85,7 @@ class CartServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		CartResponse cartResponse = cartService.updateCart(savedUser.getId(), request);
+		CartResponse cartResponse = cartService.updateCartItem(savedUser.getId(), request);
 
 		//then
 		assertThat(cartResponse.getId()).isNotNull();
@@ -96,7 +96,7 @@ class CartServiceTest extends IntegrationTestSupport {
 
 	@DisplayName("장바구니에서 선택한 아이템을 삭제한다.")
 	@Test
-	void deleteCart() {
+	void deleteCartItem() {
 		//given
 		Item item = createItem();
 		Item savedItem = itemRepository.save(item);
@@ -108,17 +108,17 @@ class CartServiceTest extends IntegrationTestSupport {
 		Cart savedCart = cartRepository.save(cart);
 
 		//when
-		cartService.deleteCart(savedCart.getId(), savedUser.getId());
+		cartService.deleteCartItem(savedCart.getId(), savedUser.getId());
 
 		//then
-		List<Cart> carts = cartRepository.findAll();
-		assertThat(carts).hasSize(0)
+		List<Cart> cartItems = cartRepository.findAll();
+		assertThat(cartItems).hasSize(0)
 			.isEmpty();
 	}
 
 	@DisplayName("장바구니에 담긴 상품목록을 조회한다.")
 	@Test
-	void findCarts() {
+	void findCartItems() {
 		//given
 		Item item1 = createItem();
 		Item savedItem1 = itemRepository.save(item1);
@@ -136,7 +136,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		Cart savedCart2 = cartRepository.save(cart2);
 
 		//when
-		List<CartResponse> cartResponse = cartService.findCarts(savedUser.getId());
+		List<CartResponse> cartResponse = cartService.findCartItems(savedUser.getId());
 
 		//then
 		assertThat(cartResponse)
