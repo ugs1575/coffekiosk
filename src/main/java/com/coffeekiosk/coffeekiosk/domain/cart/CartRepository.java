@@ -1,16 +1,25 @@
 package com.coffeekiosk.coffeekiosk.domain.cart;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
-	@Query("select c from Cart c join fetch c.user u join fetch c.item i where u.id = :userId and i.id = :itemId")
+	@Query("select c from Cart c join fetch c.item i where c.user.id = :userId and i.id = :itemId")
 	Optional<Cart> findByUserIdAndItemIdFetchJoin(@Param("userId") Long userId, @Param("itemId") Long ItemId);
 
-	@Query("select c from Cart c join fetch c.user u join fetch c.item i where c.id = :id")
+	@Query("select c from Cart c join fetch c.item i where c.id = :id")
 	Optional<Cart> findByIdFetchJoin(@Param("id") Long id);
+
+	@Query("select c from Cart c join fetch c.item i where c.id in :id and c.user.id = :userId")
+	List<Cart> findAllByIdFetchJoin(@Param("id") List<Long> id, @Param("userId") Long userId);
+
+	@Modifying
+	@Query("delete from Cart c where c.id in :id and c.user.id = :userId")
+	void deleteByIdIn(@Param("id") List<Long> id, @Param("userId") Long userId);
 }

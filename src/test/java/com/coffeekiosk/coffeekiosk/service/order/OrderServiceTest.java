@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
+import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
@@ -23,7 +25,6 @@ import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
 class OrderServiceTest extends IntegrationTestSupport {
@@ -43,8 +44,12 @@ class OrderServiceTest extends IntegrationTestSupport {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private CartRepository cartRepository;
+
 	@AfterEach
 	void tearDown() {
+		cartRepository.deleteAllInBatch();
 		orderItemRepository.deleteAllInBatch();
 		itemRepository.deleteAllInBatch();
 		orderRepository.deleteAllInBatch();
@@ -59,16 +64,20 @@ class OrderServiceTest extends IntegrationTestSupport {
 		LocalDateTime orderDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 
 		User user = createUser(20000);
-		userRepository.save(user);
+		User savedUser = userRepository.save(user);
 
 		Item item1 = createItem("카페라떼", 5000);
+		Item savedItem1 = itemRepository.save(item1);
 		Item item2 = createItem("아메리카노", 4500);
-		itemRepository.saveAll(List.of(item1, item2));
+		Item savedItem2 = itemRepository.save(item2);
 
-		OrderItemSaveServiceRequest request1 = createOrderItemRequest(item1, 1);
-		OrderItemSaveServiceRequest request2 = createOrderItemRequest(item2, 2);
+		Cart cart1 = createCart(savedUser, savedItem1, 1);
+		Cart savedCart1 = cartRepository.save(cart1);
+		Cart cart2 = createCart(savedUser, savedItem2, 2);
+		Cart savedCart2 = cartRepository.save(cart2);
+
 		OrderSaveServiceRequest request = OrderSaveServiceRequest.builder()
-			.orderList(List.of(request1, request2))
+			.cartIdList(List.of(savedCart1.getId(), savedCart2.getId()))
 			.build();
 
 		//when
@@ -83,6 +92,9 @@ class OrderServiceTest extends IntegrationTestSupport {
 			.containsExactlyInAnyOrder(
 				tuple(user.getId(), 6000)
 			);
+
+		List<Cart> carts = cartRepository.findAll();
+		assertThat(carts).isEmpty();
 	}
 
 	@DisplayName("주문 금액보다 보유 포인트가 클 경우 예외가 발생한다.")
@@ -92,14 +104,16 @@ class OrderServiceTest extends IntegrationTestSupport {
 		LocalDateTime orderDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 
 		User user = createUser(4000);
-		userRepository.save(user);
+		User savedUser = userRepository.save(user);
 
 		Item item = createItem("카페라떼", 5000);
-		itemRepository.save(item);
+		Item savedItem = itemRepository.save(item);
 
-		OrderItemSaveServiceRequest orderItemRequest = createOrderItemRequest(item, 1);
+		Cart cart = createCart(savedUser, savedItem, 1);
+		Cart savedCart = cartRepository.save(cart);
+
 		OrderSaveServiceRequest request = OrderSaveServiceRequest.builder()
-			.orderList(List.of(orderItemRequest))
+			.cartIdList(List.of(savedCart.getId()))
 			.build();
 
 		//when //then
@@ -113,14 +127,11 @@ class OrderServiceTest extends IntegrationTestSupport {
 	@Test
 	void orderAtTheSameTime() throws InterruptedException {
 		//given
-		User user = User.builder()
-			.name("우경서")
-			.point(100)
-			.build();
-		userRepository.save(user);
+		User user = createUser(100);
+		User savedUser = userRepository.save(user);
 
 		Item item = createItem("카페라떼", 1);
-		itemRepository.save(item);
+		Item savedItem = itemRepository.save(item);
 
 		//when
 		int threadCount = 100;
@@ -131,8 +142,11 @@ class OrderServiceTest extends IntegrationTestSupport {
 			executorService.submit(() -> {
 				try {
 					LocalDateTime orderDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
+					Cart cart = createCart(savedUser, savedItem, 1);
+					Cart savedCart = cartRepository.save(cart);
+
 					OrderSaveServiceRequest request = OrderSaveServiceRequest.builder()
-						.orderList(List.of(createOrderItemRequest(item, 1)))
+						.cartIdList(List.of(savedCart.getId()))
 						.build();
 
 					orderFacade.order(user.getId(), request, orderDateTime);
@@ -145,15 +159,8 @@ class OrderServiceTest extends IntegrationTestSupport {
 		latch.await();
 
 		//then
-		User foundUser = userRepository.findById(user.getId()).orElseThrow();
-		assertThat(foundUser.getPoint()).isEqualTo(0);
-	}
-
-	private OrderItemSaveServiceRequest createOrderItemRequest(Item item, int count) {
-		return OrderItemSaveServiceRequest.builder()
-			.itemId(item.getId())
-			.count(count)
-			.build();
+		List<User> users = userRepository.findAll();
+		assertThat(users.get(0).getPoint()).isEqualTo(0);
 	}
 
 	private Item createItem(String name, int price) {
@@ -169,6 +176,14 @@ class OrderServiceTest extends IntegrationTestSupport {
 		return User.builder()
 			.name("우경서")
 			.point(point)
+			.build();
+	}
+
+	private Cart createCart(User user, Item item, int count) {
+		return Cart.builder()
+			.user(user)
+			.item(item)
+			.count(count)
 			.build();
 	}
 

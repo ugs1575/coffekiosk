@@ -1,6 +1,6 @@
-package com.coffeekiosk.coffeekiosk.controller.order.dto.request;
+package com.coffeekiosk.coffeekiosk.controller.cart.dto.request;
 
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.cart.dto.request.CartSaveServiceRequest;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderItemSaveRequest {
+public class CartSaveRequest {
 
 	@NotNull(message = "상품 아이디는 필수입니다.")
 	@Positive(message = "상품 아이디는 양수입니다.")
@@ -22,13 +22,13 @@ public class OrderItemSaveRequest {
 	private int count;
 
 	@Builder
-	private OrderItemSaveRequest(Long itemId, int count) {
+	private CartSaveRequest(Long itemId, int count) {
 		this.itemId = itemId;
 		this.count = count;
 	}
 
-	public OrderItemSaveServiceRequest toServiceRequest() {
-		return OrderItemSaveServiceRequest.builder()
+	public CartSaveServiceRequest toServiceRequest() {
+		return CartSaveServiceRequest.builder()
 			.itemId(itemId)
 			.count(count)
 			.build();

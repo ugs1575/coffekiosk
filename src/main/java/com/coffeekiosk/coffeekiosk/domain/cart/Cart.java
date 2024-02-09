@@ -13,8 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,12 +21,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(
-	name = "carts",
-	uniqueConstraints = {
-		@UniqueConstraint( name = "USER_ITEM_UNIQUE", columnNames = {"user_id", "item_id"} )
-	}
-)
 public class Cart extends BaseTimeEntity {
 
 	@Id

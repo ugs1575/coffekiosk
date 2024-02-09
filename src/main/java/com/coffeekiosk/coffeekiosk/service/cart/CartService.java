@@ -13,10 +13,8 @@ import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
-import com.coffeekiosk.coffeekiosk.service.cart.dto.request.CartSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.cart.dto.request.CartSaveServiceRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +28,7 @@ public class CartService {
 	private final CartRepository cartRepository;
 
 	@Transactional
-	public CartResponse updateCart(Long userId, OrderItemSaveServiceRequest request) {
+	public CartResponse updateCart(Long userId, CartSaveServiceRequest request) {
 		Item item = findItem(request.getItemId());
 		User user = findUser(userId);
 
@@ -56,7 +54,7 @@ public class CartService {
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 	}
 
-	private Long createCart(OrderItemSaveServiceRequest request, Item item, User user) {
+	private Long createCart(CartSaveServiceRequest request, Item item, User user) {
 		Cart cart = Cart.createCart(user, item, request.getCount());
 		Cart savedCart = cartRepository.save(cart);
 		return savedCart.getId();

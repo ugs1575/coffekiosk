@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
+import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.order.Order;
@@ -18,7 +20,6 @@ import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -29,20 +30,21 @@ import lombok.RequiredArgsConstructor;
 public class OrderService {
 
 	private final UserRepository userRepository;
-	private final ItemRepository itemRepository;
 	private final OrderRepository orderRepository;
+	private final CartRepository cartRepository;
 
 	public Long order(Long userId, OrderSaveServiceRequest request, LocalDateTime orderDateTime) {
 		User user = findUser(userId);
 
-		List<Item> items = itemRepository.findAllById(request.getItemIds());
-		Map<Long, Item> itemMap = createItemMapBy(items);
+		List<Cart> cartList = cartRepository.findAllByIdFetchJoin(request.getCartIdList(), userId);
+		if (cartList.isEmpty()) {
+			throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
+		}
 
 		List<OrderItem> orderItems = new ArrayList<>();
-		for (OrderItemSaveServiceRequest itemRequest : request.getOrderList()) {
-			Item item = findItem(itemMap, itemRequest.getItemId());
-
-			OrderItem orderItem = OrderItem.createOrderItem(item, itemRequest.getCount());
+		for (Cart cart : cartList) {
+			Item item = cart.getItem();
+			OrderItem orderItem = OrderItem.createOrderItem(item, cart.getCount());
 			orderItems.add(orderItem);
 		}
 
@@ -51,6 +53,8 @@ public class OrderService {
 		deductPoint(user, order);
 
 		Order savedOrder = orderRepository.save(order);
+
+		cartRepository.deleteByIdIn(request.getCartIdList(), userId);
 
 		return savedOrder.getId();
 	}
@@ -68,20 +72,5 @@ public class OrderService {
 	private User findUser(Long userId) {
 		return userRepository.findByIdWithOptimisticLock(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
-	}
-
-	private Item findItem(Map<Long, Item> itemMap, Long itemId) {
-		Item item = itemMap.get(itemId);
-
-		if (item == null) {
-			throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
-		}
-
-		return item;
-	}
-
-	private Map<Long, Item> createItemMapBy(List<Item> items) {
-		return items.stream()
-			.collect(Collectors.toMap(Item::getId, i -> i));
 	}
 }

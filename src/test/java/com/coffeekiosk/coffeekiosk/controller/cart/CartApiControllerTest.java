@@ -12,7 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
-import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.cart.dto.request.CartSaveRequest;
 import com.coffeekiosk.coffeekiosk.service.cart.CartService;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
 
@@ -26,7 +26,7 @@ class CartApiControllerTest extends RestDocsSupport {
 	@Test
 	void updateCart() throws Exception {
 	    //given
-		OrderItemSaveRequest request = OrderItemSaveRequest.builder()
+		CartSaveRequest request = CartSaveRequest.builder()
 			.itemId(1L)
 			.count(1)
 			.build();

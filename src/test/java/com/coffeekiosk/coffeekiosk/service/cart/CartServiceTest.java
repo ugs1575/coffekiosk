@@ -2,30 +2,23 @@ package com.coffeekiosk.coffeekiosk.service.cart;
 
 import static com.coffeekiosk.coffeekiosk.domain.item.ItemType.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
-import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
-import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
-import com.coffeekiosk.coffeekiosk.service.cart.dto.request.CartSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.cart.dto.request.CartSaveServiceRequest;
 
 class CartServiceTest extends IntegrationTestSupport {
 
@@ -61,7 +54,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		Cart cart = createCart(savedUser, savedItem, 1);
 		Cart savedCart = cartRepository.save(cart);
 
-		OrderItemSaveServiceRequest request = OrderItemSaveServiceRequest.builder()
+		CartSaveServiceRequest request = CartSaveServiceRequest.builder()
 			.itemId(savedItem.getId())
 			.count(2)
 			.build();
@@ -85,7 +78,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		User user = createUser();
 		User savedUser = userRepository.save(user);
 
-		OrderItemSaveServiceRequest request = OrderItemSaveServiceRequest.builder()
+		CartSaveServiceRequest request = CartSaveServiceRequest.builder()
 			.itemId(savedItem.getId())
 			.count(2)
 			.build();
