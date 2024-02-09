@@ -16,15 +16,15 @@ public interface CartRepository extends JpaRepository<Cart, Long> {
 	@Query("select c from Cart c join fetch c.item i where c.id = :id")
 	Optional<Cart> findByIdFetchJoin(@Param("id") Long id);
 
-	@Query("select c from Cart c join fetch c.item i where c.id in :id and c.user.id = :userId")
-	List<Cart> findAllByIdFetchJoin(@Param("id") List<Long> id, @Param("userId") Long userId);
+	@Query("select c from Cart c join fetch c.item i where c.id in :ids and c.user.id = :userId")
+	List<Cart> findAllByIdFetchJoin(@Param("ids") List<Long> ids, @Param("userId") Long userId);
 
 	@Query("select c from Cart c join fetch c.item i where c.user.id = :userId")
 	List<Cart> findAllByUserIdFetchJoin(@Param("userId") Long userId);
 
 	@Modifying
-	@Query("delete from Cart c where c.id in :id and c.user.id = :userId")
-	void deleteByIdIn(@Param("id") List<Long> id, @Param("userId") Long userId);
+	@Query("delete from Cart c where c.id in :ids and c.user.id = :userId")
+	void deleteByIdIn(@Param("ids") List<Long> ids, @Param("userId") Long userId);
 
 	@Modifying
 	@Query("delete from Cart c where c.id = :id and c.user.id = :userId")
