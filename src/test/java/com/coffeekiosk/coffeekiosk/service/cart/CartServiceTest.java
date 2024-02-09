@@ -42,7 +42,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		itemRepository.deleteAllInBatch();
 	}
 
-	@DisplayName("기존에 카트에 담긴 상품이면 수량만 수정한다.")
+	@DisplayName("기존에 장바구니에 담긴 상품이면 수량만 수정한다.")
 	@Test
 	void updateCartCount() {
 		//given
@@ -69,7 +69,7 @@ class CartServiceTest extends IntegrationTestSupport {
 			.contains(savedCart.getId(), savedItem.getId(), savedItem.getName(), 2);
 	}
 
-	@DisplayName("기존에 카트에 담긴 상품이 아니면 새로 생성한다.")
+	@DisplayName("기존에 장바구니에 담긴 상품이 아니면 새로 생성한다.")
 	@Test
 	void createCart() {
 		//given
@@ -94,7 +94,7 @@ class CartServiceTest extends IntegrationTestSupport {
 			.contains(savedItem.getId(), savedItem.getName(), 2);
 	}
 
-	@DisplayName("카트에서 선택한 아이템을 삭제한다.")
+	@DisplayName("장바구니에서 선택한 아이템을 삭제한다.")
 	@Test
 	void deleteCart() {
 		//given
@@ -116,7 +116,7 @@ class CartServiceTest extends IntegrationTestSupport {
 			.isEmpty();
 	}
 
-	@DisplayName("카트에 담긴 상품목록을 조회한다.")
+	@DisplayName("장바구니에 담긴 상품목록을 조회한다.")
 	@Test
 	void findCarts() {
 		//given

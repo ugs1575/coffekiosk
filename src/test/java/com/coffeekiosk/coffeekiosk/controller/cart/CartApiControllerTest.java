@@ -25,7 +25,7 @@ class CartApiControllerTest extends RestDocsSupport {
 	@MockBean
 	protected CartService cartService;
 
-	@DisplayName("카트에 상품을 담는다")
+	@DisplayName("장바구니에 상품을 담는다")
 	@Test
 	void updateCart() throws Exception {
 	    //given
@@ -57,7 +57,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 	}
 
-	@DisplayName("카트담긴 상품을 삭제한다.")
+	@DisplayName("장바구니에 담긴 상품을 삭제한다.")
 	@Test
 	void deleteCart() throws Exception {
 		//when //then
@@ -73,7 +73,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 	}
 
-	@DisplayName("카트담긴 상품 목록을 조회한다.")
+	@DisplayName("장바구니에 담긴 상품 목록을 조회한다.")
 	@Test
 	void findCarts() throws Exception {
 		//given
