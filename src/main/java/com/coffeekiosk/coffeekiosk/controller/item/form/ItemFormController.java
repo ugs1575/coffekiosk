@@ -18,7 +18,6 @@ import com.coffeekiosk.coffeekiosk.controller.item.form.dto.request.ItemSaveForm
 import com.coffeekiosk.coffeekiosk.controller.item.form.dto.request.ItemUpdateForm;
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
-import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemTypeResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

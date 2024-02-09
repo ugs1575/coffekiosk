@@ -2,7 +2,6 @@ package com.coffeekiosk.coffeekiosk.common.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,7 +13,6 @@ import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 
 import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Path;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

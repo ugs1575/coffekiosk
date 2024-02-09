@@ -5,7 +5,6 @@ import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceReq
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

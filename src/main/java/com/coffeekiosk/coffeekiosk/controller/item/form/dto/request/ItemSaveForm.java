@@ -2,7 +2,6 @@ package com.coffeekiosk.coffeekiosk.controller.item.form.dto.request;
 
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSaveServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceRequest;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

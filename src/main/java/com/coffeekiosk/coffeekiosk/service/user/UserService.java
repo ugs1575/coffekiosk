@@ -1,7 +1,5 @@
 package com.coffeekiosk.coffeekiosk.service.user;
 
-import javax.print.DocFlavor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

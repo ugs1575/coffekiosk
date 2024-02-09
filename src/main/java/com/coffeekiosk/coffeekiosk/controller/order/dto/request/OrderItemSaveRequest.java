@@ -2,6 +2,7 @@ package com.coffeekiosk.coffeekiosk.controller.order.dto.request;
 
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
@@ -17,7 +18,7 @@ public class OrderItemSaveRequest {
 	@Positive(message = "상품 아이디는 양수입니다.")
 	private Long itemId;
 
-	@Positive(message = "최소 주문 상품 수는 1개 이상이어야 합니다.")
+	@Min(value = 1, message = "최소 주문 상품 수는 1개 이상이어야 합니다.")
 	private int count;
 
 	@Builder

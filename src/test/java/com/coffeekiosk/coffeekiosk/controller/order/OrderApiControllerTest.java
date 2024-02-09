@@ -94,6 +94,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 		OrderItemSaveRequest itemRequest = OrderItemSaveRequest.builder()
 			.count(1)
 			.build();
+
 		OrderSaveRequest request = OrderSaveRequest.builder()
 			.orderList(List.of(itemRequest))
 			.build();
@@ -147,6 +148,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 			.itemId(1L)
 			.count(0)
 			.build();
+
 		OrderSaveRequest request = OrderSaveRequest.builder()
 			.orderList(List.of(itemRequest))
 			.build();

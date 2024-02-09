@@ -1,6 +1,5 @@
 package com.coffeekiosk.coffeekiosk.domain.order;
 
-import static com.coffeekiosk.coffeekiosk.domain.item.QItem.*;
 import static com.coffeekiosk.coffeekiosk.domain.order.QOrder.*;
 import static com.coffeekiosk.coffeekiosk.domain.user.QUser.*;
 
@@ -8,9 +7,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import com.coffeekiosk.coffeekiosk.domain.user.QUser;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
