@@ -4,6 +4,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -42,7 +44,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/api/users/{userId}/cart", 1L)
+				RestDocumentationRequestBuilders.post("/api/users/{userId}/carts", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -50,6 +52,47 @@ class CartApiControllerTest extends RestDocsSupport {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"));
+
+	}
+
+	@DisplayName("카트담긴 상품을 삭제한다.")
+	@Test
+	void deleteCart() throws Exception {
+		//when //then
+		mockMvc.perform(
+				RestDocumentationRequestBuilders.delete("/api/users/{userId}/carts/{cartId}", 1L, 1L)
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"));
+
+	}
+
+	@DisplayName("카트담긴 상품 목록을 조회한다.")
+	@Test
+	void findCarts() throws Exception {
+		//given
+		CartResponse response = CartResponse.builder()
+			.id(1L)
+			.itemId(1L)
+			.itemName("아이스아메리카노")
+			.count(1)
+			.build();
+
+		when(cartService.findCarts(any())).thenReturn(List.of(response));
+
+		//when //then
+		mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/api/users/{userId}/carts", 1L)
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andExpect(jsonPath("$.data").isArray());
 
 	}
 }

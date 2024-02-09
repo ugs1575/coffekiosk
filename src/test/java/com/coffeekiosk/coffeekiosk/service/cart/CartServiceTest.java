@@ -4,6 +4,7 @@ import static com.coffeekiosk.coffeekiosk.domain.item.ItemType.*;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -91,6 +92,59 @@ class CartServiceTest extends IntegrationTestSupport {
 		assertThat(cartResponse)
 			.extracting("itemId",  "itemName", "count")
 			.contains(savedItem.getId(), savedItem.getName(), 2);
+	}
+
+	@DisplayName("카트에서 선택한 아이템을 삭제한다.")
+	@Test
+	void deleteCart() {
+		//given
+		Item item = createItem();
+		Item savedItem = itemRepository.save(item);
+
+		User user = createUser();
+		User savedUser = userRepository.save(user);
+
+		Cart cart = createCart(savedUser, savedItem, 1);
+		Cart savedCart = cartRepository.save(cart);
+
+		//when
+		cartService.deleteCart(savedCart.getId(), savedUser.getId());
+
+		//then
+		List<Cart> carts = cartRepository.findAll();
+		assertThat(carts).hasSize(0)
+			.isEmpty();
+	}
+
+	@DisplayName("카트에 담긴 상품목록을 조회한다.")
+	@Test
+	void findCarts() {
+		//given
+		Item item1 = createItem();
+		Item savedItem1 = itemRepository.save(item1);
+
+		Item item2 = createItem();
+		Item savedItem2 = itemRepository.save(item2);
+
+		User user = createUser();
+		User savedUser = userRepository.save(user);
+
+		Cart cart1 = createCart(savedUser, savedItem1, 1);
+		Cart savedCart1 = cartRepository.save(cart1);
+
+		Cart cart2 = createCart(savedUser, savedItem2, 2);
+		Cart savedCart2 = cartRepository.save(cart2);
+
+		//when
+		List<CartResponse> cartResponse = cartService.findCarts(savedUser.getId());
+
+		//then
+		assertThat(cartResponse)
+			.extracting("id", "itemId",  "itemName", "count")
+			.contains(
+				tuple(savedCart1.getId(), savedItem1.getId(), savedItem1.getName(), 1),
+				tuple(savedCart2.getId(), savedItem2.getId(), savedItem2.getName(), 2)
+			);
 	}
 
 	private Cart createCart(User user, Item item, int count) {

@@ -94,7 +94,8 @@ class OrderServiceTest extends IntegrationTestSupport {
 			);
 
 		List<Cart> carts = cartRepository.findAll();
-		assertThat(carts).isEmpty();
+		assertThat(carts).hasSize(0)
+			.isEmpty();
 	}
 
 	@DisplayName("주문 금액보다 보유 포인트가 클 경우 예외가 발생한다.")

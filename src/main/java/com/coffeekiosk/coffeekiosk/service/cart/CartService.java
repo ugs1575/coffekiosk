@@ -1,5 +1,6 @@
 package com.coffeekiosk.coffeekiosk.service.cart;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -42,6 +43,16 @@ public class CartService {
 		Long cartId = createCart(request, item, user);
 		Cart createdCart = cartRepository.findByIdFetchJoin(cartId).get();
 		return CartResponse.of(createdCart);
+	}
+
+	@Transactional
+	public void deleteCart(Long id, Long userId) {
+		cartRepository.deleteByIdAndUserId(id, userId);
+	}
+
+	public List<CartResponse> findCarts(Long userId) {
+		List<Cart> carts = cartRepository.findAllByUserIdFetchJoin(userId);
+		return CartResponse.listOf(carts);
 	}
 
 	private User findUser(Long userId) {

@@ -1,6 +1,10 @@
 package com.coffeekiosk.coffeekiosk.service.cart.dto.response;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
+import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -31,5 +35,11 @@ public class CartResponse {
 			.itemName(cart.getItem().getName())
 			.count(cart.getCount())
 			.build();
+	}
+
+	public static List<CartResponse> listOf(List<Cart> carts) {
+		return carts.stream()
+			.map(CartResponse::of)
+			.collect(Collectors.toList());
 	}
 }
