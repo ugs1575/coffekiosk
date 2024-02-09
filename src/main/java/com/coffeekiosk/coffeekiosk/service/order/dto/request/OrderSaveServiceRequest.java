@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.service.order.dto;
+package com.coffeekiosk.coffeekiosk.service.order.dto.request;
 
 import java.util.List;
 import java.util.stream.Collectors;

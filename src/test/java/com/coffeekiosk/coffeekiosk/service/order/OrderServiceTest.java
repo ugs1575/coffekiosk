@@ -22,10 +22,9 @@ import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
-import com.coffeekiosk.coffeekiosk.facade.OptimisticLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
 class OrderServiceTest extends IntegrationTestSupport {
 

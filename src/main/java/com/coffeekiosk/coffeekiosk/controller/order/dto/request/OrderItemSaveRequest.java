@@ -1,6 +1,6 @@
 package com.coffeekiosk.coffeekiosk.controller.order.dto.request;
 
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

@@ -18,8 +18,8 @@ import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
 import lombok.RequiredArgsConstructor;
 

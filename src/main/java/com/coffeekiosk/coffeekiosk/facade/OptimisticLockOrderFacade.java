@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.service.order.OrderService;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
 import lombok.RequiredArgsConstructor;
 

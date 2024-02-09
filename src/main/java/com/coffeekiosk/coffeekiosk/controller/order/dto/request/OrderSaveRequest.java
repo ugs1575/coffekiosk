@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.coffeekiosk.coffeekiosk.controller.order.dto.request.validator.UniqueItemIdConstraint;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderItemSaveServiceRequest;
-import com.coffeekiosk.coffeekiosk.service.order.dto.OrderSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
