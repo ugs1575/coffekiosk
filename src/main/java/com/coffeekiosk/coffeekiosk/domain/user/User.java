@@ -37,9 +37,6 @@ public class User extends BaseTimeEntity {
 	@Column(nullable = false)
 	private int point;
 
-	@Version
-	private Long version;
-
 	@Column(columnDefinition = "boolean default false")
 	private boolean deleted;
 

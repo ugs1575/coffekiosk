@@ -70,7 +70,7 @@ public class OrderService {
 	}
 
 	private User findUser(Long userId) {
-		return userRepository.findByIdWithOptimisticLock(userId)
+		return userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 	}
 }
