@@ -1,13 +1,9 @@
 package com.coffeekiosk.coffeekiosk.controller.order.dto.request;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.coffeekiosk.coffeekiosk.controller.order.dto.request.validator.UniqueItemIdConstraint;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,21 +15,16 @@ import lombok.NoArgsConstructor;
 public class OrderSaveRequest {
 
 	@NotEmpty(message = "주문 목록은 필수입니다.")
-	@UniqueItemIdConstraint
-	private List<@Valid OrderItemSaveRequest> orderList;
+	private List<Long> cartIdList;
 
 	@Builder
-	private OrderSaveRequest(List<OrderItemSaveRequest> orderList) {
-		this.orderList = orderList;
+	private OrderSaveRequest(List<Long> cartIdList) {
+		this.cartIdList = cartIdList;
 	}
 
 	public OrderSaveServiceRequest toServiceRequest() {
-		List<OrderItemSaveServiceRequest> requests = orderList.stream()
-			.map(OrderItemSaveRequest::toServiceRequest)
-			.collect(Collectors.toList());
-
 		return OrderSaveServiceRequest.builder()
-			.orderList(requests)
+			.cartIdList(cartIdList)
 			.build();
 	}
 }

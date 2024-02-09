@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.service.order.dto.request;
+package com.coffeekiosk.coffeekiosk.service.cart.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,14 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class OrderItemSaveServiceRequest {
+public class CartSaveServiceRequest {
 
 	private Long itemId;
 
 	private int count;
 
 	@Builder
-	private OrderItemSaveServiceRequest(Long itemId, int count) {
+	private CartSaveServiceRequest(Long itemId, int count) {
 		this.itemId = itemId;
 		this.count = count;
 	}

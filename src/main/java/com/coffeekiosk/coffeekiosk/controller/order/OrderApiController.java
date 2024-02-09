@@ -35,8 +35,7 @@ public class OrderApiController {
 	private final RedissonLockOrderFacade orderFacade;
 
 	@PostMapping
-	public ResponseEntity<ApiResponse<Void>> createOrder(@PathVariable Long userId, @RequestBody @Valid OrderSaveRequest request) throws
-		InterruptedException {
+	public ResponseEntity<ApiResponse<Void>> createOrder(@PathVariable Long userId, @RequestBody @Valid OrderSaveRequest request) throws InterruptedException {
 		Long orderId = orderFacade.order(userId, request.toServiceRequest(), LocalDateTime.now());
 		return ResponseEntity.created(URI.create("/api/users/"+ userId +"/orders/" + orderId)).body(ApiResponse.created());
 	}

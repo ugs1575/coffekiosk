@@ -1,7 +1,6 @@
 package com.coffeekiosk.coffeekiosk.service.order.dto.request;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,16 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OrderSaveServiceRequest {
 
-	private List<OrderItemSaveServiceRequest> orderList;
+	private List<Long> cartIdList;
 
 	@Builder
-	private OrderSaveServiceRequest(List<OrderItemSaveServiceRequest> orderList) {
-		this.orderList = orderList;
-	}
-
-	public List<Long> getItemIds() {
-		return orderList.stream()
-			.map(OrderItemSaveServiceRequest::getItemId)
-			.collect(Collectors.toList());
+	private OrderSaveServiceRequest(List<Long> cartIdList) {
+		this.cartIdList = cartIdList;
 	}
 }

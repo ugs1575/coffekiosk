@@ -18,9 +18,7 @@ public class OrderDocumentation {
 				parameterWithName("userId").description("사용자 ID")
 			),
 			requestFields(
-				fieldWithPath("orderList").type(JsonFieldType.ARRAY).description("주문 목록"),
-				fieldWithPath("orderList.[].itemId").type(JsonFieldType.NUMBER).description("상품 ID"),
-				fieldWithPath("orderList.[].count").type(JsonFieldType.NUMBER).description("주문 수량")
+				fieldWithPath("cartIdList").type(JsonFieldType.ARRAY).description("주문 목록")
 			),
 			responseFields(
 				fieldWithPath("code").type(JsonFieldType.NUMBER)
