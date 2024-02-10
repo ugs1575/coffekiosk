@@ -8,7 +8,8 @@
         ></nav>
 
         <div class="container">
-            <form th:object="${item}" th:action="@{/cart/list}" method="POST" onsubmit="return goToCart();">
+            <form th:object="${item}">
+                <input type="hidden" th:field="*{id}">
                 <h1 style="margin-bottom:50px">메뉴 상세</h1>
                 <div class="form-group">
                     <label th:for="name">상품명</label>
@@ -33,7 +34,7 @@
                     <a type="button" class="btn btn-secondary" th:href="@{/menu/list}">
                         취소
                     </a>
-                    <button type="submit" class="btn btn-info">
+                    <button type="button" id="addCart" class="btn btn-info">
                         담기
                     </button>
                     <a type="button" class="btn btn-success" th:href="@{/cart/list}">
@@ -48,6 +49,7 @@
 <script>
 $(document).ready(function(){
     updateOrderCount();
+    addCart();
 
     function updateOrderCount() {
         $("#plus").click(function(){
@@ -80,12 +82,37 @@ $(document).ready(function(){
     }
 });
 
-function goToCart() {
-    //ajax add cart call if success
-    if (confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?")) {
-        return true;
-    }
+function addCart() {
+    $("#addCart").click(function(){
+        var id = $('#id').val();
+        var count = $('#count').val();
+        $.ajax({
+            type: "post",
+            url: "/users/1/carts",
+            data:
+            {
+                itemId: id,
+                count: count
+            },
+            success: (response)=>{
+                console.log(response);
 
-    return false;
+                if (response.message == "OK") {
+                    if (confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?")) {
+                        location.href = "/cart/list";
+                    }
+                } else {
+                    if (response.message == "OVER_MAX_ORDER_COUNT") {
+                        alert("최대 주문 수량은 20개 입니다. 장바구니를 정리해주세요");
+                    } else {
+                        alert("존재하지 않는 상품입니다.");
+                    }
+                }
+            },
+            error: (error)=>{
+                console.log(error.code);
+            }
+        })
+    })
 }
 </script>
