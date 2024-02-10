@@ -51,7 +51,7 @@ public class CartService {
 	}
 
 	public List<CartResponse> findCartItems(Long userId) {
-		List<Cart> cartItems = cartRepository.findAllByUserIdFetchJoin(userId);
+		List<Cart> cartItems = cartRepository.findByUserIdFetchJoin(userId);
 		return CartResponse.listOf(cartItems);
 	}
 
