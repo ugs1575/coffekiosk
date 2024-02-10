@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller.cart.dto.request;
+package com.coffeekiosk.coffeekiosk.controller.cart.api.dto.request;
 
 import com.coffeekiosk.coffeekiosk.service.cart.dto.request.CartSaveServiceRequest;
 
