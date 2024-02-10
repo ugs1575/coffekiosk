@@ -33,13 +33,13 @@ public class OrderService {
 	public Long order(Long userId, OrderSaveServiceRequest request, LocalDateTime orderDateTime) {
 		User user = findUser(userId);
 
-		List<Cart> cartList = cartRepository.findByIdInFetchJoin(request.getCartIdList(), userId);
-		if (cartList.isEmpty()) {
+		List<Cart> cartItems = cartRepository.findByIdInUserIdFetchJoin(request.getCartIdList(), userId);
+		if (cartItems.isEmpty()) {
 			throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
 		}
 
 		List<OrderItem> orderItems = new ArrayList<>();
-		for (Cart cart : cartList) {
+		for (Cart cart : cartItems) {
 			Item item = cart.getItem();
 			OrderItem orderItem = OrderItem.createOrderItem(item, cart.getCount());
 			orderItems.add(orderItem);
