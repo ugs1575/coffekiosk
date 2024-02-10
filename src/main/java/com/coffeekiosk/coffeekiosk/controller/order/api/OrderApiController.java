@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller.order;
+package com.coffeekiosk.coffeekiosk.controller.order.api;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
-import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.order.api.dto.request.OrderSaveRequest;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
