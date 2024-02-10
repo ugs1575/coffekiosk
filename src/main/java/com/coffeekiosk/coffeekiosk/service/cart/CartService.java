@@ -36,7 +36,7 @@ public class CartService {
 		Optional<Cart> cart = cartRepository.findByUserIdAndItemIdFetchJoin(userId, request.getItemId());
 
 		if (cart.isPresent()) {
-			cart.get().updateCount(request.getCount());
+			cart.get().addCount(request.getCount());
 			return CartResponse.of(cart.get());
 		}
 

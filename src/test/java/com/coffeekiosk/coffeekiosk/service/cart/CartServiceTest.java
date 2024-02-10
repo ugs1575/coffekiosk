@@ -6,12 +6,14 @@ import static org.assertj.core.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
+import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
@@ -42,7 +44,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		itemRepository.deleteAllInBatch();
 	}
 
-	@DisplayName("기존에 장바구니에 담긴 상품이면 수량만 수정한다.")
+	@DisplayName("기존에 장바구니에 담긴 상품이면 수량만 더한다.")
 	@Test
 	void updateCartItemCount() {
 		//given
@@ -66,7 +68,31 @@ class CartServiceTest extends IntegrationTestSupport {
 		//then
 		assertThat(cartResponse)
 			.extracting("id", "itemId",  "itemName", "count")
-			.contains(savedCart.getId(), savedItem.getId(), savedItem.getName(), 2);
+			.contains(savedCart.getId(), savedItem.getId(), savedItem.getName(), 3);
+	}
+
+	@DisplayName("장바구니에 20개 이상은 담을 수 없다.")
+	@Test
+	void updateCartItemMaxCount() {
+		//given
+		Item item = createItem();
+		Item savedItem = itemRepository.save(item);
+
+		User user = createUser();
+		User savedUser = userRepository.save(user);
+
+		Cart cart = createCart(savedUser, savedItem, 20);
+		Cart savedCart = cartRepository.save(cart);
+
+		CartSaveServiceRequest request = CartSaveServiceRequest.builder()
+			.itemId(savedItem.getId())
+			.count(1)
+			.build();
+
+		//when, then
+		assertThatThrownBy(() -> cartService.updateCartItem(savedUser.getId(), request))
+			.isInstanceOf(BusinessException.class)
+			.hasMessage("최대 주문 가능 수량은 20개 입니다.");
 	}
 
 	@DisplayName("기존에 장바구니에 담긴 상품이 아니면 새로 생성한다.")
