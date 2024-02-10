@@ -17,13 +17,16 @@ public class CartResponse {
 
 	private String itemName;
 
+	private int itemPrice;
+
 	private int count;
 
 	@Builder
-	private CartResponse(Long id, Long itemId, String itemName, int count) {
+	private CartResponse(Long id, Long itemId, String itemName, int itemPrice, int count) {
 		this.id = id;
 		this.itemId = itemId;
 		this.itemName = itemName;
+		this.itemPrice = itemPrice;
 		this.count = count;
 	}
 
@@ -32,12 +35,13 @@ public class CartResponse {
 			.id(cart.getId())
 			.itemId(cart.getItem().getId())
 			.itemName(cart.getItem().getName())
+			.itemPrice(cart.getItem().getPrice())
 			.count(cart.getCount())
 			.build();
 	}
 
-	public static List<CartResponse> listOf(List<Cart> carts) {
-		return carts.stream()
+	public static List<CartResponse> listOf(List<Cart> cartItems) {
+		return cartItems.stream()
 			.map(CartResponse::of)
 			.collect(Collectors.toList());
 	}

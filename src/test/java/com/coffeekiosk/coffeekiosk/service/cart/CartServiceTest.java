@@ -67,8 +67,8 @@ class CartServiceTest extends IntegrationTestSupport {
 
 		//then
 		assertThat(cartResponse)
-			.extracting("id", "itemId",  "itemName", "count")
-			.contains(savedCart.getId(), savedItem.getId(), savedItem.getName(), 3);
+			.extracting("id", "itemId",  "itemName", "itemPrice", "count")
+			.contains(savedCart.getId(), savedItem.getId(), savedItem.getName(), savedItem.getPrice(), 3);
 	}
 
 	@DisplayName("장바구니에 20개 이상은 담을 수 없다.")
@@ -122,8 +122,8 @@ class CartServiceTest extends IntegrationTestSupport {
 		//then
 		assertThat(cartResponse.getId()).isNotNull();
 		assertThat(cartResponse)
-			.extracting("itemId",  "itemName", "count")
-			.contains(savedItem.getId(), savedItem.getName(), 2);
+			.extracting("itemId",  "itemName", "itemPrice",  "count")
+			.contains(savedItem.getId(), savedItem.getName(),savedItem.getPrice(), 2);
 	}
 
 	@DisplayName("장바구니에서 선택한 아이템을 삭제한다.")
@@ -172,10 +172,10 @@ class CartServiceTest extends IntegrationTestSupport {
 
 		//then
 		assertThat(cartResponse)
-			.extracting("id", "itemId",  "itemName", "count")
+			.extracting("id", "itemId",  "itemName", "itemPrice", "count")
 			.contains(
-				tuple(savedCart1.getId(), savedItem1.getId(), savedItem1.getName(), 1),
-				tuple(savedCart2.getId(), savedItem2.getId(), savedItem2.getName(), 2)
+				tuple(savedCart1.getId(), savedItem1.getId(), savedItem1.getName(), savedItem1.getPrice(), 1),
+				tuple(savedCart2.getId(), savedItem2.getId(), savedItem2.getName(), savedItem2.getPrice(), 2)
 			);
 	}
 
