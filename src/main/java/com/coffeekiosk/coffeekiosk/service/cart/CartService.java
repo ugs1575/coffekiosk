@@ -1,7 +1,6 @@
 package com.coffeekiosk.coffeekiosk.service.cart;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
+import com.coffeekiosk.coffeekiosk.domain.cart.Carts;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
@@ -23,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class CartService {
-
 	private final UserRepository userRepository;
 	private final ItemRepository itemRepository;
 	private final CartRepository cartRepository;
@@ -33,16 +32,21 @@ public class CartService {
 		Item item = findItem(request.getItemId());
 		User user = findUser(userId);
 
-		Optional<Cart> cart = cartRepository.findByUserIdAndItemIdFetchJoin(userId, request.getItemId());
+		List<Cart> cartItems = cartRepository.findByUserIdFetchJoin(userId);
+		Carts carts = new Carts(cartItems);
 
-		if (cart.isPresent()) {
-			cart.get().addCount(request.getCount());
-			return CartResponse.of(cart.get());
+		if (carts.isOverMaxOrderCount(request.getCount())) {
+			throw new BusinessException(ErrorCode.OVER_MAX_ORDER_COUNT);
 		}
 
-		Long cartId = createCart(request, item, user);
-		Cart createdCart = cartRepository.findByIdFetchJoin(cartId).get();
-		return CartResponse.of(createdCart);
+		if (carts.containsItem(item.getId())) {
+			Cart cart = cartRepository.findByUserAndItem(user, item);
+			cart.addCount(request.getCount());
+			return CartResponse.of(cart);
+		}
+
+		Cart savedCart = cartRepository.save(Cart.createCart(user, item, request.getCount()));
+		return CartResponse.of(savedCart);
 	}
 
 	@Transactional
@@ -63,12 +67,6 @@ public class CartService {
 	private Item findItem(Long itemId) {
 		return itemRepository.findById(itemId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
-	}
-
-	private Long createCart(CartSaveServiceRequest request, Item item, User user) {
-		Cart cart = Cart.createCart(user, item, request.getCount());
-		Cart savedCart = cartRepository.save(cart);
-		return savedCart.getId();
 	}
 
 }

@@ -75,17 +75,23 @@ class CartServiceTest extends IntegrationTestSupport {
 	@Test
 	void updateCartItemMaxCount() {
 		//given
-		Item item = createItem();
-		Item savedItem = itemRepository.save(item);
+		Item item1 = createItem();
+		Item savedItem1 = itemRepository.save(item1);
+
+		Item item2 = createItem();
+		Item savedItem2 = itemRepository.save(item2);
 
 		User user = createUser();
 		User savedUser = userRepository.save(user);
 
-		Cart cart = createCart(savedUser, savedItem, 20);
-		Cart savedCart = cartRepository.save(cart);
+		Cart cart1 = createCart(savedUser, savedItem1, 10);
+		Cart savedCart1 = cartRepository.save(cart1);
+
+		Cart cart2 = createCart(savedUser, savedItem2, 10);
+		Cart savedCart2 = cartRepository.save(cart2);
 
 		CartSaveServiceRequest request = CartSaveServiceRequest.builder()
-			.itemId(savedItem.getId())
+			.itemId(savedItem1.getId())
 			.count(1)
 			.build();
 

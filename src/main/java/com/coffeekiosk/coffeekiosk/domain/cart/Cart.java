@@ -1,6 +1,5 @@
 package com.coffeekiosk.coffeekiosk.domain.cart;
 
-import static com.coffeekiosk.coffeekiosk.exception.ErrorCode.*;
 import static jakarta.persistence.FetchType.*;
 
 import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
