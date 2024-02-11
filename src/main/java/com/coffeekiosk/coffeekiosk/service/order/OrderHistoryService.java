@@ -1,5 +1,6 @@
 package com.coffeekiosk.coffeekiosk.service.order;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class OrderHistoryService {
+	private static final int MAX_HISTORY_DATE = 3;
 
 	private final OrderRepository orderRepository;
 
@@ -31,14 +33,27 @@ public class OrderHistoryService {
 		return OrderResponse.of(order);
 	}
 
-	public List<OrderResponse> findOrders(Long userId, OrderSearchServiceRequest request, Pageable pageable) {
+	public List<OrderResponse> findOrders(Long userId, Pageable pageable) {
+		OrderSearchServiceRequest request = createSearchRequest();
+
 		List<Order> orders = orderRepository.findOrders(userId, request, pageable);
 		return OrderResponse.listOf(orders);
 	}
 
-	public Page<OrderResponse> findPageOrders(Long userId, OrderSearchServiceRequest request, Pageable pageable) {
+	public Page<OrderResponse> findPageOrders(Long userId, Pageable pageable) {
+		OrderSearchServiceRequest request = createSearchRequest();
 		Page<Order> orders = orderRepository.findPageOrders(userId, request, pageable);
 		Page<OrderResponse> pageOrders = new PageImpl(OrderResponse.listOf(orders), pageable, orders.getTotalElements());
 		return pageOrders;
+	}
+
+	private OrderSearchServiceRequest createSearchRequest() {
+		LocalDateTime endDate = LocalDateTime.now();
+		LocalDateTime startDate = LocalDateTime.now().minusYears(MAX_HISTORY_DATE);
+
+		return OrderSearchServiceRequest.builder()
+			.startDate(startDate)
+			.endDate(endDate)
+			.build();
 	}
 }

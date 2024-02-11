@@ -135,7 +135,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 		List<OrderResponse> result = List.of(response);
 
-		when(orderHistoryService.findOrders(any(), any(), any())).thenReturn(result);
+		when(orderHistoryService.findOrders(any(), any())).thenReturn(result);
 
 		//when //then
 		mockMvc.perform(

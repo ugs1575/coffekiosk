@@ -87,7 +87,7 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 
 	}
 
-	@DisplayName("주어진 검색 기간 내 주문 목록을 페이징 하여 최신 순으로 조회한다.")
+	@DisplayName("최근 3년 내 주문 목록을 페이징 하여 최신 순으로 조회한다.")
 	@Test
 	void findPagedOrders() {
 		//given
@@ -105,21 +105,16 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 		OrderItem orderItem2 = createOrderItem(item, 1);
 		Order order2 = createOrder(user, List.of(orderItem2), orderDateTime2);
 
-		LocalDateTime orderDateTime3 = LocalDateTime.of(2023, 12, 21, 0, 0);
+		LocalDateTime orderDateTime3 = LocalDateTime.of(2018, 12, 21, 0, 0);
 		OrderItem orderItem3 = createOrderItem(item, 1);
 		Order order3 = createOrder(user, List.of(orderItem3), orderDateTime3);
 
 		orderRepository.saveAll(List.of(order1, order2, order3));
 
-		OrderSearchServiceRequest request = OrderSearchServiceRequest.builder()
-			.startDate(orderDateTime1)
-			.endDate(orderDateTime2)
-			.build();
-
 		PageRequest pageRequest = PageRequest.of(0, 3);
 
 		//when
-		List<OrderResponse> orderResponses = orderHistoryService.findOrders(user.getId(), request, pageRequest);
+		List<OrderResponse> orderResponses = orderHistoryService.findOrders(user.getId(), pageRequest);
 
 		//then
 		assertThat(orderResponses)

@@ -66,15 +66,7 @@ public class OrderFormController {
 	public String findOrders(Model model, @PageableDefault(size = 10) Pageable pageable) {
 		Long userId = 1L;
 
-		LocalDateTime endDate = LocalDateTime.now();
-		LocalDateTime startDate = LocalDateTime.now().minusYears(3);
-
-		OrderSearchServiceRequest request = OrderSearchServiceRequest.builder()
-			.startDate(startDate)
-			.endDate(endDate)
-			.build();
-
-		Page<OrderResponse> pageOrders = orderHistoryService.findPageOrders(userId, request, pageable);
+		Page<OrderResponse> pageOrders = orderHistoryService.findPageOrders(userId, pageable);
 		model.addAttribute("orders", pageOrders);
 		return "order/history";
 	}

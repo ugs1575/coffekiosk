@@ -49,16 +49,9 @@ public class OrderApiController {
 	@GetMapping
 	public ApiResponse<List<OrderResponse>> findOrders(
 		@PathVariable Long userId,
-		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") @RequestParam("startDate") LocalDateTime startDate,
-		@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") @RequestParam("endDate") LocalDateTime endDate,
 		@PageableDefault(value = 10) Pageable pageable
 	) {
-		OrderSearchServiceRequest request = OrderSearchServiceRequest.builder()
-			.startDate(startDate)
-			.endDate(endDate)
-			.build();
-
-		List<OrderResponse> response = orderHistoryService.findOrders(userId, request, pageable);
+		List<OrderResponse> response = orderHistoryService.findOrders(userId, pageable);
 		return ApiResponse.ok(response);
 	}
 }
