@@ -118,7 +118,7 @@ public class ItemFormController {
 	}
 
 	@PostMapping("/item/{itemId}/delete")
-	public String delete(Model model, @PathVariable Long itemId) {
+	public String delete(@PathVariable Long itemId) {
 		itemService.deleteItem(itemId);
 		return "redirect:/item/list";
 	}

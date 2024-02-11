@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.controller.cart.form.dto.request.CartSaveForm;
+import com.coffeekiosk.coffeekiosk.controller.order.form.dto.request.OrderSaveForm;
 import com.coffeekiosk.coffeekiosk.service.cart.CartService;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
 import com.coffeekiosk.coffeekiosk.service.user.UserService;
@@ -47,11 +48,19 @@ public class CartFormController {
 	public String update(Model model) {
 		Long userId = 1L;
 
-		List<CartResponse> cartItems = cartService.findCartItems(userId);
-		model.addAttribute("cartItems", cartItems);
+		List<CartResponse> carts = cartService.findCartItems(userId);
+		model.addAttribute("cartItems", carts);
 
 		UserResponse user = userService.findUser(userId);
 		model.addAttribute("user", user);
+
+		OrderSaveForm orderSaveForm = new OrderSaveForm();
+
+		for (CartResponse cart : carts) {
+			orderSaveForm.addCartId(cart.getId());
+		}
+
+		model.addAttribute("orderSaveForm", orderSaveForm);
 		return "cart/listForm";
 	}
 
