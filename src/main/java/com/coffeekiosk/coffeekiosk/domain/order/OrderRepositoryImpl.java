@@ -25,7 +25,6 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
 	public List<Order> findOrders(Long userId, OrderSearchServiceRequest request, Pageable pageable) {
 		return queryFactory
 			.selectFrom(order)
-			.join(order.user, user)
 			.where(
 				userIdEq(userId),
 				order.orderDateTime.between(request.getStartDate(), request.getEndDate())
@@ -37,6 +36,6 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
 	}
 
 	private BooleanExpression userIdEq(Long userId) {
-		return userId == null ? null : user.id.eq(userId);
+		return userId == null ? null : order.user.id.eq(userId);
 	}
 }

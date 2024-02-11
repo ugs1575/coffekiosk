@@ -45,3 +45,15 @@ values ('COFFEE', '카페라떼', 5000, now(), now(), now()),
        ('NON_COFFEE', '딸기 라떼', 6500, now(), now(), now()),
        ('NON_COFFEE', '우유', 4100, now(), now(), now());
 
+insert into orders (id, user_id, order_date_time, created_date, last_modified_date)
+values (1, 1, now(), now(), now()),
+       (2, 1, now(), now(), now());
+
+insert into order_item (order_id, item_id, order_price, order_count)
+values (1, 40, 4100, 1),
+       (1, 38, 4100, 1),
+       (2, 1, 5000, 1),
+       (2, 2, 5500, 1);
+
+insert into cart (item_id, user_id, item_count, created_date, last_modified_date)
+values (40, 1, 1, now(), now());
