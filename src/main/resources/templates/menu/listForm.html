@@ -56,47 +56,47 @@
 
 
 <script>
-$(document).ready(function(){
-    var lastId, isLastPage;
+ var lastId, isLastPage;
 
+$(document).ready(function(){
     checkLastPage();
 
     openNextPage();
-
-    function checkLastPage() {
-        lastId = $('tr:last').find('input:first').val();
-        isLastPage = $('tr:last').find('input:first').next().val();
-
-        removeSeeMoreBtn();
-    }
-
-    function openNextPage() {
-        $("#seeMore").click(function(){
-            var name = $('#name').val();
-            var itemType = $('#itemType').val();
-
-            $.ajax({
-            type: "get",
-            url: "/menu/nextPage?itemId=" + lastId + "&name=" + name + "&itemType=" + itemType,
-            data: {},
-                success: (fragment)=>{
-                    $('#itemBody').append(fragment);
-
-                    checkLastPage();
-                },
-                error: (error)=>{
-                    console.log(error);
-                }
-            })
-        });
-    }
-
-    function removeSeeMoreBtn() {
-        if (isLastPage == 'true') {
-            $('#seeMore').remove();
-        }
-    }
 });
+
+function checkLastPage() {
+    lastId = $('tr:last').find('input:first').val();
+    isLastPage = $('tr:last').find('input:first').next().val();
+
+    removeSeeMoreBtn();
+}
+
+function openNextPage() {
+    $("#seeMore").click(function(){
+        var name = $('#name').val();
+        var itemType = $('#itemType').val();
+
+        $.ajax({
+        type: "get",
+        url: "/menu/nextPage?itemId=" + lastId + "&name=" + name + "&itemType=" + itemType,
+        data: {},
+            success: (fragment)=>{
+                $('#itemBody').append(fragment);
+
+                checkLastPage();
+            },
+            error: (error)=>{
+                console.log(error);
+            }
+        })
+    });
+}
+
+function removeSeeMoreBtn() {
+    if (isLastPage == 'true') {
+        $('#seeMore').remove();
+    }
+}
 
 
 </script>

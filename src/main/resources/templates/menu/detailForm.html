@@ -50,37 +50,37 @@
 $(document).ready(function(){
     updateOrderCount();
     addCart();
-
-    function updateOrderCount() {
-        $("#plus").click(function(){
-            var count = parseInt($('#count').val());
-            count += 1;
-
-            if (count == 20) {
-                $(('#plus')).attr('disabled', 'disabled');
-            } else if (count == 2) {
-                $(('#minus')).removeAttr('disabled');
-            }
-
-            $('#count').val(count);
-            $('#orderCount').text(count);
-        });
-
-        $("#minus").click(function(){
-            var count = parseInt($('#count').val());
-            count -= 1;
-
-            if (count == 1) {
-                $(('#minus')).attr('disabled', 'disabled');
-            } else if (count == 19) {
-                $(('#plus')).removeAttr('disabled');
-            }
-
-            $('#count').val(count);
-            $('#orderCount').text(count);
-        });
-    }
 });
+
+function updateOrderCount() {
+    $("#plus").click(function(){
+        var count = parseInt($('#count').val());
+        count += 1;
+
+        if (count == 20) {
+            $(('#plus')).attr('disabled', 'disabled');
+        } else if (count == 2) {
+            $(('#minus')).removeAttr('disabled');
+        }
+
+        $('#count').val(count);
+        $('#orderCount').text(count);
+    });
+
+    $("#minus").click(function(){
+        var count = parseInt($('#count').val());
+        count -= 1;
+
+        if (count == 1) {
+            $(('#minus')).attr('disabled', 'disabled');
+        } else if (count == 19) {
+            $(('#plus')).removeAttr('disabled');
+        }
+
+        $('#count').val(count);
+        $('#orderCount').text(count);
+    });
+}
 
 function addCart() {
     $("#addCart").click(function(){
@@ -88,7 +88,7 @@ function addCart() {
         var count = $('#count').val();
         $.ajax({
             type: "post",
-            url: "/users/1/carts",
+            url: "/cart/add",
             data:
             {
                 itemId: id,
