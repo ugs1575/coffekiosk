@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+
 import com.coffeekiosk.coffeekiosk.domain.order.Order;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -40,6 +42,12 @@ public class OrderResponse {
 	}
 
 	public static List<OrderResponse> listOf(List<Order> orders) {
+		return orders.stream()
+			.map(OrderResponse::of)
+			.collect(Collectors.toList());
+	}
+
+	public static List<OrderResponse> listOf(Page<Order> orders) {
 		return orders.stream()
 			.map(OrderResponse::of)
 			.collect(Collectors.toList());

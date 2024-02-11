@@ -2,6 +2,8 @@ package com.coffeekiosk.coffeekiosk.service.order;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,5 +34,11 @@ public class OrderHistoryService {
 	public List<OrderResponse> findOrders(Long userId, OrderSearchServiceRequest request, Pageable pageable) {
 		List<Order> orders = orderRepository.findOrders(userId, request, pageable);
 		return OrderResponse.listOf(orders);
+	}
+
+	public Page<OrderResponse> findPageOrders(Long userId, OrderSearchServiceRequest request, Pageable pageable) {
+		Page<Order> orders = orderRepository.findPageOrders(userId, request, pageable);
+		Page<OrderResponse> pageOrders = new PageImpl(OrderResponse.listOf(orders), pageable, orders.getTotalElements());
+		return pageOrders;
 	}
 }
