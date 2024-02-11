@@ -2,15 +2,15 @@ package com.coffeekiosk.coffeekiosk.domain.cart;
 
 import java.util.List;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class Carts {
 
 	private static final int MAX_ORDER_COUNT = 20;
 
 	private List<Cart> cartItems;
-
-	public Carts(List<Cart> cartItems) {
-		this.cartItems = cartItems;
-	}
 
 	public boolean isOverMaxOrderCount(int count) {
 		int totalCount = calculateTotalCount();
