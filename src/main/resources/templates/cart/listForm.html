@@ -17,6 +17,10 @@
                 </a>
             </div>
             <form id="cartList" th:if="${cartItems.size() > 0}" class="form-inline d-flex justify-content-end" method="GET"  th:action="@{/item/list}">
+                <input type="hidden" id="currentPoint" th:value="${user.point}" >
+                <div class="form-group mx-sm-3 mb-2">
+                    <p>현재 보유 포인트 : <span th:text="${user.point}"></span></p>
+                </div>
                 <table class="table">
                     <thead>
                         <tr>
@@ -45,9 +49,9 @@
                     <a type="button" class="btn btn-secondary" th:href="@{/menu/list}">
                         취소
                     </a>
-                    <a type="button" class="btn btn-success">
+                    <button type="button" id="order" class="btn btn-success">
                         주문하기
-                    </a>
+                    </button>
                 </div>
             </form>
         </div>
@@ -56,6 +60,9 @@
 
 
 <script>
+var totalPrice = 0;
+var totalCount = 0;
+
 $(document).ready(function(){
     calculateTotalPriceAndCount();
 });
@@ -79,8 +86,9 @@ function deleteCartItem(cart) {
 }
 
 function calculateTotalPriceAndCount() {
-    var totalPrice = 0;
-    var totalCount = 0;
+    totalPrice = 0;
+    totalCount = 0;
+
     $("input[name=price]").each(function() {
         var price = parseInt($(this).val());
         var count = parseInt($(this).next().val());
@@ -91,16 +99,31 @@ function calculateTotalPriceAndCount() {
 
    $("#totalPrice").text(totalPrice);
    $("#totalCount").text(totalCount);
+
+   activateOrderButton();
 }
 
 function showEmptyCart() {
     var size = $("input[name=count]").length;
     if (size != 0) {
+        calculateTotalPriceAndCount();
         return;
     }
 
     $("#cartList").remove();
     $("#noItem").css("display", "block");
+}
+
+function activateOrderButton() {
+    var currentPoint = $("#currentPoint").val();
+
+    console.log(totalPrice);
+    if (currentPoint < totalPrice) {
+        $("#order").attr('disabled', 'disabled');
+    } else {
+        $("#order").removeAttr('disabled');
+    }
+
 }
 </script>
 
