@@ -18,16 +18,16 @@ public class OrderItemResponse {
 
 	private int itemPrice;
 
-	private int count;
+	private int orderCount;
 
 	private int orderPrice;
 
 	@Builder
-	private OrderItemResponse(Long itemId, String itemName, int itemPrice, int count, int orderPrice) {
+	private OrderItemResponse(Long itemId, String itemName, int itemPrice, int orderCount, int orderPrice) {
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
-		this.count = count;
+		this.orderCount = orderCount;
 		this.orderPrice = orderPrice;
 	}
 
@@ -36,7 +36,7 @@ public class OrderItemResponse {
 			.itemId(orderItem.getItem().getId())
 			.itemName(orderItem.getItem().getName())
 			.itemPrice(orderItem.getItem().getPrice())
-			.count(orderItem.getCount())
+			.orderCount(orderItem.getOrderCount())
 			.orderPrice(orderItem.getOrderPrice())
 			.build();
 	}

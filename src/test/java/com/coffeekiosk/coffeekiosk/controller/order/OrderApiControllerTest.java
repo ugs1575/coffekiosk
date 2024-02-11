@@ -88,7 +88,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 			.itemId(1L)
 			.itemName("아이스아메리카노")
 			.itemPrice(1000)
-			.count(10)
+			.orderCount(10)
 			.orderPrice(10000)
 			.build();
 
@@ -122,7 +122,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 			.itemId(1L)
 			.itemName("아이스아메리카노")
 			.itemPrice(1000)
-			.count(10)
+			.orderCount(10)
 			.orderPrice(10000)
 			.build();
 

@@ -78,10 +78,10 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 			.contains(savedOrder.getId(), 9500, orderDateTime);
 
 		assertThat(orderResponse.getOrderItems())
-			.extracting( "itemId", "itemName", "itemPrice", "count", "orderPrice")
+			.extracting( "itemId", "itemName", "itemPrice", "orderCount", "orderPrice")
 			.containsExactlyInAnyOrder(
-				tuple(item1.getId(), item1.getName(), item1.getPrice(), orderItem1.getCount(), orderItem1.getOrderPrice()),
-				tuple(item2.getId(), item2.getName(), item2.getPrice(), orderItem2.getCount(), orderItem2.getOrderPrice())
+				tuple(item1.getId(), item1.getName(), item1.getPrice(), orderItem1.getOrderCount(), orderItem1.getOrderPrice()),
+				tuple(item2.getId(), item2.getName(), item2.getPrice(), orderItem2.getOrderCount(), orderItem2.getOrderPrice())
 			);
 
 	}
@@ -140,7 +140,7 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 	private OrderItem createOrderItem(Item item, int count) {
 		return OrderItem.builder()
 			.item(item)
-			.count(count)
+			.orderCount(count)
 			.build();
 	}
 

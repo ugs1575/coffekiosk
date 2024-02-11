@@ -44,19 +44,19 @@ public class OrderItem {
 	private int orderPrice;
 
 	@Column(nullable = false)
-	private int count;
+	private int orderCount;
 
 	@Builder
-	private OrderItem(Item item, int count) {
+	private OrderItem(Item item, int orderCount) {
 		this.item = item;
-		this.orderPrice = getTotalPrice(item, count);
-		this.count = count;
+		this.orderPrice = getTotalPrice(item, orderCount);
+		this.orderCount = orderCount;
 	}
 
 	public static OrderItem createOrderItem(Item item, int count) {
 		return OrderItem.builder()
 			.item(item)
-			.count(count)
+			.orderCount(count)
 			.build();
 	}
 

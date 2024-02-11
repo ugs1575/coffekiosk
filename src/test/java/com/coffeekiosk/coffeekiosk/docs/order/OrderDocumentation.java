@@ -63,7 +63,7 @@ public class OrderDocumentation {
 					.description("주문 상품명"),
 				fieldWithPath("data.orderItems.[].itemPrice").type(JsonFieldType.NUMBER)
 					.description("상품 개별 금액"),
-				fieldWithPath("data.orderItems.[].count").type(JsonFieldType.NUMBER)
+				fieldWithPath("data.orderItems.[].orderCount").type(JsonFieldType.NUMBER)
 					.description("상품 주문 수량"),
 				fieldWithPath("data.orderItems.[].orderPrice").type(JsonFieldType.NUMBER)
 					.description("상품별 주문 금액")
@@ -104,7 +104,7 @@ public class OrderDocumentation {
 					.description("주문 상품명"),
 				fieldWithPath("data.[].orderItems.[].itemPrice").type(JsonFieldType.NUMBER)
 					.description("상품 개별 금액"),
-				fieldWithPath("data.[].orderItems.[].count").type(JsonFieldType.NUMBER)
+				fieldWithPath("data.[].orderItems.[].orderCount").type(JsonFieldType.NUMBER)
 					.description("상품 주문 수량"),
 				fieldWithPath("data.[].orderItems.[].orderPrice").type(JsonFieldType.NUMBER)
 					.description("상품별 주문 금액")

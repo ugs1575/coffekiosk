@@ -67,7 +67,7 @@ class OrderItemsTest {
 	private OrderItem createOrderItem(Item item, int count) {
 		return OrderItem.builder()
 			.item(item)
-			.count(count)
+			.orderCount(count)
 			.build();
 	}
 }
