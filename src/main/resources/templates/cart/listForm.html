@@ -16,7 +16,7 @@
                     주문하기
                 </a>
             </div>
-            <form id="cartList" th:if="${cartItems.size() > 0}" class="form-inline d-flex justify-content-end" method="GET"  th:action="@{/item/list}">
+            <form id="cartList" th:if="${cartItems.size() > 0}" th:object="${orderSaveForm}" class="form-inline d-flex justify-content-end" method="POST" th:action="@{/order}" onsubmit="return remindOrder();">
                 <input type="hidden" id="currentPoint" th:value="${user.point}" >
                 <div class="form-group mx-sm-3 mb-2">
                     <p>현재 보유 포인트 : <span th:text="${user.point}"></span></p>
@@ -31,7 +31,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="cart : ${cartItems}">
+                        <tr th:each="cart,cartStat : ${cartItems}">
+                            <input type="hidden" th:field="*{cartIdList[__${cartStat.index}__]}"/>
                             <input type="hidden" name="price" th:value="${cart.itemPrice}"/>
                             <input type="hidden" name="count"  th:value="${cart.count}"/>
                             <td th:text="${cart.itemName}">커피</td>
@@ -49,7 +50,7 @@
                     <a type="button" class="btn btn-secondary" th:href="@{/menu/list}">
                         취소
                     </a>
-                    <button type="button" id="order" class="btn btn-success">
+                    <button type="submit" id="order" class="btn btn-success">
                         주문하기
                     </button>
                 </div>
@@ -117,13 +118,20 @@ function showEmptyCart() {
 function activateOrderButton() {
     var currentPoint = $("#currentPoint").val();
 
-    console.log(totalPrice);
     if (currentPoint < totalPrice) {
         $("#order").attr('disabled', 'disabled');
     } else {
         $("#order").removeAttr('disabled');
     }
 
+}
+
+function remindOrder() {
+    if (confirm("정말 주문하시겠습니까? 주문하시면 즉시 주문이 이루어지며 최소가 불가능합니다.")) {
+        return true;
+    }
+
+    return false;
 }
 </script>
 
