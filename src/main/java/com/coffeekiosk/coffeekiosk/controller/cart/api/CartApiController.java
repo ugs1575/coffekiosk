@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller.cart;
+package com.coffeekiosk.coffeekiosk.controller.cart.api;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
-import com.coffeekiosk.coffeekiosk.controller.cart.dto.request.CartSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.cart.api.dto.request.CartSaveRequest;
 import com.coffeekiosk.coffeekiosk.service.cart.CartService;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
 

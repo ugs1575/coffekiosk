@@ -25,13 +25,6 @@ public class NoticeSaveUpdateRequest {
 		this.content = content;
 	}
 
-	public Notice toEntity() {
-		return Notice.builder()
-			.title(title)
-			.content(content)
-			.build();
-	}
-
 	public NoticeSaveUpdateServiceRequest toServiceRequest() {
 		return NoticeSaveUpdateServiceRequest.builder()
 			.title(title)

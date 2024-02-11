@@ -3,8 +3,6 @@ package com.coffeekiosk.coffeekiosk.service.order;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +11,6 @@ import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
-import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.order.Order;
 import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
@@ -36,13 +33,13 @@ public class OrderService {
 	public Long order(Long userId, OrderSaveServiceRequest request, LocalDateTime orderDateTime) {
 		User user = findUser(userId);
 
-		List<Cart> cartList = cartRepository.findAllByIdFetchJoin(request.getCartIdList(), userId);
-		if (cartList.isEmpty()) {
+		List<Cart> cartItems = cartRepository.findByIdInUserIdFetchJoin(request.getCartIdList(), userId);
+		if (cartItems.isEmpty()) {
 			throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
 		}
 
 		List<OrderItem> orderItems = new ArrayList<>();
-		for (Cart cart : cartList) {
+		for (Cart cart : cartItems) {
 			Item item = cart.getItem();
 			OrderItem orderItem = OrderItem.createOrderItem(item, cart.getCount());
 			orderItems.add(orderItem);

@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller.order.dto.request;
+package com.coffeekiosk.coffeekiosk.controller.order.api.dto.request;
 
 import java.util.List;
 

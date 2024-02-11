@@ -24,10 +24,7 @@
         <title th:text="${title}">Hello, 경서게시판</title>
     </head>
     <body>
-        <nav
-            class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
-            th:fragment="menu(menu)"
-        >
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:fragment="menu(menu)">
             <a class="navbar-brand" href="#">커피주문 키오스크</a>
             <button
                 class="navbar-toggler"
@@ -43,23 +40,24 @@
 
             <div class="collapse navbar-collapse" id="navbarsExampleDefault">
                 <ul class="navbar-nav mr-auto">
-                    <li
-                        class="nav-item"
-                        th:classappend="${menu} == 'home'? 'active'"
-                    >
-                        <a class="nav-link" th:href="@{/}"
-                            >홈
-                            <span class="sr-only" th:if="${menu} == 'home'"
-                                >(current)</span
-                            ></a
-                        >
+                    <li class="nav-item" th:classappend="${menu} == 'home'? 'active'">
+                        <a class="nav-link" th:href="@{/}">홈
+                            <span class="sr-only" th:if="${menu} == 'home'">(current)</span>
+                        </a>
                     </li>
-                    <li
-                        class="nav-item"
-                        th:classappend="${menu} == 'item'? 'active'"
-                    >
+                    <li class="nav-item" th:classappend="${menu} == 'item'? 'active'">
                         <a class="nav-link" th:href="@{/item/list}">상품관리
                             <span class="sr-only" th:if="${menu} == 'item'">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" th:classappend="${menu} == 'order'? 'active'">
+                        <a class="nav-link" th:href="@{/menu/list}">주문하기
+                            <span class="sr-only" th:if="${menu} == 'item'">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" th:classappend="${menu} == 'cart'? 'active'">
+                        <a class="nav-link" th:href="@{/cart/list}">장바구니
+                            <span class="sr-only" th:if="${menu} == 'cart'">(current)</span>
                         </a>
                     </li>
                 </ul>

@@ -5,18 +5,18 @@
     <body>
         <nav
             class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
-            th:replace="~{fragments/common :: menu('item')}"
+            th:replace="~{fragments/common :: menu('order')}"
         ></nav>
 
         <div class="container">
-            <h1>상품 목록</h1>
-            <form class="form-inline d-flex justify-content-end" method="GET" th:object="${itemSearchRequest}" th:action="@{/item/list}">
+            <h1>메뉴</h1>
+            <form class="form-inline d-flex justify-content-end" method="GET" th:object="${itemSearchRequest}" th:action="@{/menu/list}">
                 <div class="form-group mx-sm-3 mb-2">
                     <label for="name" class="sr-only">검색</label>
-                    <input type="text" class="form-control mr-sm-2" id="name" name="name" placeholder="상품명" th:field="*{name}"/>
+                    <input type="text" class="form-control mr-sm-2" id="name" name="name" placeholder="메뉴명" th:field="*{name}"/>
                     <label for="itemType" class="sr-only">검색</label>
                     <select class="form-control" id="itemType" name="itemType" th:field="*{itemType}">
-                        <option value="">상품구분</option>
+                        <option value="">구분</option>
                         <option th:each=
                                         "type : ${T(com.coffeekiosk.coffeekiosk.domain.item.ItemType).values()}"
                                 th:value="${type}"
@@ -25,15 +25,13 @@
                     </select>
                 </div>
                 <button type="submit" class="btn btn-light mb-2 mr-2">검색</button>
-                <a type="button" class="btn btn-light mb-2" th:href="@{/item/new}">새 상픔 등록</a>
             </form>
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">상품명</th>
-                        <th scope="col">상품구분</th>
+                        <th scope="col">메뉴명</th>
+                        <th scope="col">구분</th>
                         <th scope="col">가격</th>
-                        <th scope="col">최근 수정일</th>
                     </tr>
                 </thead>
                 <tbody id="itemBody">
@@ -41,17 +39,16 @@
                         <input type="hidden" th:value="${item.id}">
                         <input type="hidden" th:value="${lastPage}">
                         <td>
-                            <a th:text="${item.name}" th:href="@{/item/{itemId}(itemId=${item.id})}">아이스아메리카노</a
+                            <a th:text="${item.name}" th:href="@{/menu/{itemId}(itemId=${item.id})}">아이스아메리카노</a
                             >
                         </td>
                         <td th:text="${item.itemType.name}">커피</td>
                         <td th:text="${item.price}">1000</td>
-                        <td th:text="${#temporals.format(item.lastModifiedDateTime, 'yyyy-MM-dd HH:mm:ss')}">@mdo</td>
                     </tr>
                 </tbody>
             </table>
             <div class="text-center">
-                <button type="button" class="btn btn-link" id="seeMore">더보기</button>
+                <button class="btn btn-link" id="seeMore">더보기</button>
             </div>
         </div>
     </body>
@@ -59,7 +56,7 @@
 
 
 <script>
-var lastId, isLastPage;
+ var lastId, isLastPage;
 
 $(document).ready(function(){
     checkLastPage();
@@ -81,7 +78,7 @@ function openNextPage() {
 
         $.ajax({
         type: "get",
-        url: "/item/nextPage?itemId=" + lastId + "&name=" + name + "&itemType=" + itemType,
+        url: "/menu/nextPage?itemId=" + lastId + "&name=" + name + "&itemType=" + itemType,
         data: {},
             success: (fragment)=>{
                 $('#itemBody').append(fragment);

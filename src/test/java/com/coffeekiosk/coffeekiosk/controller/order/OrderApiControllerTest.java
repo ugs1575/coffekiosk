@@ -17,7 +17,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
-import com.coffeekiosk.coffeekiosk.controller.order.dto.request.OrderSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.order.api.OrderApiController;
+import com.coffeekiosk.coffeekiosk.controller.order.api.dto.request.OrderSaveRequest;
 import com.coffeekiosk.coffeekiosk.docs.order.OrderDocumentation;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;

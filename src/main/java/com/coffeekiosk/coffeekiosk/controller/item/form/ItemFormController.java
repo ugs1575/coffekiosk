@@ -101,7 +101,7 @@ public class ItemFormController {
 			ItemResponse item = itemService.findItem(itemId);
 			model.addAttribute("itemUpdateForm", item);
 			return "item/updateForm";
-		}catch (BusinessException e) {
+		} catch (BusinessException e) {
 			return "item/error";
 		}
 	}
