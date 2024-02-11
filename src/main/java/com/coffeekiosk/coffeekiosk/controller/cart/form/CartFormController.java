@@ -1,11 +1,14 @@
 package com.coffeekiosk.coffeekiosk.controller.cart.form;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
@@ -15,24 +18,42 @@ import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/users/{userId}/carts")
 @RequiredArgsConstructor
-@RestController
+@Controller
 public class CartFormController {
 
 	private final CartService cartService;
 
-	@PostMapping
+	@ResponseBody
+	@PostMapping("/cart/add")
 	public ApiResponse<CartResponse> create(
-		@PathVariable Long userId,
 		@RequestParam Long itemId,
 		@RequestParam(defaultValue = "1") int count
 	) {
+		Long userId = 1L;
+
 		try {
 			CartResponse response = cartService.updateCartItem(userId, CartSaveForm.of(itemId, count).toServiceRequest());
 			return ApiResponse.ok(response);
 		} catch (BusinessException e) {
 			return ApiResponse.of(HttpStatus.OK, e.getErrorCode().getCode(), null);
 		}
+	}
+
+	@GetMapping("/cart/list")
+	public String update(Model model) {
+		Long userId = 1L;
+
+		List<CartResponse> cartItems = cartService.findCartItems(userId);
+		model.addAttribute("cartItems", cartItems);
+		return "cart/listForm";
+	}
+
+	@ResponseBody
+	@PostMapping("/cart/delete")
+	public ApiResponse<Void> create(@RequestParam Long cartId) {
+		Long userId = 1L;
+		cartService.deleteCartItem(cartId, userId);
+		return ApiResponse.noContent();
 	}
 }
