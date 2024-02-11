@@ -19,15 +19,15 @@ public class CartResponse {
 
 	private int itemPrice;
 
-	private int count;
+	private int itemCount;
 
 	@Builder
-	private CartResponse(Long id, Long itemId, String itemName, int itemPrice, int count) {
+	private CartResponse(Long id, Long itemId, String itemName, int itemPrice, int itemCount) {
 		this.id = id;
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
-		this.count = count;
+		this.itemCount = itemCount;
 	}
 
 	public static CartResponse of(Cart cart) {
@@ -36,7 +36,7 @@ public class CartResponse {
 			.itemId(cart.getItem().getId())
 			.itemName(cart.getItem().getName())
 			.itemPrice(cart.getItem().getPrice())
-			.count(cart.getCount())
+			.itemCount(cart.getItemCount())
 			.build();
 	}
 

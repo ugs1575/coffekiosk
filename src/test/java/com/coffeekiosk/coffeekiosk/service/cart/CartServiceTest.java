@@ -67,7 +67,7 @@ class CartServiceTest extends IntegrationTestSupport {
 
 		//then
 		assertThat(cartResponse)
-			.extracting("id", "itemId",  "itemName", "itemPrice", "count")
+			.extracting("id", "itemId",  "itemName", "itemPrice", "itemCount")
 			.contains(savedCart.getId(), savedItem.getId(), savedItem.getName(), savedItem.getPrice(), 3);
 	}
 
@@ -122,7 +122,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		//then
 		assertThat(cartResponse.getId()).isNotNull();
 		assertThat(cartResponse)
-			.extracting("itemId",  "itemName", "itemPrice",  "count")
+			.extracting("itemId",  "itemName", "itemPrice",  "itemCount")
 			.contains(savedItem.getId(), savedItem.getName(),savedItem.getPrice(), 2);
 	}
 
@@ -172,7 +172,7 @@ class CartServiceTest extends IntegrationTestSupport {
 
 		//then
 		assertThat(cartResponse)
-			.extracting("id", "itemId",  "itemName", "itemPrice", "count")
+			.extracting("id", "itemId",  "itemName", "itemPrice", "itemCount")
 			.contains(
 				tuple(savedCart1.getId(), savedItem1.getId(), savedItem1.getName(), savedItem1.getPrice(), 1),
 				tuple(savedCart2.getId(), savedItem2.getId(), savedItem2.getName(), savedItem2.getPrice(), 2)
@@ -183,7 +183,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		return Cart.builder()
 			.user(user)
 			.item(item)
-			.count(count)
+			.itemCount(count)
 			.build();
 	}
 

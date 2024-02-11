@@ -33,7 +33,7 @@ public class CartDocumentation {
 					.description("상품명"),
 				fieldWithPath("data.itemPrice").type(JsonFieldType.NUMBER)
 					.description("상품가격"),
-				fieldWithPath("data.count").type(JsonFieldType.NUMBER)
+				fieldWithPath("data.itemCount").type(JsonFieldType.NUMBER)
 					.description("상품수량")
 			)
 		);
@@ -79,7 +79,7 @@ public class CartDocumentation {
 					.description("상품명"),
 				fieldWithPath("data.[].itemPrice").type(JsonFieldType.NUMBER)
 					.description("상품가격"),
-				fieldWithPath("data.[].count").type(JsonFieldType.NUMBER)
+				fieldWithPath("data.[].itemCount").type(JsonFieldType.NUMBER)
 					.description("상품수량")
 			));
 	}

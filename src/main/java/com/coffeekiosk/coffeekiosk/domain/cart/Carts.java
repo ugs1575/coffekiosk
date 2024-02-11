@@ -24,7 +24,7 @@ public class Carts {
 
 	private int calculateTotalCount() {
 		return cartItems.stream()
-			.mapToInt(Cart::getCount)
+			.mapToInt(Cart::getItemCount)
 			.sum();
 	}
 

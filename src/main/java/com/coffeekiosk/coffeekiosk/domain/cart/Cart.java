@@ -39,30 +39,30 @@ public class Cart extends BaseTimeEntity {
 	private Item item;
 
 	@Column(nullable = false)
-	private int count;
+	private int itemCount;
 
 	@Builder
-	private Cart(User user, Item item, int count) {
+	private Cart(User user, Item item, int itemCount) {
 		this.user = user;
 		this.item = item;
-		this.count = count;
+		this.itemCount = itemCount;
 	}
 
 	public static Cart createCart(User user, Item item, int count) {
 		return Cart.builder()
 			.user(user)
 			.item(item)
-			.count(count)
+			.itemCount(count)
 			.build();
 	}
 
 	public void addCount(int count) {
-		int totalCount = this.count + count;
+		int totalCount = this.itemCount + count;
 
 		if (totalCount > MAX_ORDER_COUNT) {
 			throw new BusinessException(ErrorCode.OVER_MAX_ORDER_COUNT);
 		}
 
-		this.count = totalCount;
+		this.itemCount = totalCount;
 	}
 }

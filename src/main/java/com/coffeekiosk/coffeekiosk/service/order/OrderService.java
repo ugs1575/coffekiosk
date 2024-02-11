@@ -41,7 +41,7 @@ public class OrderService {
 		List<OrderItem> orderItems = new ArrayList<>();
 		for (Cart cart : cartItems) {
 			Item item = cart.getItem();
-			OrderItem orderItem = OrderItem.createOrderItem(item, cart.getCount());
+			OrderItem orderItem = OrderItem.createOrderItem(item, cart.getItemCount());
 			orderItems.add(orderItem);
 		}
 

@@ -39,7 +39,7 @@ class CartApiControllerTest extends RestDocsSupport {
 			.id(1L)
 			.itemId(1L)
 			.itemName("아이스아메리카노")
-			.count(1)
+			.itemCount(1)
 			.build();
 
 		when(cartService.updateCartItem(any(), any())).thenReturn(response);
@@ -82,7 +82,7 @@ class CartApiControllerTest extends RestDocsSupport {
 			.id(1L)
 			.itemId(1L)
 			.itemName("아이스아메리카노")
-			.count(1)
+			.itemCount(1)
 			.build();
 
 		when(cartService.findCartItems(any())).thenReturn(List.of(response));

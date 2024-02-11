@@ -184,7 +184,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 		return Cart.builder()
 			.user(user)
 			.item(item)
-			.count(count)
+			.itemCount(count)
 			.build();
 	}
 
