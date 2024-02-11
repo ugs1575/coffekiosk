@@ -19,6 +19,7 @@ import com.coffeekiosk.coffeekiosk.domain.order.Order;
 import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
+import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
@@ -132,7 +133,7 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 	private Order createOrder(User user, List<OrderItem> orderItems, LocalDateTime orderDateTime) {
 		return Order.builder()
 			.user(user)
-			.orderItems(orderItems)
+			.orderItems(new OrderItems(orderItems))
 			.orderDateTime(orderDateTime)
 			.build();
 	}

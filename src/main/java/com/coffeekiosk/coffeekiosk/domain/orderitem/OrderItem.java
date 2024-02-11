@@ -60,7 +60,7 @@ public class OrderItem {
 			.build();
 	}
 
-	public void addOrder(Order order) {
+	public void mappingOrder(Order order) {
 		this.order = order;
 	}
 

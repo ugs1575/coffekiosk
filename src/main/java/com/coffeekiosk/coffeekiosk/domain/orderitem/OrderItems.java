@@ -3,6 +3,8 @@ package com.coffeekiosk.coffeekiosk.domain.orderitem;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.coffeekiosk.coffeekiosk.domain.order.Order;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
@@ -32,5 +34,9 @@ public class OrderItems {
 		return orderItems.stream()
 			.mapToInt(OrderItem::getOrderPrice)
 			.sum();
+	}
+
+	public void mappingOrder(Order order) {
+		orderItems.forEach(orderItem -> orderItem.mappingOrder(order));
 	}
 }

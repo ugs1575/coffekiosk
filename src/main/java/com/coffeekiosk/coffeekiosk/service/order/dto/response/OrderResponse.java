@@ -33,7 +33,7 @@ public class OrderResponse {
 	public static OrderResponse of(Order order) {
 		return OrderResponse.builder()
 			.id(order.getId())
-			.totalPrice(order.calculateTotalPrice())
+			.totalPrice(order.getOrderPrice())
 			.orderItems(OrderItemResponse.listOf(order.getOrderItems()))
 			.orderDateTime(order.getOrderDateTime())
 			.build();

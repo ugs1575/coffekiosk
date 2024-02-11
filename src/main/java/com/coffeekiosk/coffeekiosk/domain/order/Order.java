@@ -3,7 +3,6 @@ package com.coffeekiosk.coffeekiosk.domain.order;
 import static jakarta.persistence.FetchType.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
@@ -41,17 +40,21 @@ public class Order extends BaseTimeEntity {
 	@Embedded
 	private OrderItems orderItems = OrderItems.empty();
 
+	private int orderPrice;
+
 	@Column(nullable = false)
 	private LocalDateTime orderDateTime;
 
 	@Builder
-	private Order(User user, List<OrderItem> orderItems, LocalDateTime orderDateTime) {
+	private Order(User user, OrderItems orderItems, LocalDateTime orderDateTime) {
 		this.user = user;
 		this.orderDateTime = orderDateTime;
-		orderItems.forEach(this::addOrderItem);
+		this.orderItems = orderItems;
+		this.orderPrice = orderItems.calculateTotalPrice();
+		orderItems.mappingOrder(this);
 	}
 
-	public static Order order(User user, List<OrderItem> orderItems, LocalDateTime orderDateTime) {
+	public static Order order(User user, OrderItems orderItems, LocalDateTime orderDateTime) {
 		return Order.builder()
 			.user(user)
 			.orderItems(orderItems)
@@ -61,10 +64,5 @@ public class Order extends BaseTimeEntity {
 
 	public int calculateTotalPrice() {
 		return orderItems.calculateTotalPrice();
-	}
-
-	private void addOrderItem(OrderItem orderItem) {
-		orderItems.addOrderItem(orderItem);
-		orderItem.addOrder(this);
 	}
 }

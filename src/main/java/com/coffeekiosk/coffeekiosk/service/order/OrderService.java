@@ -14,6 +14,7 @@ import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.order.Order;
 import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
+import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
@@ -38,11 +39,11 @@ public class OrderService {
 			throw new BusinessException(ErrorCode.ENTITY_NOT_FOUND);
 		}
 
-		List<OrderItem> orderItems = new ArrayList<>();
+		OrderItems orderItems = OrderItems.empty();
 		for (Cart cart : cartItems) {
 			Item item = cart.getItem();
 			OrderItem orderItem = OrderItem.createOrderItem(item, cart.getItemCount());
-			orderItems.add(orderItem);
+			orderItems.addOrderItem(orderItem);
 		}
 
 		Order order = Order.order(user, orderItems, orderDateTime);
