@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
@@ -78,6 +79,56 @@ class OrderApiControllerTest extends RestDocsSupport {
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("cartIdList"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("주문 목록은 필수입니다."));
+	}
+
+	@DisplayName("상품 주문시 주문 목록에 담긴 장바구니 ID는 null이 아니어야 한다.")
+	@Test
+	void createOrderByNull() throws Exception {
+		//given
+		List<Long> orderList = new ArrayList();
+		orderList.add(null);
+
+		OrderSaveRequest request = OrderSaveRequest.builder()
+			.cartIdList(orderList)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				post("/api/users/{userId}/orders", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("cartIdList[0]"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("장바구니 ID는 필수입니다."));
+	}
+
+	@DisplayName("상품 주문시 주문 목록은 값은 양수여야 한다.")
+	@Test
+	void createOrderByNegativeNumber() throws Exception {
+		//given
+		List<Long> orderList = new ArrayList();
+		orderList.add(-1L);
+
+		OrderSaveRequest request = OrderSaveRequest.builder()
+			.cartIdList(orderList)
+			.build();
+
+		//when //then
+		mockMvc.perform(
+				post("/api/users/{userId}/orders", 1L)
+					.content(objectMapper.writeValueAsString(request))
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
+			.andExpect(jsonPath("$.fieldErrors[0].field").value("cartIdList[0]"))
+			.andExpect(jsonPath("$.fieldErrors[0].message").value("장바구니 ID는 양수입니다."));
 	}
 	
 	@DisplayName("주문 상세내역을 조회한다.")
