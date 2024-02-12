@@ -35,12 +35,10 @@ public class OrderFormController {
 	private final RedissonLockOrderFacade orderFacade;
 
 	@PostMapping
-	public String create(@Valid OrderSaveForm orderSaveForm, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String create(OrderSaveForm orderSaveForm, RedirectAttributes redirectAttributes) {
 		Long userId = 1L;
 
-		orderSaveForm.filterNull();
-
-		if (result.hasErrors()) {
+		if (orderSaveForm.isEmpty()) {
 			return "redirect:/order/error";
 		}
 

@@ -45,45 +45,5 @@ values ('COFFEE', '카페라떼', 5000, now(), now(), now()),
        ('NON_COFFEE', '딸기 라떼', 6500, now(), now(), now()),
        ('NON_COFFEE', '우유', 4100, now(), now(), now());
 
-insert into orders (id, user_id, order_price, order_date_time, created_date, last_modified_date)
-values (1, 1, 8200, now(), now(), now()),
-       (2, 1, 10500, DATEADD('DAY', -1, now()), now(), now()),
-       (3, 1, 10500, DATEADD('DAY', -2, now()), now(), now()),
-       (4, 1, 10500, DATEADD('DAY', -3, now()), now(), now()),
-       (5, 1, 10500, DATEADD('DAY', -4, now()), now(), now()),
-       (6, 1, 10500, DATEADD('DAY', -5, now()), now(), now()),
-       (7, 1, 10500, DATEADD('DAY', -6, now()), now(), now()),
-       (8, 1, 10500, DATEADD('DAY', -7, now()), now(), now()),
-       (9, 1, 10500, DATEADD('DAY', -8, now()), now(), now()),
-       (10, 1, 10500, DATEADD('DAY', -9, now()), now(), now()),
-       (11, 1, 10500, DATEADD('DAY', -10, now()), now(), now()),
-       (12, 1, 10500, DATEADD('DAY', -11, now()), now(), now()),
-       (13, 1, 10500, DATEADD('DAY', -12, now()), now(), now()),
-       (14, 1, 10500, DATEADD('DAY', -13, now()), now(), now()),
-       (15, 1, 10500, DATEADD('DAY', -14, now()), now(), now()),
-       (16, 1, 10500, DATEADD('DAY', -15, now()), now(), now()),
-       (17, 1, 10500, DATEADD('YEAR', -4, now()), now(), now());
-
-insert into order_item (order_id, item_id, order_price, order_count)
-values (1, 40, 4100, 1),
-       (1, 38, 4100, 1),
-       (2, 1, 5000, 1),
-       (2, 2, 5500, 1),
-       (3, 1, 5000, 1),
-       (4, 1, 5000, 1),
-       (5, 1, 5000, 1),
-       (6, 1, 5000, 1),
-       (7, 1, 5000, 1),
-       (8, 1, 5000, 1),
-       (9, 1, 5000, 1),
-       (10, 1, 5000, 1),
-       (11, 1, 5000, 1),
-       (12, 1, 5000, 1),
-       (13, 1, 5000, 1),
-       (14, 1, 5000, 1),
-       (15, 1, 5000, 1),
-       (16, 1, 5000, 1),
-       (17, 1, 5000, 1);
-
 insert into cart (item_id, user_id, item_count, created_date, last_modified_date)
 values (40, 1, 1, now(), now());

@@ -24,6 +24,7 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th scope="col"></th>
                             <th scope="col">상품명</th>
                             <th scope="col">가격</th>
                             <th scope="col">수량</th>
@@ -32,9 +33,9 @@
                     </thead>
                     <tbody>
                         <tr th:each="cart,cartStat : ${cartItems}">
-                            <input type="hidden" th:field="*{cartIdList[__${cartStat.index}__]}"/>
                             <input type="hidden" name="price" th:value="${cart.itemPrice}"/>
                             <input type="hidden" name="count"  th:value="${cart.itemCount}"/>
+                            <td><input type="checkbox" th:field="*{cartIdList[__${cartStat.index}__]}" th:value="*{cartIdList[__${cartStat.index}__]}"></td>
                             <td th:text="${cart.itemName}">커피</td>
                             <td th:text="${cart.itemPrice}">1000</td>
                             <td th:text="${cart.itemCount}">1</td>
@@ -65,8 +66,23 @@ var totalPrice = 0;
 var totalCount = 0;
 
 $(document).ready(function(){
-    calculateTotalPriceAndCount();
+    $("input:checkbox").removeAttr("checked");
+    $("#totalPrice").text(totalPrice);
+    $("#totalCount").text(totalCount);
+    disabledOrderButton()
+
+    checkboxEvent();
 });
+
+function checkboxEvent() {
+    $("input:checkbox").click( function(){
+        calculateTotalPriceAndCount();
+
+        if (!$(this).is(':checked')) {
+            disabledOrderButton();
+        }
+    });
+}
 
 function deleteCartItem(cart) {
     var id = $(cart).val();
@@ -90,18 +106,21 @@ function calculateTotalPriceAndCount() {
     totalPrice = 0;
     totalCount = 0;
 
-    $("input[name=price]").each(function() {
-        var price = parseInt($(this).val());
-        var count = parseInt($(this).next().val());
+    $('input:checkbox').each(function (index) {
+        if($(this).is(":checked")==true){
+            var count = parseInt($(this).parent().prev().val());
+            var price = parseInt($(this).parent().prev().prev().val());
 
-        totalPrice += price*count;
-        totalCount += count;
-   });
+            totalPrice += price*count;
+            totalCount += count;
 
-   $("#totalPrice").text(totalPrice);
-   $("#totalCount").text(totalCount);
+            $("#totalPrice").text(totalPrice);
+            $("#totalCount").text(totalCount);
 
-   activateOrderButton();
+            activateOrderButton();
+        }
+    });
+
 }
 
 function showEmptyCart() {
@@ -126,7 +145,20 @@ function activateOrderButton() {
 
 }
 
+function disabledOrderButton() {
+    if ($('input:checkbox:checked').length > 0) {
+        return;
+    }
+
+    $("#order").attr('disabled', 'disabled');
+}
+
 function remindOrder() {
+    if ($('input:checkbox:checked').length == 0){
+        alert('선택된 상품이 없습니다.');
+        return false;
+    }
+
     if (confirm("정말 주문하시겠습니까? 주문하시면 즉시 주문이 이루어지며 최소가 불가능합니다.")) {
         return true;
     }

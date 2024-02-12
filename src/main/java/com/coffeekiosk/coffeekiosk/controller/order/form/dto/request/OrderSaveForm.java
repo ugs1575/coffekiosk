@@ -22,10 +22,17 @@ public class OrderSaveForm {
 
 	public OrderSaveForm(List<Long> cartIdList) {
 		this.cartIdList = cartIdList;
+		filterNull();
 	}
 
 	public void addCartId(Long cartId) {
 		cartIdList.add(cartId);
+	}
+
+	public OrderSaveServiceRequest toServiceRequest() {
+		return OrderSaveServiceRequest.builder()
+			.cartIdList(cartIdList)
+			.build();
 	}
 
 	public void filterNull() {
@@ -34,9 +41,7 @@ public class OrderSaveForm {
 			.collect(Collectors.toList());
 	}
 
-	public OrderSaveServiceRequest toServiceRequest() {
-		return OrderSaveServiceRequest.builder()
-			.cartIdList(cartIdList)
-			.build();
+	public boolean isEmpty() {
+		return cartIdList.isEmpty();
 	}
 }
