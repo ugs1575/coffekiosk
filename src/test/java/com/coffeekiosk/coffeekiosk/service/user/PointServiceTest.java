@@ -3,6 +3,9 @@ package com.coffeekiosk.coffeekiosk.service.user;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,9 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
+import com.coffeekiosk.coffeekiosk.facade.RedissonLockPointFacade;
 import com.coffeekiosk.coffeekiosk.service.user.dto.request.PointSaveServiceRequest;
 
 class PointServiceTest extends IntegrationTestSupport {
+
+	@Autowired
+	private RedissonLockPointFacade pointFacade;
+
 	@Autowired
 	private PointService pointService;
 
@@ -48,6 +56,36 @@ class PointServiceTest extends IntegrationTestSupport {
 			.containsExactlyInAnyOrder(
 				tuple(user.getId(), 2000)
 			);
+	}
+
+	@DisplayName("같은 사용자 정보로 여러번 포인트 충전을 시도할 때 정상적으로 포인트가 적립된다.")
+	@Test
+	void orderAtTheSameTime() throws InterruptedException {
+		//given
+		User user = createUser();
+		userRepository.save(user);
+
+		//when
+		int threadCount = 100;
+		ExecutorService executorService = Executors.newFixedThreadPool(32);
+		CountDownLatch latch = new CountDownLatch(threadCount);
+
+		for (int i = 0; i < threadCount; i++) {
+			executorService.submit(() -> {
+				try {
+					PointSaveServiceRequest request = createPointSaveRequest(1);
+					pointFacade.savePoint(user.getId(), request);
+				} finally {
+					latch.countDown();
+				}
+			});
+		}
+
+		latch.await();
+
+		//then
+		List<User> users = userRepository.findAll();
+		assertThat(users.get(0).getPoint()).isEqualTo(100);
 	}
 
 	private PointSaveServiceRequest createPointSaveRequest(int point) {
