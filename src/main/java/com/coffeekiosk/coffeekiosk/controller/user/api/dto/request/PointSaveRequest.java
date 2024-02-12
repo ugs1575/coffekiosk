@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller.user.dto.request;
+package com.coffeekiosk.coffeekiosk.controller.user.api.dto.request;
 
 import com.coffeekiosk.coffeekiosk.service.user.dto.request.PointSaveServiceRequest;
 

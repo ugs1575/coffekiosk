@@ -12,7 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
-import com.coffeekiosk.coffeekiosk.controller.user.dto.request.PointSaveRequest;
+import com.coffeekiosk.coffeekiosk.controller.user.api.PointApiController;
+import com.coffeekiosk.coffeekiosk.controller.user.api.dto.request.PointSaveRequest;
 import com.coffeekiosk.coffeekiosk.docs.user.PointDocumentation;
 import com.coffeekiosk.coffeekiosk.service.user.PointService;
 

@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller.user;
+package com.coffeekiosk.coffeekiosk.controller.user.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
