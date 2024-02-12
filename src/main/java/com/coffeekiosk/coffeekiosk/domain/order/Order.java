@@ -33,7 +33,7 @@ public class Order extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne(fetch = LAZY, optional = false)
 	@JoinColumn(name = "user_id")
 	private User user;
 

@@ -32,11 +32,11 @@ public class OrderItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne(fetch = LAZY, optional = false)
 	@JoinColumn(name = "order_id")
 	private Order order;
 
-	@ManyToOne(fetch = LAZY)
+	@ManyToOne(fetch = LAZY, optional = false)
 	@JoinColumn(name = "item_id")
 	private Item item;
 
