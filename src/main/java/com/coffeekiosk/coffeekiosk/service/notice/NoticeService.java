@@ -22,7 +22,6 @@ import com.coffeekiosk.coffeekiosk.service.notice.request.NoticeSaveUpdateServic
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @CacheConfig(cacheNames = "notices")
 @Transactional(readOnly = true)
