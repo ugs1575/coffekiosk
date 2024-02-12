@@ -41,7 +41,7 @@ public class OrderFormController {
 		orderSaveForm.filterNull();
 
 		if (result.hasErrors()) {
-			return "order/error";
+			return "redirect:/order/error";
 		}
 
 		Long orderId = orderFacade.order(userId, orderSaveForm.toServiceRequest(), LocalDateTime.now());
@@ -69,5 +69,10 @@ public class OrderFormController {
 		Page<OrderResponse> pageOrders = orderHistoryService.findPageOrders(userId, pageable);
 		model.addAttribute("orders", pageOrders);
 		return "order/history";
+	}
+
+	@GetMapping("/error")
+	public String orderFail() {
+		return "order/error";
 	}
 }

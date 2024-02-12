@@ -34,10 +34,10 @@
                         <tr th:each="cart,cartStat : ${cartItems}">
                             <input type="hidden" th:field="*{cartIdList[__${cartStat.index}__]}"/>
                             <input type="hidden" name="price" th:value="${cart.itemPrice}"/>
-                            <input type="hidden" name="count"  th:value="${cart.count}"/>
+                            <input type="hidden" name="count"  th:value="${cart.itemCount}"/>
                             <td th:text="${cart.itemName}">커피</td>
                             <td th:text="${cart.itemPrice}">1000</td>
-                            <td th:text="${cart.count}">1</td>
+                            <td th:text="${cart.itemCount}">1</td>
                             <td>
                                 <button type="button" onclick="deleteCartItem(this)" class="btn btn-outline-primary" th:value="${cart.id}">삭제</button>
                             </td>
