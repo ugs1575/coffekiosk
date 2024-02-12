@@ -60,7 +60,7 @@ public class MenuFormController {
 	}
 
 	@GetMapping("/menu/{itemId}")
-	public String findItem(Model model, @PathVariable Long itemId) {
+	public String findMenu(Model model, @PathVariable Long itemId) {
 		try {
 			ItemResponse item = itemService.findItem(itemId);
 			model.addAttribute("item", item);

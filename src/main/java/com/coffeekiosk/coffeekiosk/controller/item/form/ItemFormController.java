@@ -78,7 +78,7 @@ public class ItemFormController {
 	}
 
 	@GetMapping("/item/new")
-	public String createForm(Model model) {
+	public String create(Model model) {
 		model.addAttribute("itemSaveForm", new ItemSaveForm());
 		return "item/createForm";
 	}
