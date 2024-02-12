@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.user.api.UserApiController;
 import com.coffeekiosk.coffeekiosk.docs.user.UserDocumentation;
 import com.coffeekiosk.coffeekiosk.service.user.UserService;
 import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
