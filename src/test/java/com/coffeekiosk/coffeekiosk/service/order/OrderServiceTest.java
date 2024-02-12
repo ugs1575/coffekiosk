@@ -124,7 +124,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 
 	}
 
-	@DisplayName("같은 사용자 정보로 여러개의 주문이 동시에 들어온다.")
+	@DisplayName("같은 사용자 정보로 여러개의 주문이 동시에 들어올 때 정상적으로 포인트가 차감된다.")
 	@Test
 	void orderAtTheSameTime() throws InterruptedException {
 		//given

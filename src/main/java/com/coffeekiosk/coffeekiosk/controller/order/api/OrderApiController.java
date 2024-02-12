@@ -47,10 +47,7 @@ public class OrderApiController {
 	}
 
 	@GetMapping
-	public ApiResponse<List<OrderResponse>> findOrders(
-		@PathVariable Long userId,
-		@PageableDefault(value = 10) Pageable pageable
-	) {
+	public ApiResponse<List<OrderResponse>> findOrders(@PathVariable Long userId, @PageableDefault(value = 10) Pageable pageable) {
 		List<OrderResponse> response = orderHistoryService.findOrders(userId, pageable);
 		return ApiResponse.ok(response);
 	}
