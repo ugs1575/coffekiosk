@@ -47,3 +47,7 @@ values ('COFFEE', '카페라떼', 5000, now(), now(), now()),
 
 insert into cart (item_id, user_id, item_count, created_date, last_modified_date)
 values (40, 1, 1, now(), now());
+
+insert into notices (title, content, user_id, registered_date_time, created_date, last_modified_date)
+values ('새로 오픈했습니다. 잘 부탁드립니다.', '새로 오픈했습니다. 잘 부탁드립니다.', 1, now(), now(), now()),
+       ('오픈이벤트 진행합니다. (12.4 ~ 12.7, 3일간)', '오픈이벤트 진행합니다. (12.4 ~ 12.7, 3일간)', 1, now(), now(), now());

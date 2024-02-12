@@ -107,13 +107,14 @@ public class ItemFormController {
 	}
 
 	@PostMapping("/item/{itemId}/edit")
-	public String update(Model model, @PathVariable Long itemId, @Valid ItemUpdateForm itemUpdateForm, BindingResult result) {
+	public String update(Model model, @PathVariable Long itemId, @Valid ItemUpdateForm itemUpdateForm, BindingResult result, RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			model.addAttribute("itemUpdateForm", itemUpdateForm);
 			return "item/updateForm";
 		}
 
 		itemService.updateItem(itemId, itemUpdateForm.toServiceRequest(), LocalDateTime.now());
+		redirectAttributes.addAttribute("itemId", itemId);
 		return "redirect:/item/{itemId}";
 	}
 

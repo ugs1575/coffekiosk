@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk.controller.notice;
+package com.coffeekiosk.coffeekiosk.controller.notice.api;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
-import com.coffeekiosk.coffeekiosk.controller.notice.dto.request.NoticeSaveUpdateRequest;
+import com.coffeekiosk.coffeekiosk.controller.notice.api.dto.request.NoticeSaveUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 

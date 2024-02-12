@@ -6,6 +6,7 @@ import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceReq
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ItemUpdateForm {
-	private String id;
+	@NotNull(message = "상품 ID는 필수입니다.")
+	@Positive(message = "상품 ID는 양수입니다.")
+	private Long id;
 
 	@NotBlank(message = "상품 이름은 필수입니다.")
 	private String name;
