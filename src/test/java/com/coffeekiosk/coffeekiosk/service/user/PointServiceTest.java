@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
@@ -41,14 +42,14 @@ class PointServiceTest extends IntegrationTestSupport {
 
 		//given
 		User user = createUser();
-		userRepository.save(user);
+		User savedUser = userRepository.save(user);
 
 		PointSaveServiceRequest request1 = createPointSaveRequest(1000);
 		PointSaveServiceRequest request2 = createPointSaveRequest(1000);
 
 		//when
-		pointService.savePoint(user.getId(), request1);
-		pointService.savePoint(user.getId(), request2);
+		pointService.savePoint(new SessionUser(savedUser), request1);
+		pointService.savePoint(new SessionUser(savedUser), request2);
 
 		//then
 		List<User> users = userRepository.findAll();
@@ -64,7 +65,7 @@ class PointServiceTest extends IntegrationTestSupport {
 	void orderAtTheSameTime() throws InterruptedException {
 		//given
 		User user = createUser();
-		userRepository.save(user);
+		User savedUser = userRepository.save(user);
 
 		//when
 		int threadCount = 100;
@@ -75,7 +76,7 @@ class PointServiceTest extends IntegrationTestSupport {
 			executorService.submit(() -> {
 				try {
 					PointSaveServiceRequest request = createPointSaveRequest(1);
-					pointFacade.savePoint(user.getId(), request);
+					pointFacade.savePoint(new SessionUser(savedUser), request);
 				} finally {
 					latch.countDown();
 				}

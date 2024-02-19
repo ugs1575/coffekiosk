@@ -8,6 +8,7 @@ import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 import com.coffeekiosk.coffeekiosk.service.order.OrderService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
@@ -28,8 +29,8 @@ public class RedissonLockPointFacade {
 		this.pointService = pointService;
 	}
 
-	public void savePoint(Long userId, PointSaveServiceRequest request) {
-		RLock lock = redissonClient.getLock(userId.toString());
+	public void savePoint(SessionUser user, PointSaveServiceRequest request) {
+		RLock lock = redissonClient.getLock(user.getId().toString());
 
 		try {
 			boolean available = lock.tryLock(10, 1, TimeUnit.SECONDS);
@@ -39,7 +40,7 @@ public class RedissonLockPointFacade {
 				throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
 			}
 
-			pointService.savePoint(userId, request);
+			pointService.savePoint(user, request);
 		} catch (BusinessException e) {
 			throw e;
 		} catch (InterruptedException e) {

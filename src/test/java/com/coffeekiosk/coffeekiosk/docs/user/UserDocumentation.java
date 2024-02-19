@@ -13,9 +13,6 @@ public class UserDocumentation {
 		return document("user/find",
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
-			pathParameters(
-				parameterWithName("userId").description("사용자 ID")
-			),
 			responseFields(
 				fieldWithPath("code").type(JsonFieldType.NUMBER)
 					.description("코드"),

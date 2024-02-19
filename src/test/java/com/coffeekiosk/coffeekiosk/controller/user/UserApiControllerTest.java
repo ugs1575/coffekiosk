@@ -39,7 +39,7 @@ class UserApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/api/users/{userId}", 1L)
+				RestDocumentationRequestBuilders.get("/api/me")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())

@@ -50,7 +50,7 @@ public class CartFormController {
 		List<CartResponse> carts = cartService.findCartItems(sessionUser);
 		model.addAttribute("cartItems", carts);
 
-		UserResponse user = userService.findUser(sessionUser.getId());
+		UserResponse user = userService.findUser(sessionUser);
 		model.addAttribute("user", user);
 
 		OrderSaveForm orderSaveForm = new OrderSaveForm();

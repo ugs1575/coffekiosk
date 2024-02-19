@@ -35,7 +35,7 @@ class PointApiControllerTest extends RestDocsAndSecuritySupport {
 
 	    //when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/api/users/{userId}/points", 1L)
+				RestDocumentationRequestBuilders.post("/api/points")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -57,7 +57,7 @@ class PointApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/points", 1L)
+				post("/api/points")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -80,7 +80,7 @@ class PointApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/points", 1L)
+				post("/api/points")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)

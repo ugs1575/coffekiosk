@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
@@ -33,7 +34,7 @@ class UserServiceTest extends IntegrationTestSupport {
 		User user = userRepository.save(createUser("우경서", "test@coffeekiosk.com", 10000));
 
 		//when
-		UserResponse response = userService.findUser(user.getId());
+		UserResponse response = userService.findUser(new SessionUser(user));
 
 		//then
 		assertThat(response)
