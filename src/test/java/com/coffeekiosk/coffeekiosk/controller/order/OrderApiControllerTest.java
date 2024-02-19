@@ -49,7 +49,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/api/users/{userId}/orders", 1L)
+				RestDocumentationRequestBuilders.post("/api/orders")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -57,7 +57,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.code").value("201"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
-			.andExpect(header().string("Location", "/api/users/1/orders/1"))
+			.andExpect(header().string("Location", "/api/orders/1"))
 			.andDo(OrderDocumentation.createOrder());
 	}
 
@@ -72,7 +72,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/orders", 1L)
+				post("/api/orders")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -98,7 +98,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/orders", 1L)
+				post("/api/orders")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -124,7 +124,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/orders", 1L)
+				post("/api/orders")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -160,7 +160,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/api/users/{userId}/orders/{orderId}", 1L, 1L)
+				RestDocumentationRequestBuilders.get("/api/orders/{orderId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
@@ -197,7 +197,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/api/users/{userId}/orders", 1L)
+				RestDocumentationRequestBuilders.get("/api/orders")
 					.queryParam("endDate", "2023-11-21T00:00:00")
 					.queryParam("startDate", "2023-11-22T00:00:00")
 					.queryParam("page", "0")

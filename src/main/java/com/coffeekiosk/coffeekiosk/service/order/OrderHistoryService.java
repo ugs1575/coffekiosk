@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.domain.order.Order;
 import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
@@ -26,23 +27,23 @@ public class OrderHistoryService {
 
 	private final OrderRepository orderRepository;
 
-	public OrderResponse findOrder(Long orderId, Long userId) {
-		Order order = orderRepository.findByIdFetchJoin(orderId, userId)
+	public OrderResponse findOrder(Long orderId, SessionUser sessionUser) {
+		Order order = orderRepository.findByIdFetchJoin(orderId, sessionUser.getId())
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 
 		return OrderResponse.of(order);
 	}
 
-	public List<OrderResponse> findOrders(Long userId, Pageable pageable) {
+	public List<OrderResponse> findOrders(SessionUser sessionUser, Pageable pageable) {
 		OrderSearchServiceRequest request = createSearchRequest();
 
-		List<Order> orders = orderRepository.findOrders(userId, request, pageable);
+		List<Order> orders = orderRepository.findOrders(sessionUser.getId(), request, pageable);
 		return OrderResponse.listOf(orders);
 	}
 
-	public Page<OrderResponse> findPageOrders(Long userId, Pageable pageable) {
+	public Page<OrderResponse> findPageOrders(SessionUser sessionUser, Pageable pageable) {
 		OrderSearchServiceRequest request = createSearchRequest();
-		Page<Order> orders = orderRepository.findPageOrders(userId, request, pageable);
+		Page<Order> orders = orderRepository.findPageOrders(sessionUser.getId(), request, pageable);
 		Page<OrderResponse> pageOrders = new PageImpl(OrderResponse.listOf(orders), pageable, orders.getTotalElements());
 		return pageOrders;
 	}

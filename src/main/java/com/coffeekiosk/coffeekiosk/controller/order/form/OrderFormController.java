@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.LoginUser;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.controller.order.form.dto.request.OrderSaveForm;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;
@@ -30,24 +32,20 @@ public class OrderFormController {
 	private final RedissonLockOrderFacade orderFacade;
 
 	@PostMapping
-	public String create(OrderSaveForm orderSaveForm, RedirectAttributes redirectAttributes) {
-		Long userId = 1L;
-
+	public String create(@LoginUser SessionUser user, OrderSaveForm orderSaveForm, RedirectAttributes redirectAttributes) {
 		if (orderSaveForm.isEmpty()) {
 			return "redirect:/order/error";
 		}
 
-		Long orderId = orderFacade.order(userId, orderSaveForm.toServiceRequest(), LocalDateTime.now());
+		Long orderId = orderFacade.order(user, orderSaveForm.toServiceRequest(), LocalDateTime.now());
 		redirectAttributes.addAttribute("orderId", orderId);
 		return "redirect:/order/{orderId}";
 	}
 
 	@GetMapping("/{orderId}")
-	public String findOrder(Model model, @PathVariable Long orderId) {
-		Long userId = 1L;
-
+	public String findOrder(Model model, @LoginUser SessionUser user, @PathVariable Long orderId) {
 		try {
-			OrderResponse order = orderHistoryService.findOrder(orderId, userId);
+			OrderResponse order = orderHistoryService.findOrder(orderId, user);
 			model.addAttribute("order", order);
 			return "order/detailForm";
 		} catch (BusinessException e) {
@@ -56,10 +54,8 @@ public class OrderFormController {
 	}
 
 	@GetMapping("/history")
-	public String findOrders(Model model, @PageableDefault(size = 10) Pageable pageable) {
-		Long userId = 1L;
-
-		Page<OrderResponse> pageOrders = orderHistoryService.findPageOrders(userId, pageable);
+	public String findOrders(Model model, @LoginUser SessionUser user, @PageableDefault(size = 10) Pageable pageable) {
+		Page<OrderResponse> pageOrders = orderHistoryService.findPageOrders(user, pageable);
 		model.addAttribute("orders", pageOrders);
 		return "order/history";
 	}

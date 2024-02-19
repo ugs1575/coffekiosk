@@ -14,9 +14,6 @@ public class OrderDocumentation {
 		return document("order/create",
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
-			pathParameters(
-				parameterWithName("userId").description("사용자 ID")
-			),
 			requestFields(
 				fieldWithPath("cartIdList").type(JsonFieldType.ARRAY).description("주문 목록")
 			),
@@ -39,7 +36,6 @@ public class OrderDocumentation {
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
 			pathParameters(
-				parameterWithName("userId").description("사용자 ID"),
 				parameterWithName("orderId").description("주문 ID")
 			),
 			responseFields(
@@ -74,9 +70,6 @@ public class OrderDocumentation {
 		return document("order/findAll",
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
-			pathParameters(
-				parameterWithName("userId").description("사용자 ID")
-			),
 			queryParameters(
 				parameterWithName("page").description("페이지 번호"),
 				parameterWithName("size").description("한 페이지 당 데이터 수"),
