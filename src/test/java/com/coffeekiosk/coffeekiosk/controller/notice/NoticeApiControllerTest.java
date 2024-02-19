@@ -50,7 +50,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/api/users/{userId}/notices", 1L)
+				RestDocumentationRequestBuilders.post("/api/notices", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -73,7 +73,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/notices", 1L)
+				post("/api/notices", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)

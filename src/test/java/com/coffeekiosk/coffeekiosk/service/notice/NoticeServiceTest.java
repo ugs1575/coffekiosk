@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.notice.Notice;
 import com.coffeekiosk.coffeekiosk.domain.notice.NoticeRepository;
@@ -41,7 +42,7 @@ class NoticeServiceTest extends IntegrationTestSupport {
 	void createNotice() {
 		//given
 		User user = createUser();
-		userRepository.save(user);
+		User savedUser = userRepository.save(user);
 
 		LocalDateTime registeredDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 
@@ -51,7 +52,7 @@ class NoticeServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		NoticeResponse response = noticeService.createNotice(user.getId(), request, registeredDateTime);
+		NoticeResponse response = noticeService.createNotice(new SessionUser(savedUser), request, registeredDateTime);
 
 		//then
 		assertThat(response.getId()).isNotNull();

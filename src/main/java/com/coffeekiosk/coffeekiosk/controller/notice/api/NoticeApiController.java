@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
+import com.coffeekiosk.coffeekiosk.config.auth.LoginUser;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.controller.notice.api.dto.request.NoticeSaveUpdateRequest;
 import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
@@ -22,38 +24,38 @@ import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api")
+@RequestMapping("/api/notices")
 @RequiredArgsConstructor
 @RestController
 public class NoticeApiController {
 
 	private final NoticeService noticeService;
 
-	@PostMapping("/users/{userId}/notices")
-	public ResponseEntity<ApiResponse<Void>> createNotice(@PathVariable Long userId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
-		NoticeResponse response = noticeService.createNotice(userId, request.toServiceRequest(), LocalDateTime.now());
+	@PostMapping
+	public ResponseEntity<ApiResponse<Void>> createNotice(@LoginUser SessionUser user, @RequestBody @Valid NoticeSaveUpdateRequest request) {
+		NoticeResponse response = noticeService.createNotice(user, request.toServiceRequest(), LocalDateTime.now());
 		return ResponseEntity.created(URI.create("/api/notices/" + response.getId())).body(ApiResponse.created());
 	}
 
-	@PatchMapping("/notices/{noticeId}")
+	@PatchMapping("/{noticeId}")
 	public ApiResponse<Void> updateNotice(@PathVariable Long noticeId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
 		noticeService.updateNotice(noticeId, request.toServiceRequest());
 		return ApiResponse.noContent();
 	}
 
-	@GetMapping("/notices/{noticeId}")
+	@GetMapping("/{noticeId}")
 	public ApiResponse<NoticeResponse> findNotice(@PathVariable Long noticeId) {
 		NoticeResponse response = noticeService.findById(noticeId);
 		return ApiResponse.ok(response);
 	}
 
-	@GetMapping("/notices")
+	@GetMapping
 	public ApiResponse<List<NoticeResponse>> findNotices() {
 		List<NoticeResponse> response = noticeService.findNotices();
 		return ApiResponse.ok(response);
 	}
 
-	@DeleteMapping("/notices/{noticeId}")
+	@DeleteMapping("/{noticeId}")
 	public ApiResponse<Void> deleteNotice(@PathVariable Long noticeId) {
 		noticeService.delete(noticeId);
 		return ApiResponse.noContent();
