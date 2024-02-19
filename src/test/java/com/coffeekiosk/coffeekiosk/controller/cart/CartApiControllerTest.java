@@ -48,7 +48,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/api/users/{userId}/carts", 1L)
+				RestDocumentationRequestBuilders.post("/api/carts", 1L)
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -66,7 +66,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 	void deleteCartItem() throws Exception {
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.delete("/api/users/{userId}/carts/{cartId}", 1L, 1L)
+				RestDocumentationRequestBuilders.delete("/api/carts/{cartId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
@@ -93,7 +93,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/api/users/{userId}/carts", 1L)
+				RestDocumentationRequestBuilders.get("/api/carts", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())

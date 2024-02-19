@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
@@ -63,7 +64,7 @@ class CartServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		CartResponse cartResponse = cartService.updateCartItem(savedUser.getId(), request);
+		CartResponse cartResponse = cartService.updateCartItem(new SessionUser(savedUser), request);
 
 		//then
 		assertThat(cartResponse)
@@ -96,7 +97,7 @@ class CartServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when, then
-		assertThatThrownBy(() -> cartService.updateCartItem(savedUser.getId(), request))
+		assertThatThrownBy(() -> cartService.updateCartItem(new SessionUser(savedUser), request))
 			.isInstanceOf(BusinessException.class)
 			.hasMessage("최대 주문 가능 수량은 20개 입니다.");
 	}
@@ -117,7 +118,7 @@ class CartServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		CartResponse cartResponse = cartService.updateCartItem(savedUser.getId(), request);
+		CartResponse cartResponse = cartService.updateCartItem(new SessionUser(savedUser), request);
 
 		//then
 		assertThat(cartResponse.getId()).isNotNull();
@@ -140,7 +141,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		Cart savedCart = cartRepository.save(cart);
 
 		//when
-		cartService.deleteCartItem(savedCart.getId(), savedUser.getId());
+		cartService.deleteCartItem(savedCart.getId(), new SessionUser(savedUser));
 
 		//then
 		List<Cart> cartItems = cartRepository.findAll();
@@ -168,7 +169,7 @@ class CartServiceTest extends IntegrationTestSupport {
 		Cart savedCart2 = cartRepository.save(cart2);
 
 		//when
-		List<CartResponse> cartResponse = cartService.findCartItems(savedUser.getId());
+		List<CartResponse> cartResponse = cartService.findCartItems(new SessionUser(savedUser));
 
 		//then
 		assertThat(cartResponse)

@@ -13,9 +13,6 @@ public class CartDocumentation {
 		return document("cart/update",
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
-			pathParameters(
-				parameterWithName("userId").description("사용자 ID")
-			),
 			requestFields(
 				fieldWithPath("itemId").type(JsonFieldType.NUMBER).description("상품 ID"),
 				fieldWithPath("count").type(JsonFieldType.NUMBER).description("상품 수량")
@@ -44,7 +41,6 @@ public class CartDocumentation {
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
 			pathParameters(
-				parameterWithName("userId").description("사용자 ID"),
 				parameterWithName("cartId").description("장바구니 ID")
 			),
 			responseFields(
@@ -61,9 +57,6 @@ public class CartDocumentation {
 		return document("cart/findAll",
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
-			pathParameters(
-				parameterWithName("userId").description("사용자 ID")
-			),
 			responseFields(
 				fieldWithPath("code").type(JsonFieldType.NUMBER)
 					.description("코드"),
