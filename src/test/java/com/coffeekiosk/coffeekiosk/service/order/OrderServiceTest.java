@@ -22,6 +22,7 @@ import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
+import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
@@ -175,7 +176,9 @@ class OrderServiceTest extends IntegrationTestSupport {
 
 	private User createUser(int point) {
 		return User.builder()
+			.email("test@coffeekiosk.com")
 			.name("우경서")
+			.role(Role.USER)
 			.point(point)
 			.build();
 	}

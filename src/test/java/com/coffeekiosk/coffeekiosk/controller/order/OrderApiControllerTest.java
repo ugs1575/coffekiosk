@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.order.api.OrderApiController;
@@ -37,6 +38,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품을 주문한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createOrder() throws Exception {
 		//given
 		OrderSaveRequest request = OrderSaveRequest.builder()
@@ -61,6 +63,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 주문시 주문 목록은 필수 값이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createOrderWithoutOrderList() throws Exception {
 		//given
 		OrderSaveRequest request = OrderSaveRequest.builder()
@@ -83,6 +86,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 주문시 주문 목록에 담긴 장바구니 ID는 null이 아니어야 한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createOrderByNull() throws Exception {
 		//given
 		List<Long> orderList = new ArrayList();
@@ -108,6 +112,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 주문시 주문 목록은 값은 양수여야 한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createOrderByNegativeNumber() throws Exception {
 		//given
 		List<Long> orderList = new ArrayList();
@@ -133,6 +138,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 	
 	@DisplayName("주문 상세내역을 조회한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findOrder() throws Exception {
 		//given
 		OrderItemResponse orderItemResponse = OrderItemResponse.builder()
@@ -167,6 +173,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 목록 조회을 조회할 수 있다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findOrders() throws Exception {
 		//given
 		OrderItemResponse orderItemResponse = OrderItemResponse.builder()

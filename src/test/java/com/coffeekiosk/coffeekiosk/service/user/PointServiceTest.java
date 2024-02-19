@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
+import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockPointFacade;
@@ -96,7 +97,9 @@ class PointServiceTest extends IntegrationTestSupport {
 
 	private User createUser() {
 		return User.builder()
+			.email("test@coffeekiosk.com")
 			.name("우경서")
+			.role(Role.USER)
 			.build();
 	}
 }

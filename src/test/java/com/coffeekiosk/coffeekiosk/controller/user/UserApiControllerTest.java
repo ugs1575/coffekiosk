@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.user.api.UserApiController;
@@ -25,6 +26,7 @@ class UserApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 상세정보를 조회한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findItem() throws Exception {
 		//given
 		UserResponse response = UserResponse.builder()

@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.notice.api.NoticeApiController;
@@ -31,6 +32,7 @@ class NoticeApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("공지사항을 등록한다")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createNotice() throws Exception {
 		//given
 		NoticeSaveUpdateRequest request = NoticeSaveUpdateRequest.builder()
@@ -62,6 +64,7 @@ class NoticeApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("공지사항 등록 시 제목은 필수 값입니다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createPostWithoutTitle() throws Exception {
 		//given
 		NoticeSaveUpdateRequest request = NoticeSaveUpdateRequest.builder()
@@ -84,6 +87,7 @@ class NoticeApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("공지사항을 수정한다")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateNotice() throws Exception {
 		//given
 		NoticeSaveUpdateRequest request = NoticeSaveUpdateRequest.builder()
@@ -106,6 +110,7 @@ class NoticeApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("공지사항 수정 시 제목은 필수 값입니다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateNoticeWithoutTitle() throws Exception {
 		//given
 		NoticeSaveUpdateRequest request = NoticeSaveUpdateRequest.builder()
@@ -129,6 +134,7 @@ class NoticeApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("공지사항을 삭제한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void deleteNotice() throws Exception {
 		//when //then
 		mockMvc.perform(
@@ -144,6 +150,7 @@ class NoticeApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("공지사항 목록을 조회한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findNotices() throws Exception {
 		//given
 		NoticeResponse response = NoticeResponse.builder()
@@ -174,6 +181,7 @@ class NoticeApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("공지사항을 조회한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findNotice() throws Exception {
 		//given
 		NoticeResponse response = NoticeResponse.builder()

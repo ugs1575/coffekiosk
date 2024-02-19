@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.coffeekiosk.coffeekiosk.RestDocsSupport;
 import com.coffeekiosk.coffeekiosk.controller.cart.api.CartApiController;
@@ -28,6 +29,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("장바구니에 상품을 담는다")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateCartItem() throws Exception {
 	    //given
 		CartSaveRequest request = CartSaveRequest.builder()
@@ -60,6 +62,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("장바구니에 담긴 상품을 삭제한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void deleteCartItem() throws Exception {
 		//when //then
 		mockMvc.perform(
@@ -76,6 +79,7 @@ class CartApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("장바구니에 담긴 상품 목록을 조회한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findCartItems() throws Exception {
 		//given
 		CartResponse response = CartResponse.builder()
