@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk;
+package com.coffeekiosk.coffeekiosk.service;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

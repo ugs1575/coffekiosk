@@ -10,7 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.notice.Notice;
 import com.coffeekiosk.coffeekiosk.domain.notice.NoticeRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;

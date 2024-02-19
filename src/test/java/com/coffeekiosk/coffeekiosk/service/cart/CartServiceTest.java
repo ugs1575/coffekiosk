@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;

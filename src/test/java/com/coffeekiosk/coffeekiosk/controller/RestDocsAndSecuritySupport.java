@@ -1,4 +1,4 @@
-package com.coffeekiosk.coffeekiosk;
+package com.coffeekiosk.coffeekiosk.controller;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.*;
@@ -15,12 +15,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import com.coffeekiosk.coffeekiosk.config.SecurityDocumentationConfig;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Import(SecurityDocumentationConfig.class)
 @ExtendWith(RestDocumentationExtension.class)
-public abstract class RestDocsSupport {
+public abstract class RestDocsAndSecuritySupport {
 
 	@Autowired
 	protected MockMvc mockMvc;

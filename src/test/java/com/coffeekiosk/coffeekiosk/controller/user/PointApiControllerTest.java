@@ -12,14 +12,14 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.user.api.PointApiController;
 import com.coffeekiosk.coffeekiosk.controller.user.api.dto.request.PointSaveRequest;
 import com.coffeekiosk.coffeekiosk.docs.user.PointDocumentation;
 import com.coffeekiosk.coffeekiosk.service.user.PointService;
 
 @WebMvcTest(controllers = PointApiController.class)
-class PointApiControllerTest extends RestDocsSupport {
+class PointApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@MockBean
 	protected PointService pointService;

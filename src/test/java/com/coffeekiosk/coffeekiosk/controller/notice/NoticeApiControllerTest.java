@@ -17,7 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.notice.api.NoticeApiController;
 import com.coffeekiosk.coffeekiosk.controller.notice.api.dto.request.NoticeSaveUpdateRequest;
 import com.coffeekiosk.coffeekiosk.docs.notice.NoticeDocumentation;
@@ -25,7 +25,7 @@ import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 
 @WebMvcTest(controllers = NoticeApiController.class)
-class NoticeApiControllerTest extends RestDocsSupport {
+class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@MockBean
 	protected NoticeService noticeService;

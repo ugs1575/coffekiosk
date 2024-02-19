@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 
@@ -26,7 +26,7 @@ import jakarta.validation.Valid;
 
 @ContextConfiguration(classes = {GlobalExceptionHandlerTest.TestController.class, GlobalExceptionHandler.class})
 @WebMvcTest(controllers = GlobalExceptionHandlerTest.TestController.class)
-class GlobalExceptionHandlerTest extends RestDocsSupport {
+class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("request parameter 값이 누락될 경우 예외를 처리한다.")
 	@Test

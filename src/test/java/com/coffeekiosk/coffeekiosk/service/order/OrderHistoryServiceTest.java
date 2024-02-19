@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
@@ -23,7 +23,6 @@ import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 class OrderHistoryServiceTest extends IntegrationTestSupport {

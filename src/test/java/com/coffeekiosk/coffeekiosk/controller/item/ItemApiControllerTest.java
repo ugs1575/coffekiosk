@@ -16,7 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.item.api.ItemApiController;
 import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemUpdateRequest;
@@ -26,7 +26,7 @@ import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
 @WebMvcTest(controllers = ItemApiController.class)
-class ItemApiControllerTest extends RestDocsSupport {
+class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@MockBean
 	protected ItemService itemService;

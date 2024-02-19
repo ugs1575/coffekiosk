@@ -18,7 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.order.api.OrderApiController;
 import com.coffeekiosk.coffeekiosk.controller.order.api.dto.request.OrderSaveRequest;
 import com.coffeekiosk.coffeekiosk.docs.order.OrderDocumentation;
@@ -28,7 +28,7 @@ import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderItemResponse;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 @WebMvcTest(controllers = OrderApiController.class)
-class OrderApiControllerTest extends RestDocsSupport {
+class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@MockBean
 	protected RedissonLockOrderFacade orderFacade;

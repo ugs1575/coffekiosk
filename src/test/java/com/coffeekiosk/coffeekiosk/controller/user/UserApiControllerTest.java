@@ -12,14 +12,14 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.user.api.UserApiController;
 import com.coffeekiosk.coffeekiosk.docs.user.UserDocumentation;
 import com.coffeekiosk.coffeekiosk.service.user.UserService;
 import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
 
 @WebMvcTest(controllers = UserApiController.class)
-class UserApiControllerTest extends RestDocsSupport {
+class UserApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@MockBean
 	protected UserService userService;
