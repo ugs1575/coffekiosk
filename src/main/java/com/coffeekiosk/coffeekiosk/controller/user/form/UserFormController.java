@@ -18,7 +18,7 @@ public class UserFormController {
 
 	private final UserService userService;
 
-	@GetMapping("/user/detail")
+	@GetMapping("/me")
 	public String findUser(Model model, @LoginUser SessionUser sessionUser) {
 		try {
 			UserResponse user = userService.findUser(sessionUser);
