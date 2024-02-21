@@ -1,7 +1,8 @@
 package com.coffeekiosk.coffeekiosk.controller.user.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,12 @@ public class UserApiController {
 	@GetMapping("/me")
 	public ApiResponse<UserResponse> findUser(@LoginUser SessionUser user) {
 		UserResponse response = userService.findUser(user);
+		return ApiResponse.ok(response);
+	}
+
+	@PostMapping("/role")
+	public ApiResponse<UserResponse> updateUserRole(@LoginUser SessionUser user) {
+		UserResponse response = userService.updateRole(user);
 		return ApiResponse.ok(response);
 	}
 }

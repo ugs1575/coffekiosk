@@ -15,6 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.user.api.UserApiController;
 import com.coffeekiosk.coffeekiosk.docs.user.UserDocumentation;
+import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.service.user.UserService;
 import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
 
@@ -24,15 +25,16 @@ class UserApiControllerTest extends RestDocsAndSecuritySupport {
 	@MockBean
 	protected UserService userService;
 
-	@DisplayName("상품 상세정보를 조회한다.")
+	@DisplayName("사용자 상세정보를 조회한다.")
 	@Test
 	@WithMockUser(roles = "USER")
-	void findItem() throws Exception {
+	void getProfile() throws Exception {
 		//given
 		UserResponse response = UserResponse.builder()
 			.id(1L)
 			.name("우경서")
 			.point(10000)
+			.role(Role.USER)
 			.build();
 
 		when(userService.findUser(any())).thenReturn(response);
@@ -47,6 +49,32 @@ class UserApiControllerTest extends RestDocsAndSecuritySupport {
 			.andExpect(jsonPath("$.code").value("200"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(UserDocumentation.findUser());
+	}
+
+	@DisplayName("회원권한을 수정한다.")
+	@Test
+	@WithMockUser(roles = "USER")
+	void updateUserRole() throws Exception {
+		//given
+		UserResponse response = UserResponse.builder()
+			.id(1L)
+			.name("우경서")
+			.point(10000)
+			.role(Role.USER)
+			.build();
+
+		when(userService.updateRole(any())).thenReturn(response);
+
+		//when //then
+		mockMvc.perform(
+				RestDocumentationRequestBuilders.patch("/api/role")
+					.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.message").value("OK"))
+			.andDo(UserDocumentation.updateRole());
 	}
 
 }

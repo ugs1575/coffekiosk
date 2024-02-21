@@ -43,7 +43,6 @@ public class User extends BaseTimeEntity {
 	private String picture;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
 	private Role role;
 
 	@Column(nullable = false)
@@ -86,5 +85,9 @@ public class User extends BaseTimeEntity {
 		this.picture = picture;
 
 		return this;
+	}
+
+	public void updateRole(Role role) {
+		this.role = role;
 	}
 }
