@@ -22,7 +22,7 @@ public class UserService {
 
 	@Transactional
 	public UserResponse updateRole(SessionUser sessionUser) {
-		User user = findById(sessionUser);
+		User user = findById(sessionUser.getId());
 		if (user.getRole().equals(Role.USER)){
 			user.updateRole(Role.ADMIN);
 		} else {
@@ -33,12 +33,12 @@ public class UserService {
 	}
 
 	public UserResponse findUser(SessionUser sessionUser) {
-		User user = findById(sessionUser);
+		User user = findById(sessionUser.getId());
 		return UserResponse.of(user);
 	}
 
-	private User findById(SessionUser sessionUser) {
-		return userRepository.findById(sessionUser.getId())
+	private User findById(Long userId) {
+		return userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 	}
 }

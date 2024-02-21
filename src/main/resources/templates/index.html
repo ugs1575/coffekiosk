@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:replace="~{fragments/common :: head('홈')}"> </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="~{fragments/common :: menu('home')}"></nav>
@@ -9,11 +9,12 @@
                 <h1>Coffee Kiosk</h1>
                 <p class="lead">커피 주문 키오스크</p>
 
-                <div th:if="${userName} != null">
-                    Logged in as: <span th:text="${userName}"></span>
+                <div sec:authorize="isAuthenticated()">
+                    Logged in as: <span th:text="${user.name}"></span> (<span id="role" th:text="${user.role}"></span>)
                     <a href="/logout" class="btn btn-outline-dark">로그아웃</a>
+                    <button type="button" id="updateRole" class="btn btn-outline-primary">권한 변경 (사용자 <-> 관리자)</button>
                 </div>
-                <div th:if="${userName} == null">
+                <div sec:authorize="!isAuthenticated()">
                     <a href="/oauth2/authorization/google" class="btn btn-outline-primary">Google Login</a>
                     <a href="/oauth2/authorization/naver" class="btn btn-outline-success">Naver Login</a>
                 </div>
@@ -21,3 +22,30 @@
         </main>
     </body>
 </html>
+
+<script>
+$(document).ready(function(){
+    updateRole();
+});
+
+function updateRole() {
+    $("#updateRole").click(function(){
+        $.ajax({
+            type: "post",
+            url: "/api/role",
+            data:{},
+            success: (response)=>{
+                if (response.message == "OK") {
+                    alert("권한이 변경되었습니다.");
+                    $("#role").text(response.data.role);
+                } else {
+                    alert("권한이 변경이 정상처리 되지 않았습니다.");
+                }
+            },
+            error: (error)=>{
+                console.log(error.code);
+            }
+        })
+    })
+}
+</script>
