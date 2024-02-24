@@ -43,6 +43,6 @@ public class PointFormController {
 
 		pointFacade.savePoint(user, pointSaveForm.toServiceRequest());
 		redirectAttributes.addAttribute("userId", user.getId());
-		return "redirect:/user/{userId}";
+		return "redirect:/me";
 	}
 }
