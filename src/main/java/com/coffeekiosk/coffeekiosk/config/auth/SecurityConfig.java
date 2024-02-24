@@ -8,6 +8,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.coffeekiosk.coffeekiosk.domain.user.Role;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -27,11 +29,28 @@ public class SecurityConfig {
 				.requestMatchers(
 					new AntPathRequestMatcher("/"),
 					new AntPathRequestMatcher("/notice/**", HttpMethod.GET.name()),
+					new AntPathRequestMatcher("/api/notice/**", HttpMethod.GET.name()),
 					new AntPathRequestMatcher("/css/**"),
 					new AntPathRequestMatcher("/images/**"),
 					new AntPathRequestMatcher("/js/**"),
-					new AntPathRequestMatcher("/h2-console/**")
-				).permitAll()
+					new AntPathRequestMatcher("/h2-console/**")).permitAll()
+				.requestMatchers(
+					new AntPathRequestMatcher("/notice/**", HttpMethod.POST.name()),
+					new AntPathRequestMatcher("/api/notice/**", HttpMethod.POST.name()),
+					new AntPathRequestMatcher("/api/notice/**", HttpMethod.PATCH.name()),
+					new AntPathRequestMatcher("/api/notice/**", HttpMethod.DELETE.name()),
+					new AntPathRequestMatcher("/item/**"),
+					new AntPathRequestMatcher("/api/items/**")
+					).hasRole(Role.ADMIN.name())
+				.requestMatchers(
+					new AntPathRequestMatcher("/cart/**"),
+					new AntPathRequestMatcher("/api/carts/**"),
+					new AntPathRequestMatcher("/menu/**"),
+					new AntPathRequestMatcher("/order/**"),
+					new AntPathRequestMatcher("/api/orders/**"),
+					new AntPathRequestMatcher("/point/**"),
+					new AntPathRequestMatcher("/api/points/**")
+				).hasRole(Role.USER.name())
 				.anyRequest().authenticated()
 			.and()
 				.formLogin()
@@ -39,6 +58,9 @@ public class SecurityConfig {
 			.and()
 				.logout()
 					.logoutSuccessUrl("/")
+			.and()
+				.exceptionHandling()
+					.accessDeniedPage("/access-denied")
 			.and()
 				.oauth2Login()
 					.userInfoEndpoint()
