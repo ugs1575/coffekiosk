@@ -13,7 +13,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
@@ -22,6 +23,7 @@ import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
 import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
+import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
@@ -81,7 +83,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when
-		Long orderId = orderFacade.order(user.getId(), request, orderDateTime);
+		Long orderId = orderFacade.order(new SessionUser(savedUser), request, orderDateTime);
 
 		//then
 		assertThat(orderId).isNotNull();
@@ -90,7 +92,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 		assertThat(users).hasSize(1)
 			.extracting("id", "point")
 			.containsExactlyInAnyOrder(
-				tuple(user.getId(), 6000)
+				tuple(savedUser.getId(), 6000)
 			);
 
 		List<Cart> carts = cartRepository.findAll();
@@ -118,7 +120,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 			.build();
 
 		//when //then
-		assertThatThrownBy(() -> orderFacade.order(user.getId(), request, orderDateTime))
+		assertThatThrownBy(() -> orderFacade.order(new SessionUser(savedUser), request, orderDateTime))
 			.isInstanceOf(BusinessException.class)
 			.hasMessage("현재 가지고 있는 포인트가 주문 금액보다 적습니다.");
 
@@ -150,7 +152,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 						.cartIdList(List.of(savedCart.getId()))
 						.build();
 
-					orderFacade.order(user.getId(), request, orderDateTime);
+					orderFacade.order(new SessionUser(savedUser), request, orderDateTime);
 				} finally {
 					latch.countDown();
 				}
@@ -175,7 +177,9 @@ class OrderServiceTest extends IntegrationTestSupport {
 
 	private User createUser(int point) {
 		return User.builder()
+			.email("test@coffeekiosk.com")
 			.name("우경서")
+			.role(Role.USER)
 			.point(point)
 			.build();
 	}

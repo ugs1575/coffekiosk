@@ -16,8 +16,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.test.context.support.WithMockUser;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.order.api.OrderApiController;
 import com.coffeekiosk.coffeekiosk.controller.order.api.dto.request.OrderSaveRequest;
 import com.coffeekiosk.coffeekiosk.docs.order.OrderDocumentation;
@@ -27,7 +28,7 @@ import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderItemResponse;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 @WebMvcTest(controllers = OrderApiController.class)
-class OrderApiControllerTest extends RestDocsSupport {
+class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@MockBean
 	protected RedissonLockOrderFacade orderFacade;
@@ -37,6 +38,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품을 주문한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createOrder() throws Exception {
 		//given
 		OrderSaveRequest request = OrderSaveRequest.builder()
@@ -47,7 +49,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/api/users/{userId}/orders", 1L)
+				RestDocumentationRequestBuilders.post("/api/orders")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -55,12 +57,13 @@ class OrderApiControllerTest extends RestDocsSupport {
 			.andExpect(status().isCreated())
 			.andExpect(jsonPath("$.code").value("201"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
-			.andExpect(header().string("Location", "/api/users/1/orders/1"))
+			.andExpect(header().string("Location", "/api/orders/1"))
 			.andDo(OrderDocumentation.createOrder());
 	}
 
 	@DisplayName("상품 주문시 주문 목록은 필수 값이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createOrderWithoutOrderList() throws Exception {
 		//given
 		OrderSaveRequest request = OrderSaveRequest.builder()
@@ -69,7 +72,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/orders", 1L)
+				post("/api/orders")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -83,6 +86,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 주문시 주문 목록에 담긴 장바구니 ID는 null이 아니어야 한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createOrderByNull() throws Exception {
 		//given
 		List<Long> orderList = new ArrayList();
@@ -94,7 +98,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/orders", 1L)
+				post("/api/orders")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -108,6 +112,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 주문시 주문 목록은 값은 양수여야 한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createOrderByNegativeNumber() throws Exception {
 		//given
 		List<Long> orderList = new ArrayList();
@@ -119,7 +124,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/orders", 1L)
+				post("/api/orders")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -133,6 +138,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 	
 	@DisplayName("주문 상세내역을 조회한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findOrder() throws Exception {
 		//given
 		OrderItemResponse orderItemResponse = OrderItemResponse.builder()
@@ -154,7 +160,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/api/users/{userId}/orders/{orderId}", 1L, 1L)
+				RestDocumentationRequestBuilders.get("/api/orders/{orderId}", 1L)
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
@@ -167,6 +173,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 목록 조회을 조회할 수 있다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findOrders() throws Exception {
 		//given
 		OrderItemResponse orderItemResponse = OrderItemResponse.builder()
@@ -190,7 +197,7 @@ class OrderApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/api/users/{userId}/orders", 1L)
+				RestDocumentationRequestBuilders.get("/api/orders")
 					.queryParam("endDate", "2023-11-21T00:00:00")
 					.queryParam("startDate", "2023-11-22T00:00:00")
 					.queryParam("page", "0")

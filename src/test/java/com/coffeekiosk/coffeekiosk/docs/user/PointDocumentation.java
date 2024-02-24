@@ -13,9 +13,6 @@ public class PointDocumentation {
 		return document("point/save",
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
-			pathParameters(
-				parameterWithName("userId").description("사용자 ID")
-			),
 			requestFields(
 				fieldWithPath("amount").type(JsonFieldType.NUMBER).description("충전 금액")
 			),

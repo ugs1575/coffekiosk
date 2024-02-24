@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:fragment="head(title)">
         <!-- Required meta tags -->
         <meta charset="utf-8" />
@@ -15,8 +15,8 @@
         />
         <!-- Custom styles for this template -->
         <link
-            href="starter-template.css"
-            th:href="@{/starter-template.css}"
+            href="/css/starter-template.css"
+            th:href="@{/css/starter-template.css}"
             rel="stylesheet"
         />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -50,32 +50,32 @@
                             <span class="sr-only" th:if="${menu} == 'notice'">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item" th:classappend="${menu} == 'item'? 'active'">
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')" th:classappend="${menu} == 'item'? 'active'">
                         <a class="nav-link" th:href="@{/item/list}">상품관리
                             <span class="sr-only" th:if="${menu} == 'item'">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item" th:classappend="${menu} == 'order'? 'active'">
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')" th:classappend="${menu} == 'order'? 'active'">
                         <a class="nav-link" th:href="@{/menu/list}">주문하기
                             <span class="sr-only" th:if="${menu} == 'order'">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item" th:classappend="${menu} == 'cart'? 'active'">
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')" th:classappend="${menu} == 'cart'? 'active'">
                         <a class="nav-link" th:href="@{/cart/list}">장바구니
                             <span class="sr-only" th:if="${menu} == 'cart'">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item" th:classappend="${menu} == 'orderHistory'? 'active'">
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')" th:classappend="${menu} == 'orderHistory'? 'active'">
                         <a class="nav-link" th:href="@{/order/history}">주문내역
                             <span class="sr-only" th:if="${menu} == 'orderHistory'">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item" th:classappend="${menu} == 'user'? 'active'">
-                        <a class="nav-link" th:href="@{/user/detail}">내정보
+                    <li class="nav-item" sec:authorize="isAuthenticated()" th:classappend="${menu} == 'user'? 'active'">
+                        <a class="nav-link" th:href="@{/me}">내정보
                             <span class="sr-only" th:if="${menu} == 'user'">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item" th:classappend="${menu} == 'point'? 'active'">
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_USER')" th:classappend="${menu} == 'point'? 'active'">
                         <a class="nav-link" th:href="@{/point/save}">포인트 충전
                             <span class="sr-only" th:if="${menu} == 'point'">(current)</span>
                         </a>

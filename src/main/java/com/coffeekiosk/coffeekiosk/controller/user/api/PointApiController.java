@@ -7,22 +7,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
+import com.coffeekiosk.coffeekiosk.config.auth.LoginUser;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.controller.user.api.dto.request.PointSaveRequest;
 import com.coffeekiosk.coffeekiosk.service.user.PointService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api/users/{userId}")
+@RequestMapping("/api/points")
 @RequiredArgsConstructor
 @RestController
 public class PointApiController {
 
 	private final PointService pointService;
 
-	@PostMapping("/points")
-	public ApiResponse<Void> savePoint(@PathVariable Long userId, @RequestBody @Valid PointSaveRequest request) {
-		pointService.savePoint(userId, request.toServiceRequest());
+	@PostMapping
+	public ApiResponse<Void> savePoint(@LoginUser SessionUser user, @RequestBody @Valid PointSaveRequest request) {
+		pointService.savePoint(user, request.toServiceRequest());
 		return ApiResponse.noContent();
 	}
 

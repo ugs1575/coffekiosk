@@ -14,9 +14,6 @@ public class NoticeDocumentation {
 		return document("notice/create",
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
-			pathParameters(
-				parameterWithName("userId").description("사용자 ID")
-			),
 			requestFields(
 				fieldWithPath("title").type(JsonFieldType.STRING).description("공지사항 제목"),
 				fieldWithPath("content").type(JsonFieldType.STRING).description("공지사항 내용").optional()

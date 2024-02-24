@@ -1,26 +1,35 @@
 package com.coffeekiosk.coffeekiosk.controller.user.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
+import com.coffeekiosk.coffeekiosk.config.auth.LoginUser;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.service.user.UserService;
 import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
 
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @RestController
 public class UserApiController {
 
 	private final UserService userService;
 
-	@GetMapping("/{userId}")
-	public ApiResponse<UserResponse> findUser(@PathVariable Long userId) {
-		UserResponse response = userService.findUser(userId);
+	@GetMapping("/me")
+	public ApiResponse<UserResponse> findUser(@LoginUser SessionUser user) {
+		UserResponse response = userService.findUser(user);
+		return ApiResponse.ok(response);
+	}
+
+	@PostMapping("/role")
+	public ApiResponse<UserResponse> updateUserRole(@LoginUser SessionUser user) {
+		UserResponse response = userService.updateRole(user);
 		return ApiResponse.ok(response);
 	}
 }

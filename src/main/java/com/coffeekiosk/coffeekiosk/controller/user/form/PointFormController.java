@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.coffeekiosk.coffeekiosk.config.auth.LoginUser;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.controller.item.form.dto.request.ItemSaveForm;
 import com.coffeekiosk.coffeekiosk.controller.user.form.dto.request.PointSaveForm;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockPointFacade;
@@ -29,15 +31,18 @@ public class PointFormController {
 	}
 
 	@PostMapping("/point/save")
-	public String savePoint(@Valid PointSaveForm pointSaveForm, BindingResult result, RedirectAttributes redirectAttributes) {
-		Long userId = 1L;
-
+	public String savePoint(
+		@LoginUser SessionUser user,
+		@Valid PointSaveForm pointSaveForm,
+		BindingResult result,
+		RedirectAttributes redirectAttributes
+	) {
 		if (result.hasErrors()) {
 			return "point/createForm";
 		}
 
-		pointFacade.savePoint(userId, pointSaveForm.toServiceRequest());
-		redirectAttributes.addAttribute("userId", userId);
+		pointFacade.savePoint(user, pointSaveForm.toServiceRequest());
+		redirectAttributes.addAttribute("userId", user.getId());
 		return "redirect:/user/{userId}";
 	}
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.domain.notice.Notice;
 import com.coffeekiosk.coffeekiosk.domain.notice.NoticeRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
@@ -35,8 +36,8 @@ public class NoticeService {
 
 	@CacheEvict(key = "'all'")
 	@Transactional
-	public NoticeResponse createNotice(Long userId, NoticeSaveUpdateServiceRequest request, LocalDateTime registeredDateTime) {
-		User user = findUser(userId);
+	public NoticeResponse createNotice(SessionUser sessionUser, NoticeSaveUpdateServiceRequest request, LocalDateTime registeredDateTime) {
+		User user = findUser(sessionUser.getId());
 
 		Notice notice = request.toEntity(user, registeredDateTime);
 		Notice savedNotice = noticeRepository.save(notice);

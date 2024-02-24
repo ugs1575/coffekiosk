@@ -38,3 +38,6 @@ out/
 
 ### p6spy ###
 spy.log
+
+### oauth ###
+application-oauth.properties

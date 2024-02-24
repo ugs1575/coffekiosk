@@ -9,6 +9,8 @@ import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +21,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@SQLDelete(sql = "UPDATE member SET deleted = true WHERE member_id=?")
+@SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,15 +37,31 @@ public class User extends BaseTimeEntity {
 	private String name;
 
 	@Column(nullable = false)
+	private String email;
+
+	@Column
+	private String picture;
+
+	@Enumerated(EnumType.STRING)
+	private Role role;
+
+	@Column(nullable = false)
 	private int point;
 
 	@Column(columnDefinition = "boolean default false")
 	private boolean deleted;
 
 	@Builder
-	private User(String name, int point) {
+	private User(String name, String email, String picture, Role role, int point) {
 		this.name = name;
+		this.email = email;
+		this.picture = picture;
+		this.role = role;
 		this.point = point;
+	}
+
+	public String getRoleKey() {
+		return this.role.getKey();
 	}
 
 	public void savePoint(int amount) {
@@ -60,5 +78,16 @@ public class User extends BaseTimeEntity {
 
 	public boolean isMoreThanCurrentPoint(int totalPrice) {
 		return totalPrice > point;
+	}
+
+	public User update(String name, String picture) {
+		this.name = name;
+		this.picture = picture;
+
+		return this;
+	}
+
+	public void updateRole(Role role) {
+		this.role = role;
 	}
 }

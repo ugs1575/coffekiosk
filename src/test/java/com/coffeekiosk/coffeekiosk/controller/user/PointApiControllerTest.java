@@ -10,21 +10,23 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.test.context.support.WithMockUser;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.user.api.PointApiController;
 import com.coffeekiosk.coffeekiosk.controller.user.api.dto.request.PointSaveRequest;
 import com.coffeekiosk.coffeekiosk.docs.user.PointDocumentation;
 import com.coffeekiosk.coffeekiosk.service.user.PointService;
 
 @WebMvcTest(controllers = PointApiController.class)
-class PointApiControllerTest extends RestDocsSupport {
+class PointApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@MockBean
 	protected PointService pointService;
 
 	@DisplayName("포인트를 충전한다")
 	@Test
+	@WithMockUser(roles = "USER")
 	void savePoint() throws Exception {
 	    //given
 		PointSaveRequest request = PointSaveRequest.builder()
@@ -33,7 +35,7 @@ class PointApiControllerTest extends RestDocsSupport {
 
 	    //when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/api/users/{userId}/points", 1L)
+				RestDocumentationRequestBuilders.post("/api/points")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -46,6 +48,7 @@ class PointApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("최소 포인트 충전 금액은 10000원이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void savePointLessThanMinimum() throws Exception {
 		//given
 		PointSaveRequest request = PointSaveRequest.builder()
@@ -54,7 +57,7 @@ class PointApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/points", 1L)
+				post("/api/points")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -68,6 +71,7 @@ class PointApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("최대 포인트 충전 금액은 550000원이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void savePointMoreThanMaximum() throws Exception {
 		//given
 		PointSaveRequest request = PointSaveRequest.builder()
@@ -76,7 +80,7 @@ class PointApiControllerTest extends RestDocsSupport {
 
 		//when //then
 		mockMvc.perform(
-				post("/api/users/{userId}/points", 1L)
+				post("/api/points")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)

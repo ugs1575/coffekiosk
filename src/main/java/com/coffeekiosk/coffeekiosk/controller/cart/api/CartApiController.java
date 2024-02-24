@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
+import com.coffeekiosk.coffeekiosk.config.auth.LoginUser;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.controller.cart.api.dto.request.CartSaveRequest;
 import com.coffeekiosk.coffeekiosk.service.cart.CartService;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
@@ -18,7 +20,7 @@ import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RequestMapping("/api/users/{userId}/carts")
+@RequestMapping("/api/carts")
 @RequiredArgsConstructor
 @RestController
 public class CartApiController {
@@ -26,19 +28,19 @@ public class CartApiController {
 	private final CartService cartService;
 
 	@PostMapping
-	public ApiResponse<CartResponse> updateCartItem(@PathVariable Long userId, @RequestBody @Valid CartSaveRequest request) {
-		CartResponse response = cartService.updateCartItem(userId, request.toServiceRequest());
+	public ApiResponse<CartResponse> updateCartItem(@LoginUser SessionUser user, @RequestBody @Valid CartSaveRequest request) {
+		CartResponse response = cartService.updateCartItem(user, request.toServiceRequest());
 		return ApiResponse.ok(response);
 	}
 	@DeleteMapping("/{cartId}")
-	public ApiResponse<Void> deleteCartItem(@PathVariable Long userId, @PathVariable Long cartId) {
-		cartService.deleteCartItem(cartId, userId);
+	public ApiResponse<Void> deleteCartItem(@LoginUser SessionUser user, @PathVariable Long cartId) {
+		cartService.deleteCartItem(cartId, user);
 		return ApiResponse.noContent();
 	}
 
 	@GetMapping
-	public ApiResponse<List<CartResponse>> findCartItems(@PathVariable Long userId) {
-		List<CartResponse> response = cartService.findCartItems(userId);
+	public ApiResponse<List<CartResponse>> findCartItems(@LoginUser SessionUser user) {
+		List<CartResponse> response = cartService.findCartItems(user);
 		return ApiResponse.ok(response);
 	}
 }

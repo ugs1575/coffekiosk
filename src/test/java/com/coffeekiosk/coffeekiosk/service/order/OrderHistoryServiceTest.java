@@ -9,9 +9,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
-import com.coffeekiosk.coffeekiosk.IntegrationTestSupport;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
@@ -20,9 +22,9 @@ import com.coffeekiosk.coffeekiosk.domain.order.OrderRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
+import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
-import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 class OrderHistoryServiceTest extends IntegrationTestSupport {
@@ -56,7 +58,7 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 	void findOrderById() {
 		//given
 		User user = createUser(10000);
-		userRepository.save(user);
+		User savedUser = userRepository.save(user);
 
 		Item item1 = createItem("카페라떼", 5000);
 		Item item2 = createItem("아메리카노", 4500);
@@ -71,7 +73,7 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 		Order savedOrder = orderRepository.save(order);
 
 		//when
-		OrderResponse orderResponse = orderHistoryService.findOrder(order.getId(), user.getId());
+		OrderResponse orderResponse = orderHistoryService.findOrder(order.getId(), new SessionUser(savedUser));
 
 		//then
 		assertThat(orderResponse)
@@ -114,10 +116,48 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 		PageRequest pageRequest = PageRequest.of(0, 3);
 
 		//when
-		List<OrderResponse> orderResponses = orderHistoryService.findOrders(user.getId(), pageRequest);
+		List<OrderResponse> orderResponses = orderHistoryService.findOrders(new SessionUser(user), pageRequest);
 
 		//then
 		assertThat(orderResponses)
+			.extracting("id", "orderDateTime")
+			.containsExactly(
+				tuple(order2.getId(), orderDateTime2),
+				tuple(order1.getId(), orderDateTime1)
+			);
+	}
+
+	@DisplayName("최근 3년 내 주문 목록을 페이징 하여 최신 순으로 조회한다.")
+	@Test
+	void findFormPagedOrders() {
+		//given
+		User user = createUser(30000);
+		userRepository.save(user);
+
+		Item item = createItem("카페라떼", 5000);
+		itemRepository.save(item);
+
+		LocalDateTime orderDateTime1 = LocalDateTime.of(2023, 11, 21, 0, 0);
+		OrderItem orderItem1 = createOrderItem(item, 1);
+		Order order1 = createOrder(user, List.of(orderItem1), orderDateTime1);
+
+		LocalDateTime orderDateTime2 = LocalDateTime.of(2023, 12, 1, 0, 0);
+		OrderItem orderItem2 = createOrderItem(item, 1);
+		Order order2 = createOrder(user, List.of(orderItem2), orderDateTime2);
+
+		LocalDateTime orderDateTime3 = LocalDateTime.of(2018, 12, 21, 0, 0);
+		OrderItem orderItem3 = createOrderItem(item, 1);
+		Order order3 = createOrder(user, List.of(orderItem3), orderDateTime3);
+
+		orderRepository.saveAll(List.of(order1, order2, order3));
+
+		PageRequest pageRequest = PageRequest.of(0, 3);
+
+		//when
+		Page<OrderResponse> pagedOrders = orderHistoryService.findPageOrders(new SessionUser(user), pageRequest);
+
+		//then
+		assertThat(pagedOrders)
 			.extracting("id", "orderDateTime")
 			.containsExactly(
 				tuple(order2.getId(), orderDateTime2),
@@ -151,7 +191,9 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 
 	private User createUser(int point) {
 		return User.builder()
+			.email("test@coffeekiosk.com")
 			.name("우경서")
+			.role(Role.USER)
 			.point(point)
 			.build();
 	}

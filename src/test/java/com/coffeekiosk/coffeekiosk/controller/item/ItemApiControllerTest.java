@@ -14,8 +14,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.test.context.support.WithMockUser;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.controller.item.api.ItemApiController;
 import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemSaveRequest;
 import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemUpdateRequest;
@@ -25,13 +26,14 @@ import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
 @WebMvcTest(controllers = ItemApiController.class)
-class ItemApiControllerTest extends RestDocsSupport {
+class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@MockBean
 	protected ItemService itemService;
 
 	@DisplayName("상품을 등록한다")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createItem() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -58,6 +60,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 등록 시 상품 이름은 필수값이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createItemWithoutName() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -81,6 +84,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createItemWithEmptyName() throws Exception {
 		ItemSaveRequest request = ItemSaveRequest.builder()
 			.name("")
@@ -105,6 +109,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 등록 시 상품 타입은 필수값이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createItemWithoutItemType() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -128,6 +133,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 등록 시 상품 타입은 최소1글자 이상입니다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createItemWithEmptyType() throws Exception {
 		ItemSaveRequest request = ItemSaveRequest.builder()
 			.name("카페라떼")
@@ -152,6 +158,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 등록 시 상품 타입은 유효한 타입이어야합니다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createItemWithInvalidType() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -174,6 +181,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 등록 시 상품 가격은 최소 1원입니다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void createItemWithoutPrice() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -198,6 +206,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품을 수정한다")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateItem() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -221,6 +230,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 수정 시 상품 이름은 필수값이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateItemWithoutName() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -244,6 +254,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateItemWithEmptyName() throws Exception {
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
 			.name("")
@@ -268,6 +279,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 수정 시 상품 타입은 필수값이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateItemWithoutItemType() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -291,6 +303,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 수정 시 상품 타입은 최소1글자 이상입니다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateItemWithEmptyType() throws Exception {
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
 			.name("카페라떼")
@@ -315,6 +328,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 수정 시 상품 타입은 유효한 타입이어야합니다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateItemWithInvalidType() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -337,6 +351,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 수정 시 상품 가격은 양수여야합니다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void updateItemWithoutPrice() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -361,6 +376,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품을 삭제한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void deleteItem() throws Exception {
 		//when //then
 		mockMvc.perform(
@@ -376,6 +392,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 목록을 조회한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findItems() throws Exception {
 		//given
 		ItemResponse itemResponse = ItemResponse.builder()
@@ -409,6 +426,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 목록 검색 시 검색 조건은 빈값으로 검색할 수 있다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findItemsWithEmptySearchConditions() throws Exception {
 		//given
 		List<ItemResponse> result = List.of();
@@ -431,6 +449,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 타입으로 목록 검색 시 유효하지 않은 타입으로 검색할 수 없다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findItemsWithEmptyType() throws Exception {
 		//when //then
 		mockMvc.perform(
@@ -446,6 +465,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 목록 최대 요청 사이즈는 100이다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findItemsMaxValue() throws Exception {
 		//when //then
 		mockMvc.perform(
@@ -463,6 +483,7 @@ class ItemApiControllerTest extends RestDocsSupport {
 
 	@DisplayName("상품 상세정보를 조회한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void findItem() throws Exception {
 		//given
 		ItemResponse itemResponse = ItemResponse.builder()

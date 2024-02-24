@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.LoginUser;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.controller.notice.form.dto.request.NoticeSaveForm;
 import com.coffeekiosk.coffeekiosk.controller.notice.form.dto.request.NoticeUpdateForm;
 import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
@@ -57,14 +59,17 @@ public class NoticeFormController {
 	}
 
 	@PostMapping("/notice/new")
-	public String create(@Valid NoticeSaveForm noticeSaveForm, BindingResult result, RedirectAttributes redirectAttributes) {
-		Long userId = 1L;
-
+	public String create (
+		@LoginUser SessionUser sessionUser,
+		@Valid NoticeSaveForm noticeSaveForm,
+		BindingResult result,
+		RedirectAttributes redirectAttributes
+	) {
 		if (result.hasErrors()) {
 			return "notice/createForm";
 		}
 
-		NoticeResponse notice = noticeService.createNotice(userId, noticeSaveForm.toServiceRequest(),
+		NoticeResponse notice = noticeService.createNotice(sessionUser, noticeSaveForm.toServiceRequest(),
 			LocalDateTime.now());
 		redirectAttributes.addAttribute("noticeId", notice.getId());
 		return "redirect:/notice/{noticeId}";

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:replace="~{fragments/common :: head('게시판')}"> </head>
     <body>
         <nav
@@ -23,10 +23,10 @@
                     <input type="text" class="form-control" th:field="*{registeredDateTime}" disabled/>
                 </div>
                 <div class="text-center">
-                    <a type="button" class="btn btn-primary" th:href="@{/notice/{noticeId}/edit(noticeId=*{id})}">
+                    <a type="button" sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" th:href="@{/notice/{noticeId}/edit(noticeId=*{id})}">
                         수정
                     </a>
-                    <button type="submit" class="btn btn-danger">
+                    <button sec:authorize="hasRole('ROLE_ADMIN')" type="submit" class="btn btn-danger">
                         삭제
                     </button>
                     <a type="button" class="btn btn-secondary" th:href="@{/notice/list}">

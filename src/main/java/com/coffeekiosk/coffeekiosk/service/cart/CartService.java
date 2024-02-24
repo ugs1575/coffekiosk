@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
 import com.coffeekiosk.coffeekiosk.domain.cart.Carts;
@@ -28,11 +29,11 @@ public class CartService {
 	private final CartRepository cartRepository;
 
 	@Transactional
-	public CartResponse updateCartItem(Long userId, CartSaveServiceRequest request) {
+	public CartResponse updateCartItem(SessionUser sessionUser, CartSaveServiceRequest request) {
 		Item item = findItem(request.getItemId());
-		User user = findUser(userId);
+		User user = findUser(sessionUser.getId());
 
-		List<Cart> cartItems = cartRepository.findByUserIdFetchJoin(userId);
+		List<Cart> cartItems = cartRepository.findByUserIdFetchJoin(user.getId());
 		Carts carts = new Carts(cartItems);
 
 		if (carts.isOverMaxOrderCount(request.getCount())) {
@@ -50,12 +51,12 @@ public class CartService {
 	}
 
 	@Transactional
-	public void deleteCartItem(Long id, Long userId) {
-		cartRepository.deleteByIdAndUserId(id, userId);
+	public void deleteCartItem(Long id, SessionUser sessionUser) {
+		cartRepository.deleteByIdAndUserId(id, sessionUser.getId());
 	}
 
-	public List<CartResponse> findCartItems(Long userId) {
-		List<Cart> cartItems = cartRepository.findByUserIdFetchJoin(userId);
+	public List<CartResponse> findCartItems(SessionUser sessionUser) {
+		List<Cart> cartItems = cartRepository.findByUserIdFetchJoin(sessionUser.getId());
 		return CartResponse.listOf(cartItems);
 	}
 

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coffeekiosk.coffeekiosk.RestDocsSupport;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 
@@ -25,10 +26,11 @@ import jakarta.validation.Valid;
 
 @ContextConfiguration(classes = {GlobalExceptionHandlerTest.TestController.class, GlobalExceptionHandler.class})
 @WebMvcTest(controllers = GlobalExceptionHandlerTest.TestController.class)
-class GlobalExceptionHandlerTest extends RestDocsSupport {
+class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("request parameter 값이 누락될 경우 예외를 처리한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void handleMissingServletRequestParameterException() throws Exception {
 		mockMvc.perform(
 				get("/exception")
@@ -44,6 +46,7 @@ class GlobalExceptionHandlerTest extends RestDocsSupport {
 	
 	@DisplayName("request body 형식에 맞지 않을 경우 예외를 처리한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void handleHttpMessageNotReadableException() throws Exception {
 		String requestJson = "{\"id\":\"test\"}";
 
@@ -62,6 +65,7 @@ class GlobalExceptionHandlerTest extends RestDocsSupport {
 
 	@DisplayName("요청 값에 맞지 않는 타입이 들어올 경우 예외를 처리한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void handleMethodArgumentTypeMismatchException() throws Exception {
 		String input = "test";
 
@@ -79,6 +83,7 @@ class GlobalExceptionHandlerTest extends RestDocsSupport {
 
 	@DisplayName("잘못된 Http 메서드로 요청이 왔을 때 예외 처리한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void handleHttpRequestMethodNotSupportedException() throws Exception {
 		mockMvc.perform(delete("/exception"))
 			.andDo(print())
@@ -89,6 +94,7 @@ class GlobalExceptionHandlerTest extends RestDocsSupport {
 
 	@DisplayName("비즈니스 예외 처리한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void handleBusinessException() throws Exception {
 		mockMvc.perform(
 				get("/exception/1")
@@ -102,6 +108,7 @@ class GlobalExceptionHandlerTest extends RestDocsSupport {
 
 	@DisplayName("비즈니스 예외 이외의 예외를 처리한다.")
 	@Test
+	@WithMockUser(roles = "USER")
 	void handleException() throws Exception {
 		mockMvc.perform(
 				post("/exception")

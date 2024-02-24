@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coffeekiosk.coffeekiosk.common.dto.response.ApiResponse;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.LoginUser;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.controller.cart.form.dto.request.CartSaveForm;
 import com.coffeekiosk.coffeekiosk.controller.order.form.dto.request.OrderSaveForm;
 import com.coffeekiosk.coffeekiosk.service.cart.CartService;
@@ -31,13 +33,12 @@ public class CartFormController {
 	@ResponseBody
 	@PostMapping("/cart/add")
 	public ApiResponse<CartResponse> create(
+		@LoginUser SessionUser sessionUser,
 		@RequestParam Long itemId,
 		@RequestParam(defaultValue = "1") int count
 	) {
-		Long userId = 1L;
-
 		try {
-			CartResponse response = cartService.updateCartItem(userId, CartSaveForm.of(itemId, count).toServiceRequest());
+			CartResponse response = cartService.updateCartItem(sessionUser, CartSaveForm.of(itemId, count).toServiceRequest());
 			return ApiResponse.ok(response);
 		} catch (BusinessException e) {
 			return ApiResponse.of(HttpStatus.OK, e.getErrorCode().getCode(), null);
@@ -45,13 +46,11 @@ public class CartFormController {
 	}
 
 	@GetMapping("/cart/list")
-	public String update(Model model) {
-		Long userId = 1L;
-
-		List<CartResponse> carts = cartService.findCartItems(userId);
+	public String update(Model model, @LoginUser SessionUser sessionUser) {
+		List<CartResponse> carts = cartService.findCartItems(sessionUser);
 		model.addAttribute("cartItems", carts);
 
-		UserResponse user = userService.findUser(userId);
+		UserResponse user = userService.findUser(sessionUser);
 		model.addAttribute("user", user);
 
 		OrderSaveForm orderSaveForm = new OrderSaveForm();
@@ -66,9 +65,8 @@ public class CartFormController {
 
 	@ResponseBody
 	@PostMapping("/cart/delete")
-	public ApiResponse<Void> create(@RequestParam Long cartId) {
-		Long userId = 1L;
-		cartService.deleteCartItem(cartId, userId);
+	public ApiResponse<Void> create(@LoginUser SessionUser sessionUser, @RequestParam Long cartId) {
+		cartService.deleteCartItem(cartId, sessionUser);
 		return ApiResponse.noContent();
 	}
 }
