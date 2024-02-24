@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head th:replace="~{fragments/common :: head('게시판')}">
     </head>
     <body>
@@ -11,7 +11,7 @@
         <div class="container">
             <h1>공지사항 목록</h1>
             <form class="form-inline d-flex justify-content-end">
-                <a type="button" class="btn btn-light mb-2" th:href="@{/notice/new}">새 공지사항 등록</a>
+                <a type="button" sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-light mb-2" th:href="@{/notice/new}">새 공지사항 등록</a>
             </form>
             <table class="table">
                 <thead>
