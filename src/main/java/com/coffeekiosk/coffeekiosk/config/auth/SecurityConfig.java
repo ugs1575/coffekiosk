@@ -2,13 +2,11 @@ package com.coffeekiosk.coffeekiosk.config.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-
-import com.coffeekiosk.coffeekiosk.config.auth.CustomOAuth2UserService;
-import com.coffeekiosk.coffeekiosk.domain.user.Role;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,12 +26,12 @@ public class SecurityConfig {
 				.authorizeHttpRequests()
 				.requestMatchers(
 					new AntPathRequestMatcher("/"),
+					new AntPathRequestMatcher("/notice/**", HttpMethod.GET.name()),
 					new AntPathRequestMatcher("/css/**"),
 					new AntPathRequestMatcher("/images/**"),
 					new AntPathRequestMatcher("/js/**"),
 					new AntPathRequestMatcher("/h2-console/**")
 				).permitAll()
-				.requestMatchers(new AntPathRequestMatcher("/api/**")).hasRole(Role.USER.name())
 				.anyRequest().authenticated()
 			.and()
 				.formLogin()

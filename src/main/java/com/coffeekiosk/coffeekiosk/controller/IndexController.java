@@ -9,14 +9,12 @@ import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.service.user.UserService;
 import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
 
-	private final HttpSession httpSession;
 	private final UserService userService;
 
 	@GetMapping("/")

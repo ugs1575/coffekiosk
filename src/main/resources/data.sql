@@ -1,5 +1,5 @@
-insert into users(deleted, name, email, role, point, created_date, last_modified_date)
-values (false, '우경서', 'test@coffee.kiosk.com', 'GUEST', 10000, now(), now());
+insert into users(deleted, name, email, point, created_date, last_modified_date)
+values (false, '우경서', 'test@coffee.kiosk.com', 10000, now(), now());
 
 insert into items (item_type, name, price, last_modified_date_time, created_date, last_modified_date)
 values ('COFFEE', '카페라떼', 5000, now(), now(), now()),
