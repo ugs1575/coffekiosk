@@ -48,7 +48,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/api/carts", 1L)
+				RestDocumentationRequestBuilders.post("/api/carts")
 					.content(objectMapper.writeValueAsString(request))
 					.contentType(MediaType.APPLICATION_JSON)
 			)
@@ -93,7 +93,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 
 		//when //then
 		mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/api/carts", 1L)
+				RestDocumentationRequestBuilders.get("/api/carts")
 					.contentType(MediaType.APPLICATION_JSON)
 			)
 			.andDo(print())
