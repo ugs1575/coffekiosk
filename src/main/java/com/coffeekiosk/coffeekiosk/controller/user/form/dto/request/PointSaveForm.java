@@ -4,6 +4,7 @@ import com.coffeekiosk.coffeekiosk.service.user.dto.request.PointSaveServiceRequ
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PointSaveForm {
 
+	@NotNull(message = "충전 최소 금액은 필수입니다.")
 	@Min(value = 10000, message = "충전 최소 금액은 10000원 입니다.")
 	@Max(value = 550000, message = "충전 최대 금액은 550000원 입니다.")
 	private Integer amount;

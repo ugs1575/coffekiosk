@@ -10,7 +10,7 @@
             <form action="#" th:action="@{/point/save}" th:object="${pointSaveForm}" method="post">
                 <div class="form-group">
                     <label th:for="amount">1만원부터 55만원까지 충전 가능합니다.</label>
-                    <input type="number" maxlength='6' class="form-control" placeholder="충전금액"
+                    <input type="text" maxlength="6" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="form-control" placeholder="충전금액"
                             th:field="*{amount}"
                             th:classappend="${#fields.hasErrors('amount')} ? 'is-invalid'"/>
                     <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="invalid-feedback">
