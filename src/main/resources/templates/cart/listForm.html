@@ -1,171 +1,65 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{fragments/common :: head('게시판')}">
-    </head>
-    <body>
-        <nav
-            class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
-            th:replace="~{fragments/common :: menu('cart')}"
-        ></nav>
+<head th:replace="~{fragments/common :: head('게시판')}">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+     th:replace="~{fragments/common :: menu('cart')}"></nav>
 
-        <div class="container">
-            <h1>장바구니 목록</h1>
-            <div id="noItem" class="text-center" th:style="${cartItems.size() == 0 ? 'display:block' : 'display:none'}">
-                <h2 style="margin-bottom:50px;margin-top:50px" th:text="'장바구니가 비어있습니다.'"></h2>
-                <a type="button" class="btn btn-secondary" th:href="@{/menu/list}">
-                    주문하기
-                </a>
-            </div>
-            <form id="cartList" th:if="${cartItems.size() > 0}" th:object="${orderSaveForm}" class="form-inline d-flex justify-content-end" method="POST" th:action="@{/order}" onsubmit="return remindOrder();">
-                <input type="hidden" id="currentPoint" th:value="${user.point}" >
-                <div class="form-group mx-sm-3 mb-2">
-                    <p>현재 보유 포인트 : <span th:text="${user.point}"></span></p>
-                </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col"></th>
-                            <th scope="col">상품명</th>
-                            <th scope="col">가격</th>
-                            <th scope="col">수량</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="cart,cartStat : ${cartItems}">
-                            <input type="hidden" name="price" th:value="${cart.itemPrice}"/>
-                            <input type="hidden" name="count"  th:value="${cart.itemCount}"/>
-                            <td><input type="checkbox" th:field="*{cartIdList[__${cartStat.index}__]}" th:value="*{cartIdList[__${cartStat.index}__]}"></td>
-                            <td th:text="${cart.itemName}">커피</td>
-                            <td th:text="${cart.itemPrice}">1000</td>
-                            <td th:text="${cart.itemCount}">1</td>
-                            <td>
-                                <button type="button" onclick="deleteCartItem(this)" class="btn btn-outline-primary" th:value="${cart.id}">삭제</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="text-right">
-                    <p>총 결제 금액 : <span id="totalPrice"></span> 원</p>
-                    <p>총 주문 수량 : <span id="totalCount"></span> /20</p>
-                    <a type="button" class="btn btn-secondary" th:href="@{/menu/list}">
-                        취소
-                    </a>
-                    <button type="submit" id="order" class="btn btn-success">
-                        주문하기
-                    </button>
-                </div>
-            </form>
+<div class="container">
+    <h1>장바구니 목록</h1>
+    <div id="noItem" class="text-center" th:style="${cartItems.size() == 0 ? 'display:block' : 'display:none'}">
+        <h2 style="margin-bottom:50px;margin-top:50px" th:text="'장바구니가 비어있습니다.'"></h2>
+        <a type="button" class="btn btn-secondary" th:href="@{/menu/list}">
+            주문하기
+        </a>
+    </div>
+    <form id="cartList" th:if="${cartItems.size() > 0}" th:object="${orderSaveForm}" class="form-inline d-flex justify-content-end" method="POST" th:action="@{/order}">
+        <input type="hidden" id="currentPoint" th:value="${user.point}" >
+        <div class="form-group mx-sm-3 mb-2">
+            <p>현재 보유 포인트 : <span th:text="${user.point}"></span></p>
         </div>
-    </body>
-    <footer th:replace="~{fragments/common :: footer}"></footer>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">상품명</th>
+                <th scope="col">가격</th>
+                <th scope="col">수량</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cart,cartStat : ${cartItems}">
+                <input type="hidden" name="price" th:value="${cart.itemPrice}"/>
+                <input type="hidden" name="count"  th:value="${cart.itemCount}"/>
+                <td><input type="checkbox" th:field="*{cartIdList[__${cartStat.index}__]}" th:value="*{cartIdList[__${cartStat.index}__]}"></td>
+                <td th:text="${cart.itemName}">커피</td>
+                <td th:text="${cart.itemPrice}">1000</td>
+                <td th:text="${cart.itemCount}">1</td>
+                <td>
+                    <button type="button" name="deleteBtn" class="btn btn-outline-primary" th:value="${cart.id}">삭제</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="text-right">
+            <p>총 결제 금액 : <span id="totalPrice"></span> 원</p>
+            <p>총 주문 수량 : <span id="totalCount"></span> /20</p>
+            <a type="button" class="btn btn-secondary" th:href="@{/menu/list}">
+                취소
+            </a>
+            <button type="submit" id="order" class="btn btn-success">
+                주문하기
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+<footer th:replace="~{fragments/common :: footer}"></footer>
+<script src="/js/cart.js"></script>
+
 </html>
 
-
-<script>
-var totalPrice = 0;
-var totalCount = 0;
-
-$(document).ready(function(){
-    $("input:checkbox").removeAttr("checked");
-    $("#totalPrice").text(totalPrice);
-    $("#totalCount").text(totalCount);
-    disabledOrderButton()
-
-    checkboxEvent();
-});
-
-function checkboxEvent() {
-    $("input:checkbox").click( function(){
-        calculateTotalPriceAndCount();
-
-        if (!$(this).is(':checked')) {
-            disabledOrderButton();
-        }
-    });
-}
-
-function deleteCartItem(cart) {
-    var id = $(cart).val();
-    $.ajax({
-        type: "post",
-        url: "/cart/delete",
-        data: {
-            cartId: id
-        },
-        success: (fragment)=>{
-            $(cart).parent().parent().remove();
-            showEmptyCart();
-        },
-        error: (error)=>{
-            console.log(error);
-        }
-    })
-}
-
-function calculateTotalPriceAndCount() {
-    totalPrice = 0;
-    totalCount = 0;
-
-    $('input:checkbox').each(function (index) {
-        if($(this).is(":checked")==true){
-            var count = parseInt($(this).parent().prev().val());
-            var price = parseInt($(this).parent().prev().prev().val());
-
-            totalPrice += price*count;
-            totalCount += count;
-
-            $("#totalPrice").text(totalPrice);
-            $("#totalCount").text(totalCount);
-
-            activateOrderButton();
-        }
-    });
-
-}
-
-function showEmptyCart() {
-    var size = $("input[name=count]").length;
-    if (size != 0) {
-        calculateTotalPriceAndCount();
-        return;
-    }
-
-    $("#cartList").remove();
-    $("#noItem").css("display", "block");
-}
-
-function activateOrderButton() {
-    var currentPoint = $("#currentPoint").val();
-
-    if (currentPoint < totalPrice) {
-        $("#order").attr('disabled', 'disabled');
-    } else {
-        $("#order").removeAttr('disabled');
-    }
-
-}
-
-function disabledOrderButton() {
-    if ($('input:checkbox:checked').length > 0) {
-        return;
-    }
-
-    $("#order").attr('disabled', 'disabled');
-}
-
-function remindOrder() {
-    if ($('input:checkbox:checked').length == 0){
-        alert('선택된 상품이 없습니다.');
-        return false;
-    }
-
-    if (confirm("정말 주문하시겠습니까? 주문하시면 즉시 주문이 이루어지며 최소가 불가능합니다.")) {
-        return true;
-    }
-
-    return false;
-}
-</script>
 
 

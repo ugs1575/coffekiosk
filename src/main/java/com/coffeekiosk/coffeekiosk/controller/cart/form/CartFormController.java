@@ -62,11 +62,4 @@ public class CartFormController {
 		model.addAttribute("orderSaveForm", orderSaveForm);
 		return "cart/listForm";
 	}
-
-	@ResponseBody
-	@PostMapping("/cart/delete")
-	public ApiResponse<Void> create(@LoginUser SessionUser sessionUser, @RequestParam Long cartId) {
-		cartService.deleteCartItem(cartId, sessionUser);
-		return ApiResponse.noContent();
-	}
 }
