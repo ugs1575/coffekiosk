@@ -30,21 +30,6 @@ public class CartFormController {
 	private final CartService cartService;
 	private final UserService userService;
 
-	@ResponseBody
-	@PostMapping("/cart/add")
-	public ApiResponse<CartResponse> create(
-		@LoginUser SessionUser sessionUser,
-		@RequestParam Long itemId,
-		@RequestParam(defaultValue = "1") int count
-	) {
-		try {
-			CartResponse response = cartService.updateCartItem(sessionUser, CartSaveForm.of(itemId, count).toServiceRequest());
-			return ApiResponse.ok(response);
-		} catch (BusinessException e) {
-			return ApiResponse.of(HttpStatus.OK, e.getErrorCode().getCode(), null);
-		}
-	}
-
 	@GetMapping("/cart/list")
 	public String update(Model model, @LoginUser SessionUser sessionUser) {
 		List<CartResponse> carts = cartService.findCartItems(sessionUser);
