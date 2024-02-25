@@ -87,7 +87,7 @@ var cart = {
     calculateTotalPriceAndCount : function() {
         var totalPrice = 0;
         var totalCount = 0;
-        $('input:checkbox').each(function (index) {
+        $('input:checkbox').each(function () {
             if($(this).is(":checked")==true) {
                 var count = parseInt($(this).parent().prev().val());
                 var price = parseInt($(this).parent().prev().prev().val());
