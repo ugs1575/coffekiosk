@@ -20,7 +20,7 @@ public class ItemDocumentation {
 				fieldWithPath("price").type(JsonFieldType.NUMBER).description("상품가격")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -46,7 +46,7 @@ public class ItemDocumentation {
 				fieldWithPath("price").type(JsonFieldType.NUMBER).description("상품가격")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -63,7 +63,7 @@ public class ItemDocumentation {
 				parameterWithName("itemId").description("상품 ID")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -80,7 +80,7 @@ public class ItemDocumentation {
 				parameterWithName("itemId").description("상품 ID")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -110,7 +110,7 @@ public class ItemDocumentation {
 				parameterWithName("itemType").description("상품타입")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),

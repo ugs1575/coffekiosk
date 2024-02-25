@@ -33,7 +33,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품을 등록한다")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void createItem() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -52,7 +52,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.code").value("201"))
+			.andExpect(jsonPath("$.code").value("CREATED"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
 			.andExpect(header().string("Location", "/api/items/1"))
 			.andDo(ItemDocumentation.createItem());
@@ -60,7 +60,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 등록 시 상품 이름은 필수값이다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void createItemWithoutName() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -76,7 +76,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
@@ -84,7 +84,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void createItemWithEmptyName() throws Exception {
 		ItemSaveRequest request = ItemSaveRequest.builder()
 			.name("")
@@ -100,7 +100,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
@@ -109,7 +109,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 등록 시 상품 타입은 필수값이다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void createItemWithoutItemType() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -125,7 +125,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
@@ -133,7 +133,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 등록 시 상품 타입은 최소1글자 이상입니다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void createItemWithEmptyType() throws Exception {
 		ItemSaveRequest request = ItemSaveRequest.builder()
 			.name("카페라떼")
@@ -149,7 +149,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
@@ -158,7 +158,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 등록 시 상품 타입은 유효한 타입이어야합니다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void createItemWithInvalidType() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -175,13 +175,13 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("ITEM_TYPE_NOT_FOUND"))
 			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
 
 	@DisplayName("상품 등록 시 상품 가격은 최소 1원입니다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void createItemWithoutPrice() throws Exception {
 		//given
 		ItemSaveRequest request = ItemSaveRequest.builder()
@@ -198,7 +198,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 상품 가격은 1원입니다."));
@@ -206,7 +206,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품을 수정한다")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void updateItem() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -223,14 +223,14 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(ItemDocumentation.updateItem());
 	}
 
 	@DisplayName("상품 수정 시 상품 이름은 필수값이다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void updateItemWithoutName() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -246,7 +246,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
@@ -254,7 +254,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 등록 시 상품 이름은 최소1글자 이상이다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void updateItemWithEmptyName() throws Exception {
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
 			.name("")
@@ -270,7 +270,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 이름은 필수입니다."));
@@ -279,7 +279,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 수정 시 상품 타입은 필수값이다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void updateItemWithoutItemType() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -295,7 +295,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
@@ -303,7 +303,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 수정 시 상품 타입은 최소1글자 이상입니다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void updateItemWithEmptyType() throws Exception {
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
 			.name("카페라떼")
@@ -319,7 +319,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("itemType"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("상품 타입은 필수입니다."));
@@ -328,7 +328,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 수정 시 상품 타입은 유효한 타입이어야합니다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void updateItemWithInvalidType() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -345,13 +345,13 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("ITEM_TYPE_NOT_FOUND"))
 			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
 
 	@DisplayName("상품 수정 시 상품 가격은 양수여야합니다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void updateItemWithoutPrice() throws Exception {
 		//given
 		ItemUpdateRequest request = ItemUpdateRequest.builder()
@@ -368,7 +368,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("price"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("최소 상품 가격은 1원입니다."));
@@ -376,7 +376,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품을 삭제한다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void deleteItem() throws Exception {
 		//when //then
 		mockMvc.perform(
@@ -385,14 +385,14 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(ItemDocumentation.deleteItem());
 	}
 
 	@DisplayName("상품 목록을 조회한다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void findItems() throws Exception {
 		//given
 		ItemResponse itemResponse = ItemResponse.builder()
@@ -418,7 +418,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andExpect(jsonPath("$.data").isArray())
 			.andDo(ItemDocumentation.findItems());
@@ -426,7 +426,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 목록 검색 시 검색 조건은 빈값으로 검색할 수 있다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void findItemsWithEmptySearchConditions() throws Exception {
 		//given
 		List<ItemResponse> result = List.of();
@@ -442,14 +442,14 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andExpect(jsonPath("$.data").isArray());
 	}
 
 	@DisplayName("상품 타입으로 목록 검색 시 유효하지 않은 타입으로 검색할 수 없다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void findItemsWithEmptyType() throws Exception {
 		//when //then
 		mockMvc.perform(
@@ -459,13 +459,13 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("ITEM_TYPE_NOT_FOUND"))
 			.andExpect(jsonPath("$.message").value("유효하지 않는 상품 타입입니다."));
 	}
 
 	@DisplayName("상품 목록 최대 요청 사이즈는 100이다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void findItemsMaxValue() throws Exception {
 		//when //then
 		mockMvc.perform(
@@ -475,7 +475,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("findItems.pageSize"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("최대 페이지 사이즈는 100입니다."));
@@ -483,7 +483,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 
 	@DisplayName("상품 상세정보를 조회한다.")
 	@Test
-	@WithMockUser(roles = "USER")
+	@WithMockUser(roles = "ADMIN")
 	void findItem() throws Exception {
 		//given
 		ItemResponse itemResponse = ItemResponse.builder()
@@ -503,7 +503,7 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(ItemDocumentation.findItem());
 	}

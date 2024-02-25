@@ -41,7 +41,7 @@ class PointApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(PointDocumentation.savePoint());
 	}
@@ -63,7 +63,7 @@ class PointApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("amount"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("충전 최소 금액은 10000원 입니다."));
@@ -86,7 +86,7 @@ class PointApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("amount"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("충전 최대 금액은 550000원 입니다."));

@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommonResponse {
-	private int code;
+	private String code;
 	private String message;
 
-	public CommonResponse(HttpStatus status, String message) {
-		this.code = status.value();
+	public CommonResponse(String code, String message) {
+		this.code = code;
 		this.message = message;
 	}
 }

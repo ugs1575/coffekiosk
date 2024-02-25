@@ -11,29 +11,29 @@ import lombok.NoArgsConstructor;
 public class ApiResponse<T> extends CommonResponse {
 	private T data;
 
-	private ApiResponse(HttpStatus status, String message, T data) {
-		super(status, message);
+	private ApiResponse(String code, String message, T data) {
+		super(code, message);
 		this.data = data;
 	}
 
-	public static <T> ApiResponse<T> of(HttpStatus httpStatus, String message, T data) {
-		return new ApiResponse<>(httpStatus, message, data);
+	public static <T> ApiResponse<T> of(String code, String message, T data) {
+		return new ApiResponse<>(code, message, data);
 	}
 
-	public static <T> ApiResponse<T> of(HttpStatus httpStatus, T data) {
-		return of(httpStatus, httpStatus.name(), data);
+	public static <T> ApiResponse<T> of(String code, T data) {
+		return of(code, code, data);
 	}
 
 	public static <T> ApiResponse<T> ok(T data) {
-		return of(HttpStatus.OK, data);
+		return of(HttpStatus.OK.name(), data);
 	}
 
 	public static <T> ApiResponse<T> noContent() {
-		return of(HttpStatus.OK, null);
+		return of(HttpStatus.OK.name(), null);
 	}
 
 	public static <T> ApiResponse<T> created() {
-		return of(HttpStatus.CREATED, null);
+		return of(HttpStatus.CREATED.name(), null);
 	}
 
 }

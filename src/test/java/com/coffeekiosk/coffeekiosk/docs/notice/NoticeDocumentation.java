@@ -19,7 +19,7 @@ public class NoticeDocumentation {
 				fieldWithPath("content").type(JsonFieldType.STRING).description("공지사항 내용").optional()
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -44,7 +44,7 @@ public class NoticeDocumentation {
 				fieldWithPath("content").type(JsonFieldType.STRING).description("공지사항 내용").optional()
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -61,7 +61,7 @@ public class NoticeDocumentation {
 				parameterWithName("noticeId").description("공지사항 ID")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -78,7 +78,7 @@ public class NoticeDocumentation {
 				parameterWithName("noticeId").description("공지사항 ID")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -104,7 +104,7 @@ public class NoticeDocumentation {
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),

@@ -54,7 +54,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(CartDocumentation.updateCart());
 
@@ -71,7 +71,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(CartDocumentation.deleteCart());
 
@@ -98,7 +98,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andExpect(jsonPath("$.data").isArray())
 			.andDo(CartDocumentation.findCarts());

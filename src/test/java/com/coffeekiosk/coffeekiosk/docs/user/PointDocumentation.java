@@ -17,7 +17,7 @@ public class PointDocumentation {
 				fieldWithPath("amount").type(JsonFieldType.NUMBER).description("충전 금액")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),

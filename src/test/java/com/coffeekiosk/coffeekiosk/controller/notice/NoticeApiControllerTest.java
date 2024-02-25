@@ -56,7 +56,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.code").value("201"))
+			.andExpect(jsonPath("$.code").value("CREATED"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
 			.andExpect(header().string("Location", "/api/notices/1"))
 			.andDo(NoticeDocumentation.createNotice());
@@ -79,7 +79,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("title"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."));
@@ -103,7 +103,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(NoticeDocumentation.updateNotice());
 	}
@@ -125,7 +125,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("title"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("제목은 필수 입니다."));
@@ -143,7 +143,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(NoticeDocumentation.deleteNotice());
 	}
@@ -173,7 +173,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andExpect(jsonPath("$.data").isArray())
 			.andDo(NoticeDocumentation.findNotices());
@@ -202,7 +202,7 @@ class NoticeApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(NoticeDocumentation.findNotice());
 	}

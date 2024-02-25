@@ -38,7 +38,7 @@ class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("MISSING_REQUEST_PARAM"))
 			.andExpect(jsonPath("$.message").value("요청 파라미터를 누락하였습니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("요청 파라미터를 누락하였습니다."));
@@ -57,7 +57,7 @@ class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_JSON_FORMAT"))
 			.andExpect(jsonPath("$.message").value("JSON 형식이 잘못되었습니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("id"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("JSON 형식이 잘못되었습니다."));
@@ -75,7 +75,7 @@ class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_TYPE_VALUE"))
 			.andExpect(jsonPath("$.message").value("요청 값의 타입이 잘못되었습니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("id"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("요청 값의 타입이 잘못되었습니다."));
@@ -88,7 +88,7 @@ class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 		mockMvc.perform(delete("/exception"))
 			.andDo(print())
 			.andExpect(status().isMethodNotAllowed())
-			.andExpect(jsonPath("$.code").value("405"))
+			.andExpect(jsonPath("$.code").value("METHOD_NOT_ALLOWED"))
 			.andExpect(jsonPath("$.message").value("허용되지 않는 메서드입니다."));
 	}
 
@@ -102,7 +102,7 @@ class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isNotFound())
-			.andExpect(jsonPath("$.code").value("404"))
+			.andExpect(jsonPath("$.code").value("ENTITY_NOT_FOUND"))
 			.andExpect(jsonPath("$.message").value("해당 데이터를 찾을 수 없습니다."));
 	}
 
@@ -117,7 +117,7 @@ class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isInternalServerError())
-			.andExpect(jsonPath("$.code").value("500"))
+			.andExpect(jsonPath("$.code").value("INTERNAL_SERVER_ERROR"))
 			.andExpect(jsonPath("$.message").value("내부 서버 오류가 발생했습니다."));
 	}
 

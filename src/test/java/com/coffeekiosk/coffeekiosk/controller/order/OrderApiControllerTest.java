@@ -55,7 +55,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("$.code").value("201"))
+			.andExpect(jsonPath("$.code").value("CREATED"))
 			.andExpect(jsonPath("$.message").value("CREATED"))
 			.andExpect(header().string("Location", "/api/orders/1"))
 			.andDo(OrderDocumentation.createOrder());
@@ -78,7 +78,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("cartIdList"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("주문 목록은 필수입니다."));
@@ -104,7 +104,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("cartIdList[0]"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("장바구니 ID는 필수입니다."));
@@ -130,7 +130,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value("400"))
+			.andExpect(jsonPath("$.code").value("INVALID_INPUT_VALUE"))
 			.andExpect(jsonPath("$.message").value("적절하지 않은 요청 값입니다."))
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("cartIdList[0]"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("장바구니 ID는 양수입니다."));
@@ -165,7 +165,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(OrderDocumentation.findOrder());
 	    
@@ -206,7 +206,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.code").value("200"))
+			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andExpect(jsonPath("$.data").isArray())
 			.andDo(OrderDocumentation.findOrders());

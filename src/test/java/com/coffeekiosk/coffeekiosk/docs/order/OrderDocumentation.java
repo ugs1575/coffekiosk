@@ -18,7 +18,7 @@ public class OrderDocumentation {
 				fieldWithPath("cartIdList").type(JsonFieldType.ARRAY).description("주문 목록")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -39,7 +39,7 @@ public class OrderDocumentation {
 				parameterWithName("orderId").description("주문 ID")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -77,7 +77,7 @@ public class OrderDocumentation {
 				parameterWithName("endDate").description("주문 내역 검색 종료일 (yyyy-MM-dd'T'HH:mm:ss)")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),

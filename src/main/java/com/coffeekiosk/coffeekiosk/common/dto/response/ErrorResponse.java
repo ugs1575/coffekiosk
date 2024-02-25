@@ -23,17 +23,12 @@ public class ErrorResponse extends CommonResponse {
 	private List<FieldError> fieldErrors;
 
 	private ErrorResponse(ErrorCode errorCode, List<FieldError> fieldErrors) {
-		super(errorCode.getHttpStatus(), errorCode.getMessage());
+		super(errorCode.getCode(), errorCode.getMessage());
 		this.fieldErrors = fieldErrors;
 	}
 
 	private ErrorResponse(ErrorCode errorCode) {
-		super(errorCode.getHttpStatus(), errorCode.getMessage());
-		this.fieldErrors = new ArrayList<>();
-	}
-
-	private ErrorResponse(ErrorCode errorCode, String message) {
-		super(errorCode.getHttpStatus(), message);
+		super(errorCode.getCode(), errorCode.getMessage());
 		this.fieldErrors = new ArrayList<>();
 	}
 

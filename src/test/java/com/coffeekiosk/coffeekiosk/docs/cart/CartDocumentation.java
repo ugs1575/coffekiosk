@@ -18,7 +18,7 @@ public class CartDocumentation {
 				fieldWithPath("count").type(JsonFieldType.NUMBER).description("상품 수량")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -44,7 +44,7 @@ public class CartDocumentation {
 				parameterWithName("cartId").description("장바구니 ID")
 			),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -58,7 +58,7 @@ public class CartDocumentation {
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),

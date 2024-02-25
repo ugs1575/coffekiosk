@@ -15,7 +15,7 @@ public class UserDocumentation {
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
@@ -37,7 +37,7 @@ public class UserDocumentation {
 			preprocessRequest(prettyPrint()),
 			preprocessResponse(prettyPrint()),
 			responseFields(
-				fieldWithPath("code").type(JsonFieldType.NUMBER)
+				fieldWithPath("code").type(JsonFieldType.STRING)
 					.description("코드"),
 				fieldWithPath("message").type(JsonFieldType.STRING)
 					.description("메시지"),
