@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{fragments/common :: head('게시판')}"> </head>
+    <head th:replace="~{fragments/common :: head}"></head>
     <body>
-        <nav
-            class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
-            th:replace="~{fragments/common :: menu('user')}"
-        ></nav>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+            th:replace="~{fragments/common :: menu('user')}"></nav>
 
         <div class="container">
             <form th:object="${user}">

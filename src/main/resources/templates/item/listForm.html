@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{fragments/common :: head('게시판')}">
-    </head>
+    <head th:replace="~{fragments/common :: head}"></head>
     <body>
-        <nav
-            class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
-            th:replace="~{fragments/common :: menu('item')}"
-        ></nav>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+            th:replace="~{fragments/common :: menu('item')}"></nav>
 
         <div class="container">
             <h1>상품 목록</h1>
@@ -17,8 +14,7 @@
                     <label for="itemType" class="sr-only">검색</label>
                     <select class="form-control" id="itemType" name="itemType" th:field="*{itemType}">
                         <option value="">상품구분</option>
-                        <option th:each=
-                                        "type : ${T(com.coffeekiosk.coffeekiosk.domain.item.ItemType).values()}"
+                        <option th:each="type : ${T(com.coffeekiosk.coffeekiosk.domain.item.ItemType).values()}"
                                 th:value="${type}"
                                 th:text="${type.name}">option
                         </option>
@@ -41,8 +37,7 @@
                         <input type="hidden" th:value="${item.id}">
                         <input type="hidden" th:value="${lastPage}">
                         <td>
-                            <a th:text="${item.name}" th:href="@{/item/{itemId}(itemId=${item.id})}">아이스아메리카노</a
-                            >
+                            <a th:text="${item.name}" th:href="@{/item/{itemId}(itemId=${item.id})}">아이스아메리카노</a>
                         </td>
                         <td th:text="${item.itemType.name}">커피</td>
                         <td th:text="${item.price}">1000</td>
