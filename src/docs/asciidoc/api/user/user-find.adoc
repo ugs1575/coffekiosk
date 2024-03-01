@@ -3,7 +3,6 @@
 
 ==== HTTP Request
 include::{snippets}/user/find/http-request.adoc[]
-include::{snippets}/user/find/path-parameters.adoc[]
 
 ==== HTTP Response
 include::{snippets}/user/find/http-response.adoc[]

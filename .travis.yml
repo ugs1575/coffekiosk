@@ -12,6 +12,34 @@ cache:
 
 script: "./gradlew clean build"
 
+before_deploy:
+  - zip -r coffeekiosk-webservice *
+  - mkdir -p deploy
+  - mv coffeekiosk-webservice.zip deploy/coffeekiosk-webservice.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: coffeekiosk-build
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private
+    local_dir: deploy
+    wait-until-deployed: true
+    on:
+      branch: develop
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: coffeekiosk-build
+    key: coffeekiosk-webservice.zip
+    bundle_type: zip
+    application: coffeekiosk-webservice
+    deployment_group: coffeekiosk-webservice-group
+    region: ap-northeast-2
+    wait-until-deployed: true
+
 notifications:
   email:
     recipients:

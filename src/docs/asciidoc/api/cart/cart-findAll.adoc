@@ -3,7 +3,6 @@
 
 ==== HTTP Request
 include::{snippets}/cart/findAll/http-request.adoc[]
-include::{snippets}/cart/findAll/path-parameters.adoc[]
 
 ==== HTTP Response
 include::{snippets}/cart/findAll/http-response.adoc[]

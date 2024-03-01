@@ -3,7 +3,6 @@
 
 ==== HTTP Request
 include::{snippets}/cart/update/http-request.adoc[]
-include::{snippets}/cart/update/path-parameters.adoc[]
 include::{snippets}/cart/update/request-fields.adoc[]
 
 ==== HTTP Response

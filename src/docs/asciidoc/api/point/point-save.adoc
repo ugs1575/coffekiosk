@@ -3,7 +3,6 @@
 
 ==== HTTP Request
 include::{snippets}/point/save/http-request.adoc[]
-include::{snippets}/point/save/path-parameters.adoc[]
 include::{snippets}/point/save/request-fields.adoc[]
 
 ==== HTTP Response

@@ -3,7 +3,6 @@
 
 ==== HTTP Request
 include::{snippets}/order/create/http-request.adoc[]
-include::{snippets}/order/create/path-parameters.adoc[]
 include::{snippets}/order/create/request-fields.adoc[]
 
 ==== HTTP Response
