@@ -1,0 +1,18 @@
+language: java
+jdk:
+  - openjdk17
+
+branches:
+  only:
+    - develop
+cache:
+  directories:
+    - '$HOME/.m2/repository'
+    - '$HOME/.gradle'
+
+script: "./gradlew clean build"
+
+notifications:
+  email:
+    recipients:
+      - ugs1575@naver.com
