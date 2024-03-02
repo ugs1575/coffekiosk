@@ -39,6 +39,8 @@ deploy:
     deployment_group: coffeekiosk-webservice-group
     region: ap-northeast-2
     wait-until-deployed: true
+    on:
+      branch: develop
 
 notifications:
   email:
