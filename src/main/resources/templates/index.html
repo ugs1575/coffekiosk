@@ -8,7 +8,7 @@
 <main role="main" class="container">
     <div class="starter-template">
         <h1>Coffee Kiosk</h1>
-        <p class="lead">커피 주문 키오스크 ver.2</p>
+        <p class="lead">커피 주문 시스템</p>
 
         <div sec:authorize="isAuthenticated()">
             Logged in as: <span th:text="${user.name}"></span> (<span th:text="${user.role}"></span>)
@@ -17,7 +17,6 @@
         </div>
         <div sec:authorize="!isAuthenticated()">
             <a href="/oauth2/authorization/google" class="btn btn-outline-primary">Google Login</a>
-            <a href="/oauth2/authorization/naver" class="btn btn-outline-success">Naver Login</a>
         </div>
     </div>
 </main>
