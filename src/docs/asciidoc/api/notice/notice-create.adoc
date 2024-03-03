@@ -2,9 +2,11 @@
 === 공지사항 등록
 
 ==== HTTP Request
+
 include::{snippets}/notice/create/http-request.adoc[]
 include::{snippets}/notice/create/request-fields.adoc[]
 
 ==== HTTP Response
+
 include::{snippets}/notice/create/http-response.adoc[]
 include::{snippets}/notice/create/response-fields.adoc[]

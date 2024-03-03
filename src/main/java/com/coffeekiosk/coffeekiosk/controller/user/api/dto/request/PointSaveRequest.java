@@ -1,9 +1,10 @@
 package com.coffeekiosk.coffeekiosk.controller.user.api.dto.request;
 
-import com.coffeekiosk.coffeekiosk.service.user.dto.request.PointSaveServiceRequest;
-
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+
+import com.coffeekiosk.coffeekiosk.service.user.dto.request.PointSaveServiceRequest;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

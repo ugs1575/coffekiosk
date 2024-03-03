@@ -44,7 +44,8 @@ public class OrderHistoryService {
 	public Page<OrderResponse> findPageOrders(SessionUser sessionUser, Pageable pageable) {
 		OrderSearchServiceRequest request = createSearchRequest();
 		Page<Order> orders = orderRepository.findPageOrders(sessionUser.getId(), request, pageable);
-		Page<OrderResponse> pageOrders = new PageImpl(OrderResponse.listOf(orders), pageable, orders.getTotalElements());
+		Page<OrderResponse> pageOrders = new PageImpl(
+			OrderResponse.listOf(orders), pageable, orders.getTotalElements());
 		return pageOrders;
 	}
 

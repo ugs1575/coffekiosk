@@ -31,7 +31,7 @@ class CartApiControllerTest extends RestDocsAndSecuritySupport {
 	@Test
 	@WithMockUser(roles = "USER")
 	void updateCartItem() throws Exception {
-	    //given
+		//given
 		CartSaveRequest request = CartSaveRequest.builder()
 			.itemId(1L)
 			.count(1)

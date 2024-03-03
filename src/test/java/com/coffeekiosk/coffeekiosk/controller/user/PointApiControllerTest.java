@@ -28,12 +28,12 @@ class PointApiControllerTest extends RestDocsAndSecuritySupport {
 	@Test
 	@WithMockUser(roles = "USER")
 	void savePoint() throws Exception {
-	    //given
+		//given
 		PointSaveRequest request = PointSaveRequest.builder()
 			.amount(10000)
 			.build();
 
-	    //when //then
+		//when //then
 		mockMvc.perform(
 				RestDocumentationRequestBuilders.post("/api/points")
 					.content(objectMapper.writeValueAsString(request))

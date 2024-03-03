@@ -23,7 +23,7 @@ public class NoticeResponse {
 	private LocalDateTime registeredDateTime;
 
 	private Long userId;
-	
+
 	private String userName;
 
 	@Builder

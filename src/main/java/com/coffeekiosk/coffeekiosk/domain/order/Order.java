@@ -4,11 +4,6 @@ import static jakarta.persistence.FetchType.*;
 
 import java.time.LocalDateTime;
 
-import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
-import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
-import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
-import com.coffeekiosk.coffeekiosk.domain.user.User;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -18,6 +13,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
+import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
+import com.coffeekiosk.coffeekiosk.domain.user.User;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

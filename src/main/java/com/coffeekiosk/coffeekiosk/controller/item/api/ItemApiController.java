@@ -4,6 +4,9 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +26,6 @@ import com.coffeekiosk.coffeekiosk.controller.item.api.dto.request.ItemUpdateReq
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
 import lombok.RequiredArgsConstructor;
 
 @Validated

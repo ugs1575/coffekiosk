@@ -3,18 +3,16 @@ package com.coffeekiosk.coffeekiosk.service.user;
 import static com.coffeekiosk.coffeekiosk.domain.user.Role.*;
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
-import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.service.user.dto.response.UserResponse;
 
 class UserServiceTest extends IntegrationTestSupport {
@@ -59,7 +57,7 @@ class UserServiceTest extends IntegrationTestSupport {
 	@DisplayName("사용자 정보를 조회한다.")
 	@Test
 	void findUserById() {
-	    //given
+		//given
 		User user = userRepository.save(createUser(USER));
 
 		//when

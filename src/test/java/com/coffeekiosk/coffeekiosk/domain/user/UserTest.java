@@ -12,14 +12,14 @@ class UserTest {
 	@DisplayName("포인트를 충전 시 포인트가 적립된다.")
 	@Test
 	void savePoint() {
-	    //given
+		//given
 		User user = new User();
 
-	    //when
+		//when
 		user.savePoint(1000);
 		user.savePoint(1000);
 
-	    //then
+		//then
 		assertThat(user.getPoint()).isEqualTo(2000);
 	}
 
@@ -41,12 +41,12 @@ class UserTest {
 	@DisplayName("보유 포인트가 부족할 경우 주문은 불가능하다.")
 	@Test
 	void insufficientPoint() {
-	    //given
+		//given
 		User user = User.builder()
 			.point(100)
 			.build();
 
-	    //when, then
+		//when, then
 		assertThatThrownBy(() -> user.deductPoint(200))
 			.isInstanceOf(BusinessException.class)
 			.hasMessage("현재 가지고 있는 포인트가 주문 금액보다 적습니다.");
@@ -56,12 +56,12 @@ class UserTest {
 	@DisplayName("차감될 금액이 보유 포인트보다 많은지 확인한다.")
 	@Test
 	void isMoreThanCurrentPoint() {
-	    //given
+		//given
 		User user = User.builder()
 			.point(100)
 			.build();
 
-	    //when
+		//when
 		boolean result = user.isMoreThanCurrentPoint(200);
 
 		//then

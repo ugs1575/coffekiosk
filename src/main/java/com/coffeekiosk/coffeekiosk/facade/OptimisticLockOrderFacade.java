@@ -16,7 +16,8 @@ public class OptimisticLockOrderFacade {
 
 	private final OrderService orderService;
 
-	public Long order(Long userId, OrderSaveServiceRequest request, LocalDateTime orderDateTime) throws InterruptedException {
+	public Long order(Long userId, OrderSaveServiceRequest request, LocalDateTime orderDateTime) throws
+		InterruptedException {
 		Long orderId = 0L;
 
 		while (true) {

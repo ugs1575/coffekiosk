@@ -11,9 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
-import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
@@ -21,8 +20,9 @@ import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
-import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.request.CartSaveServiceRequest;
+import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
 
 class CartServiceTest extends IntegrationTestSupport {
 
@@ -68,7 +68,7 @@ class CartServiceTest extends IntegrationTestSupport {
 
 		//then
 		assertThat(cartResponse)
-			.extracting("id", "itemId",  "itemName", "itemPrice", "itemCount")
+			.extracting("id", "itemId", "itemName", "itemPrice", "itemCount")
 			.contains(savedCart.getId(), savedItem.getId(), savedItem.getName(), savedItem.getPrice(), 3);
 	}
 
@@ -123,8 +123,8 @@ class CartServiceTest extends IntegrationTestSupport {
 		//then
 		assertThat(cartResponse.getId()).isNotNull();
 		assertThat(cartResponse)
-			.extracting("itemId",  "itemName", "itemPrice",  "itemCount")
-			.contains(savedItem.getId(), savedItem.getName(),savedItem.getPrice(), 2);
+			.extracting("itemId", "itemName", "itemPrice", "itemCount")
+			.contains(savedItem.getId(), savedItem.getName(), savedItem.getPrice(), 2);
 	}
 
 	@DisplayName("장바구니에서 선택한 아이템을 삭제한다.")
@@ -173,7 +173,7 @@ class CartServiceTest extends IntegrationTestSupport {
 
 		//then
 		assertThat(cartResponse)
-			.extracting("id", "itemId",  "itemName", "itemPrice", "itemCount")
+			.extracting("id", "itemId", "itemName", "itemPrice", "itemCount")
 			.contains(
 				tuple(savedCart1.getId(), savedItem1.getId(), savedItem1.getName(), savedItem1.getPrice(), 1),
 				tuple(savedCart2.getId(), savedItem2.getId(), savedItem2.getName(), savedItem2.getPrice(), 2)

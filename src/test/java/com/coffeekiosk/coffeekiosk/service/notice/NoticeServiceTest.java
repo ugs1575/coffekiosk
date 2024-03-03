@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
-import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.notice.Notice;
 import com.coffeekiosk.coffeekiosk.domain.notice.NoticeRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.service.notice.request.NoticeSaveUpdateServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 
@@ -98,7 +98,7 @@ class NoticeServiceTest extends IntegrationTestSupport {
 		userRepository.save(user);
 
 		LocalDateTime registeredDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
-		Notice notice = createNotice("제목1", "내용1",  user,  registeredDateTime);
+		Notice notice = createNotice("제목1", "내용1", user, registeredDateTime);
 		noticeRepository.save(notice);
 
 		//when

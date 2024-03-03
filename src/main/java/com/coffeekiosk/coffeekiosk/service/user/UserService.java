@@ -23,7 +23,7 @@ public class UserService {
 	@Transactional
 	public UserResponse updateRole(SessionUser sessionUser) {
 		User user = findById(sessionUser.getId());
-		if (user.getRole().equals(Role.USER)){
+		if (user.getRole().equals(Role.USER)) {
 			user.updateRole(Role.ADMIN);
 		} else {
 			user.updateRole(Role.USER);

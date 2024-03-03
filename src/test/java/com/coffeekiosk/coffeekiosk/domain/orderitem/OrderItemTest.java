@@ -15,7 +15,7 @@ class OrderItemTest {
 	@DisplayName("주문 상품 금액을 계산한다.")
 	@Test
 	void calculateOrderPrice() {
-	    //given
+		//given
 		Item item = createItem("아이스아메리카노", 1000);
 
 		//when

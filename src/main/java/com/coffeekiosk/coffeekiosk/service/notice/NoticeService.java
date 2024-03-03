@@ -36,7 +36,8 @@ public class NoticeService {
 
 	@CacheEvict(key = "'all'")
 	@Transactional
-	public NoticeResponse createNotice(SessionUser sessionUser, NoticeSaveUpdateServiceRequest request, LocalDateTime registeredDateTime) {
+	public NoticeResponse createNotice(
+		SessionUser sessionUser, NoticeSaveUpdateServiceRequest request, LocalDateTime registeredDateTime) {
 		User user = findUser(sessionUser.getId());
 
 		Notice notice = request.toEntity(user, registeredDateTime);
@@ -87,5 +88,4 @@ public class NoticeService {
 		return userRepository.findById(userId)
 			.orElseThrow(() -> new BusinessException(ErrorCode.ENTITY_NOT_FOUND));
 	}
-
 }

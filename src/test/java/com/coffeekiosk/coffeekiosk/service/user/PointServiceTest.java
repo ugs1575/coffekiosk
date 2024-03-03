@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
-import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockPointFacade;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.service.user.dto.request.PointSaveServiceRequest;
 
 class PointServiceTest extends IntegrationTestSupport {
@@ -55,9 +55,7 @@ class PointServiceTest extends IntegrationTestSupport {
 		List<User> users = userRepository.findAll();
 		assertThat(users).hasSize(1)
 			.extracting("id", "point")
-			.containsExactlyInAnyOrder(
-				tuple(user.getId(), 2000)
-			);
+			.containsExactlyInAnyOrder(tuple(user.getId(), 2000));
 	}
 
 	@DisplayName("같은 사용자 정보로 여러번 포인트 충전을 시도할 때 정상적으로 포인트가 적립된다.")

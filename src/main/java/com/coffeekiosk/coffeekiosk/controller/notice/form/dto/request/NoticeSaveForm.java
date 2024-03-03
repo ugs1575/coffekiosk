@@ -1,8 +1,9 @@
 package com.coffeekiosk.coffeekiosk.controller.notice.form.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 import com.coffeekiosk.coffeekiosk.service.notice.request.NoticeSaveUpdateServiceRequest;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,6 @@ public class NoticeSaveForm {
 	private String title;
 
 	private String content;
-
 
 	@Builder
 	private NoticeSaveForm(String title, String content) {

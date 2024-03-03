@@ -3,11 +3,12 @@ package com.coffeekiosk.coffeekiosk.domain.orderitem;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.coffeekiosk.coffeekiosk.domain.order.Order;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
+
+import com.coffeekiosk.coffeekiosk.domain.order.Order;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

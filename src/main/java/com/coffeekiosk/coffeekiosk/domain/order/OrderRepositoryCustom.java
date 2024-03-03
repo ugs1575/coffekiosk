@@ -10,5 +10,6 @@ import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceR
 public interface OrderRepositoryCustom {
 
 	List<Order> findOrders(Long userId, OrderSearchServiceRequest request, Pageable pageable);
+
 	Page<Order> findPageOrders(Long userId, OrderSearchServiceRequest request, Pageable pageable);
 }

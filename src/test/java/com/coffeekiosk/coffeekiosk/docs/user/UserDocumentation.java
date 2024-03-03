@@ -3,11 +3,9 @@ package com.coffeekiosk.coffeekiosk.docs.user;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
 
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.ResultHandler;
 
 public class UserDocumentation {
 	public static RestDocumentationResultHandler findUser() {

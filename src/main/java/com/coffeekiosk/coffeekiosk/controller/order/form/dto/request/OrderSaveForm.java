@@ -5,9 +5,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import jakarta.validation.constraints.NotEmpty;
+
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 
 @Getter

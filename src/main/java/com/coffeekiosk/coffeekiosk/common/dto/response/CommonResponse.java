@@ -1,7 +1,5 @@
 package com.coffeekiosk.coffeekiosk.common.dto.response;
 
-import org.springframework.http.HttpStatus;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

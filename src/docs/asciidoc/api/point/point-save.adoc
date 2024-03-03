@@ -2,9 +2,11 @@
 === 포인트 충전
 
 ==== HTTP Request
+
 include::{snippets}/point/save/http-request.adoc[]
 include::{snippets}/point/save/request-fields.adoc[]
 
 ==== HTTP Response
+
 include::{snippets}/point/save/http-response.adoc[]
 include::{snippets}/point/save/response-fields.adoc[]

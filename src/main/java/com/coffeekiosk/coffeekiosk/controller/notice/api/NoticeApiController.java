@@ -4,6 +4,8 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,6 @@ import com.coffeekiosk.coffeekiosk.controller.notice.api.dto.request.NoticeSaveU
 import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/notices")
@@ -32,13 +33,15 @@ public class NoticeApiController {
 	private final NoticeService noticeService;
 
 	@PostMapping
-	public ResponseEntity<ApiResponse<Void>> createNotice(@LoginUser SessionUser user, @RequestBody @Valid NoticeSaveUpdateRequest request) {
+	public ResponseEntity<ApiResponse<Void>> createNotice(
+		@LoginUser SessionUser user, @RequestBody @Valid NoticeSaveUpdateRequest request) {
 		NoticeResponse response = noticeService.createNotice(user, request.toServiceRequest(), LocalDateTime.now());
 		return ResponseEntity.created(URI.create("/api/notices/" + response.getId())).body(ApiResponse.created());
 	}
 
 	@PatchMapping("/{noticeId}")
-	public ApiResponse<Void> updateNotice(@PathVariable Long noticeId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
+	public ApiResponse<Void> updateNotice(
+		@PathVariable Long noticeId, @RequestBody @Valid NoticeSaveUpdateRequest request) {
 		noticeService.updateNotice(noticeId, request.toServiceRequest());
 		return ApiResponse.noContent();
 	}

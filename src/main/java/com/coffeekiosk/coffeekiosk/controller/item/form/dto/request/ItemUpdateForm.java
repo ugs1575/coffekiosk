@@ -1,12 +1,13 @@
 package com.coffeekiosk.coffeekiosk.controller.item.form.dto.request;
 
-import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
-import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceRequest;
-
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+
+import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
+import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceRequest;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +39,7 @@ public class ItemUpdateForm {
 	}
 
 	public ItemUpdateServiceRequest toServiceRequest() {
-		return  ItemUpdateServiceRequest.builder()
+		return ItemUpdateServiceRequest.builder()
 			.name(name)
 			.itemType(ItemType.of(itemType))
 			.price(price)

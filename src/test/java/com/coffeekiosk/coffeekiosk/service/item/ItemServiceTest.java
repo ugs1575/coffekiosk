@@ -11,10 +11,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSaveServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSearchServiceRequest;
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemUpdateServiceRequest;
@@ -54,10 +54,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(1)
 			.extracting("id", "name", "itemType", "price", "lastModifiedDateTime")
-			.containsExactlyInAnyOrder(
-				tuple(itemId, "카페라떼", COFFEE, 5000, lastModifiedDateTime)
-			);
-
+			.containsExactlyInAnyOrder(tuple(itemId, "카페라떼", COFFEE, 5000, lastModifiedDateTime));
 	}
 
 	@DisplayName("상품 정보를 수정한다.")
@@ -83,10 +80,7 @@ class ItemServiceTest extends IntegrationTestSupport {
 		List<Item> items = itemRepository.findAll();
 		assertThat(items).hasSize(1)
 			.extracting("id", "name", "itemType", "price", "lastModifiedDateTime")
-			.containsExactlyInAnyOrder(
-				tuple(savedItem.getId(), "케이크", DESSERT, 6000, updatedModifiedDateTime)
-			);
-
+			.containsExactlyInAnyOrder(tuple(savedItem.getId(), "케이크", DESSERT, 6000, updatedModifiedDateTime));
 	}
 
 	@DisplayName("상품을 삭제한다.")

@@ -2,9 +2,6 @@ package com.coffeekiosk.coffeekiosk.domain.notice;
 
 import java.time.LocalDateTime;
 
-import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
-import com.coffeekiosk.coffeekiosk.domain.user.User;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +11,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+import com.coffeekiosk.coffeekiosk.common.domain.BaseTimeEntity;
+import com.coffeekiosk.coffeekiosk.domain.user.User;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -3,6 +3,8 @@ package com.coffeekiosk.coffeekiosk.controller.notice.form;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +21,6 @@ import com.coffeekiosk.coffeekiosk.controller.notice.form.dto.request.NoticeUpda
 import com.coffeekiosk.coffeekiosk.service.notice.NoticeService;
 import com.coffeekiosk.coffeekiosk.service.notice.response.NoticeResponse;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -59,7 +60,7 @@ public class NoticeFormController {
 	}
 
 	@PostMapping("/notice/new")
-	public String create (
+	public String create(
 		@LoginUser SessionUser sessionUser,
 		@Valid NoticeSaveForm noticeSaveForm,
 		BindingResult result,
@@ -87,7 +88,9 @@ public class NoticeFormController {
 	}
 
 	@PostMapping("/notice/{noticeId}/edit")
-	public String update(Model model, @PathVariable Long noticeId, @Valid NoticeUpdateForm noticeUpdateForm, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String update(Model model, @PathVariable Long noticeId,
+		@Valid NoticeUpdateForm noticeUpdateForm, BindingResult result,
+		RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			model.addAttribute("noticeUpdateForm", noticeUpdateForm);
 			return "notice/updateForm";

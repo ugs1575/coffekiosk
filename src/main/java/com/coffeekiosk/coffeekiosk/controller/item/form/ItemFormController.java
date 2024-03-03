@@ -3,6 +3,8 @@ package com.coffeekiosk.coffeekiosk.controller.item.form;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +21,6 @@ import com.coffeekiosk.coffeekiosk.controller.item.form.dto.request.ItemUpdateFo
 import com.coffeekiosk.coffeekiosk.service.item.ItemService;
 import com.coffeekiosk.coffeekiosk.service.item.dto.response.ItemResponse;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -84,7 +85,8 @@ public class ItemFormController {
 	}
 
 	@PostMapping("/item/new")
-	public String create(@Valid ItemSaveForm itemSaveForm, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String create(
+		@Valid ItemSaveForm itemSaveForm, BindingResult result, RedirectAttributes redirectAttributes) {
 
 		if (result.hasErrors()) {
 			return "item/createForm";
@@ -107,7 +109,9 @@ public class ItemFormController {
 	}
 
 	@PostMapping("/item/{itemId}/edit")
-	public String update(Model model, @PathVariable Long itemId, @Valid ItemUpdateForm itemUpdateForm, BindingResult result, RedirectAttributes redirectAttributes) {
+	public String update(Model model, @PathVariable Long itemId,
+		@Valid ItemUpdateForm itemUpdateForm, BindingResult result,
+		RedirectAttributes redirectAttributes) {
 		if (result.hasErrors()) {
 			model.addAttribute("itemUpdateForm", itemUpdateForm);
 			return "item/updateForm";

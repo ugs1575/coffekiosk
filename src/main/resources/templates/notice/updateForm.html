@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{fragments/common :: head}"></head>
-    <body>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
-            th:replace="~{fragments/common :: menu('notice')}"></nav>
+<head th:replace="~{fragments/common :: head}"></head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+     th:replace="~{fragments/common :: menu('notice')}"></nav>
 
-        <div class="container">
-            <h1 style="margin-bottom:50px">공지사항 수정</h1>
-            <form action="#" th:object="${noticeUpdateForm}"
-                  th:action="@{/notice/{noticeId}/edit(noticeId=${noticeUpdateForm.id})}"
-                  method="post">
-                <input type="hidden" th:field="*{id}" />
-                <div class="form-group">
-                    <label th:for="title">제목</label>
-                    <input type="text" class="form-control"
-                            th:field="*{title}"
-                            th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"/>
-                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="invalid-feedback">
-                        제목 에러 메시지
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label th:for="content">내용</label>
-                    <textarea class="form-control" rows="3"
-                            th:field="*{content}"
-                            th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'">
-                    </textarea>
-                    <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="invalid-feedback">
-                        내용 에러 메시지
-                    </div>
-                </div>
-                <div class="text-right">
-                    <a type="button" class="btn btn-secondary" th:href="@{/notice/list}">
-                        취소
-                    </a>
-                    <button type="submit" class="btn btn-primary">확인</button>
-                </div>
-            </form>
+<div class="container">
+    <h1 style="margin-bottom:50px">공지사항 수정</h1>
+    <form action="#" th:object="${noticeUpdateForm}"
+          th:action="@{/notice/{noticeId}/edit(noticeId=${noticeUpdateForm.id})}"
+          method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="form-group">
+            <label th:for="title">제목</label>
+            <input type="text" class="form-control"
+                   th:field="*{title}"
+                   th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"/>
+            <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="invalid-feedback">
+                제목 에러 메시지
+            </div>
         </div>
-    </body>
-    <footer th:replace="~{fragments/common :: footer}"></footer>
+        <div class="form-group">
+            <label th:for="content">내용</label>
+            <textarea class="form-control" rows="3"
+                      th:field="*{content}"
+                      th:classappend="${#fields.hasErrors('content')} ? 'is-invalid'">
+                    </textarea>
+            <div th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="invalid-feedback">
+                내용 에러 메시지
+            </div>
+        </div>
+        <div class="text-right">
+            <a type="button" class="btn btn-secondary" th:href="@{/notice/list}">
+                취소
+            </a>
+            <button type="submit" class="btn btn-primary">확인</button>
+        </div>
+    </form>
+</div>
+</body>
+<footer th:replace="~{fragments/common :: footer}"></footer>
 </html>

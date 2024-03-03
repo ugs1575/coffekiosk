@@ -2,6 +2,8 @@ package com.coffeekiosk.coffeekiosk.controller.cart.api;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +19,6 @@ import com.coffeekiosk.coffeekiosk.controller.cart.api.dto.request.CartSaveReque
 import com.coffeekiosk.coffeekiosk.service.cart.CartService;
 import com.coffeekiosk.coffeekiosk.service.cart.dto.response.CartResponse;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/carts")
@@ -28,10 +29,12 @@ public class CartApiController {
 	private final CartService cartService;
 
 	@PostMapping
-	public ApiResponse<CartResponse> updateCartItem(@LoginUser SessionUser user, @RequestBody @Valid CartSaveRequest request) {
+	public ApiResponse<CartResponse> updateCartItem(
+		@LoginUser SessionUser user, @RequestBody @Valid CartSaveRequest request) {
 		CartResponse response = cartService.updateCartItem(user, request.toServiceRequest());
 		return ApiResponse.ok(response);
 	}
+
 	@DeleteMapping("/{cartId}")
 	public ApiResponse<Void> deleteCartItem(@LoginUser SessionUser user, @PathVariable Long cartId) {
 		cartService.deleteCartItem(cartId, user);

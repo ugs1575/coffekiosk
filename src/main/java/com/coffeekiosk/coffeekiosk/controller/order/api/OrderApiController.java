@@ -4,6 +4,8 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,6 @@ import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.service.order.OrderHistoryService;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/api/orders")
@@ -34,7 +35,9 @@ public class OrderApiController {
 	private final RedissonLockOrderFacade orderFacade;
 
 	@PostMapping
-	public ResponseEntity<ApiResponse<Void>> createOrder(@LoginUser SessionUser user, @RequestBody @Valid OrderSaveRequest request) throws InterruptedException {
+	public ResponseEntity<ApiResponse<Void>> createOrder(
+		@LoginUser SessionUser user, @RequestBody @Valid OrderSaveRequest request) throws
+		InterruptedException {
 		Long orderId = orderFacade.order(user, request.toServiceRequest(), LocalDateTime.now());
 		return ResponseEntity.created(URI.create("/api/orders/" + orderId)).body(ApiResponse.created());
 	}
@@ -46,7 +49,8 @@ public class OrderApiController {
 	}
 
 	@GetMapping
-	public ApiResponse<List<OrderResponse>> findOrders(@LoginUser SessionUser user, @PageableDefault(value = 10) Pageable pageable) {
+	public ApiResponse<List<OrderResponse>> findOrders(
+		@LoginUser SessionUser user, @PageableDefault(value = 10) Pageable pageable) {
 		List<OrderResponse> response = orderHistoryService.findOrders(user, pageable);
 		return ApiResponse.ok(response);
 	}

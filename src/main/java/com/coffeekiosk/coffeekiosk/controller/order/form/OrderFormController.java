@@ -32,7 +32,8 @@ public class OrderFormController {
 	private final RedissonLockOrderFacade orderFacade;
 
 	@PostMapping
-	public String create(@LoginUser SessionUser user, OrderSaveForm orderSaveForm, RedirectAttributes redirectAttributes) {
+	public String create(
+		@LoginUser SessionUser user, OrderSaveForm orderSaveForm, RedirectAttributes redirectAttributes) {
 		if (orderSaveForm.isEmpty()) {
 			return "redirect:/order/error";
 		}

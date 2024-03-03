@@ -1,9 +1,10 @@
 package com.coffeekiosk.coffeekiosk.domain.order;
 
 import static com.coffeekiosk.coffeekiosk.domain.order.QOrder.*;
-import static com.coffeekiosk.coffeekiosk.domain.user.QUser.*;
 
 import java.util.List;
+
+import jakarta.persistence.EntityManager;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +14,6 @@ import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSearchServiceR
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import jakarta.persistence.EntityManager;
 
 public class OrderRepositoryImpl implements OrderRepositoryCustom {
 

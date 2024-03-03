@@ -1,5 +1,7 @@
 package com.coffeekiosk.coffeekiosk.config.auth;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -9,7 +11,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

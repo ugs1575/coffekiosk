@@ -13,8 +13,9 @@
             주문하기
         </a>
     </div>
-    <form id="cartList" th:if="${cartItems.size() > 0}" th:object="${orderSaveForm}" class="form-inline d-flex justify-content-end" method="POST" th:action="@{/order}">
-        <input type="hidden" id="currentPoint" th:value="${user.point}" >
+    <form id="cartList" th:if="${cartItems.size() > 0}" th:object="${orderSaveForm}"
+          class="form-inline d-flex justify-content-end" method="POST" th:action="@{/order}">
+        <input type="hidden" id="currentPoint" th:value="${user.point}">
         <div class="form-group mx-sm-3 mb-2">
             <p>현재 보유 포인트 : <span th:text="${user.point}"></span></p>
         </div>
@@ -31,13 +32,15 @@
             <tbody>
             <tr th:each="cart,cartStat : ${cartItems}">
                 <input type="hidden" name="price" th:value="${cart.itemPrice}"/>
-                <input type="hidden" name="count"  th:value="${cart.itemCount}"/>
-                <td><input type="checkbox" th:field="*{cartIdList[__${cartStat.index}__]}" th:value="*{cartIdList[__${cartStat.index}__]}"></td>
+                <input type="hidden" name="count" th:value="${cart.itemCount}"/>
+                <td><input type="checkbox" th:field="*{cartIdList[__${cartStat.index}__]}"
+                           th:value="*{cartIdList[__${cartStat.index}__]}"></td>
                 <td th:text="${cart.itemName}">커피</td>
                 <td th:text="${cart.itemPrice}">1000</td>
                 <td th:text="${cart.itemCount}">1</td>
                 <td>
-                    <button type="button" name="deleteBtn" class="btn btn-outline-primary" th:value="${cart.id}">삭제</button>
+                    <button type="button" name="deleteBtn" class="btn btn-outline-primary" th:value="${cart.id}">삭제
+                    </button>
                 </td>
             </tr>
             </tbody>

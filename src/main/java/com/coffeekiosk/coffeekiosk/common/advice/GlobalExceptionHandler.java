@@ -1,5 +1,7 @@
 package com.coffeekiosk.coffeekiosk.common.advice;
 
+import jakarta.validation.ConstraintViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,7 +16,6 @@ import com.coffeekiosk.coffeekiosk.common.dto.response.ErrorResponse;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 
-import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,62 +23,66 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MissingServletRequestParameterException.class)
-	protected ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+	protected ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
+		MissingServletRequestParameterException exception) {
 		ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
-		ErrorResponse response = ErrorResponse.of(e);
+		ErrorResponse response = ErrorResponse.of(exception);
 		return new ResponseEntity<>(response, errorCode.getHttpStatus());
 	}
 
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	protected ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-		ErrorResponse response = ErrorResponse.of(e);
+	protected ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(
+		HttpMessageNotReadableException exception) {
+		ErrorResponse response = ErrorResponse.of(exception);
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+	protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
+		MethodArgumentNotValidException exception) {
 		ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
-		ErrorResponse response = ErrorResponse.of(errorCode, e.getBindingResult());
+		ErrorResponse response = ErrorResponse.of(errorCode, exception.getBindingResult());
 		return new ResponseEntity<>(response, errorCode.getHttpStatus());
 	}
 
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
-		ErrorResponse response = ErrorResponse.of(e);
+	protected ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
+		MethodArgumentTypeMismatchException exception) {
+		ErrorResponse response = ErrorResponse.of(exception);
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	protected ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
-		HttpRequestMethodNotSupportedException e) {
+		HttpRequestMethodNotSupportedException exception) {
 		ErrorResponse response = ErrorResponse.of(ErrorCode.METHOD_NOT_ALLOWED);
 		return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
 	}
 
 	@ExceptionHandler(BusinessException.class)
-	protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
-		ErrorCode errorCode = e.getErrorCode();
+	protected ResponseEntity<ErrorResponse> handleBusinessException(BusinessException exception) {
+		ErrorCode errorCode = exception.getErrorCode();
 		ErrorResponse response = ErrorResponse.of(errorCode);
 		return new ResponseEntity<>(response, errorCode.getHttpStatus());
 	}
 
 	@ExceptionHandler(ConstraintViolationException.class)
-	protected ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+	protected ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException exception) {
 		ErrorCode errorCode = ErrorCode.INVALID_INPUT_VALUE;
-		ErrorResponse response = ErrorResponse.of(errorCode, e);
+		ErrorResponse response = ErrorResponse.of(errorCode, exception);
 		return new ResponseEntity<>(response, errorCode.getHttpStatus());
 	}
 
 	@ExceptionHandler(IllegalStateException.class)
-	protected ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
-		log.error(e.getMessage(), e);
+	protected ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException exception) {
+		log.error(exception.getMessage(), exception);
 		ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(Exception.class)
-	protected ResponseEntity<ErrorResponse> handleException(Exception e) {
-		log.error(e.getMessage(), e);
+	protected ResponseEntity<ErrorResponse> handleException(Exception exception) {
+		log.error(exception.getMessage(), exception);
 		ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}

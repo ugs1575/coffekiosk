@@ -4,6 +4,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import jakarta.validation.Valid;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,11 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.controller.RestDocsAndSecuritySupport;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
-
-import jakarta.validation.Valid;
 
 @ContextConfiguration(classes = {GlobalExceptionHandlerTest.TestController.class, GlobalExceptionHandler.class})
 @WebMvcTest(controllers = GlobalExceptionHandlerTest.TestController.class)
@@ -43,7 +43,7 @@ class GlobalExceptionHandlerTest extends RestDocsAndSecuritySupport {
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("요청 파라미터를 누락하였습니다."));
 	}
-	
+
 	@DisplayName("request body 형식에 맞지 않을 경우 예외를 처리한다.")
 	@Test
 	@WithMockUser(roles = "USER")

@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
-import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.ItemType;
@@ -25,6 +24,7 @@ import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.service.order.dto.response.OrderResponse;
 
 class OrderHistoryServiceTest extends IntegrationTestSupport {
@@ -51,7 +51,6 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 		orderRepository.deleteAllInBatch();
 		userRepository.deleteAllInBatch();
 	}
-
 
 	@DisplayName("주문 상세 정보를 조회한다.")
 	@Test
@@ -81,10 +80,12 @@ class OrderHistoryServiceTest extends IntegrationTestSupport {
 			.contains(savedOrder.getId(), 9500, orderDateTime);
 
 		assertThat(orderResponse.getOrderItems())
-			.extracting( "itemId", "itemName", "itemPrice", "orderCount", "orderPrice")
+			.extracting("itemId", "itemName", "itemPrice", "orderCount", "orderPrice")
 			.containsExactlyInAnyOrder(
-				tuple(item1.getId(), item1.getName(), item1.getPrice(), orderItem1.getOrderCount(), orderItem1.getOrderPrice()),
-				tuple(item2.getId(), item2.getName(), item2.getPrice(), orderItem2.getOrderCount(), orderItem2.getOrderPrice())
+				tuple(item1.getId(), item1.getName(), item1.getPrice(),
+					orderItem1.getOrderCount(), orderItem1.getOrderPrice()),
+				tuple(item2.getId(), item2.getName(), item2.getPrice(),
+					orderItem2.getOrderCount(), orderItem2.getOrderPrice())
 			);
 
 	}

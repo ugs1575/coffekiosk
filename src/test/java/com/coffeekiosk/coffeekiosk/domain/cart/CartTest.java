@@ -1,7 +1,6 @@
 package com.coffeekiosk.coffeekiosk.domain.cart;
 
 import static com.coffeekiosk.coffeekiosk.domain.item.ItemType.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
 

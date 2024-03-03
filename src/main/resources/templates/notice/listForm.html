@@ -1,35 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head th:replace="~{fragments/common :: head}">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
-            th:replace="~{fragments/common :: menu('notice')}"></nav>
+<head th:replace="~{fragments/common :: head}">
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top"
+     th:replace="~{fragments/common :: menu('notice')}"></nav>
 
-        <div class="container">
-            <h1>공지사항 목록</h1>
-            <form class="form-inline d-flex justify-content-end">
-                <a type="button" sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-light mb-2" th:href="@{/notice/new}">새 공지사항 등록</a>
-            </form>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">제목</th>
-                        <th scope="col">최초 등록일</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="notice : ${notices}">
-                        <td>
-                            <a th:text="${notice.title}" th:href="@{/notice/{noticeId}(noticeId=${notice.id})}">제목</a>
-                        </td>
-                        <td th:text="${#temporals.format(notice.registeredDateTime, 'yyyy-MM-dd HH:mm:ss')}">등록일</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </body>
-    <footer th:replace="~{fragments/common :: footer}"></footer>
+<div class="container">
+    <h1>공지사항 목록</h1>
+    <form class="form-inline d-flex justify-content-end">
+        <a type="button" sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-light mb-2" th:href="@{/notice/new}">새
+            공지사항 등록</a>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">제목</th>
+            <th scope="col">최초 등록일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="notice : ${notices}">
+            <td>
+                <a th:text="${notice.title}" th:href="@{/notice/{noticeId}(noticeId=${notice.id})}">제목</a>
+            </td>
+            <td th:text="${#temporals.format(notice.registeredDateTime, 'yyyy-MM-dd HH:mm:ss')}">등록일</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<footer th:replace="~{fragments/common :: footer}"></footer>
 </html>
 
 

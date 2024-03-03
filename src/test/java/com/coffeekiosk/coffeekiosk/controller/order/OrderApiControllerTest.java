@@ -1,6 +1,6 @@
 package com.coffeekiosk.coffeekiosk.controller.order;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -135,7 +135,7 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			.andExpect(jsonPath("$.fieldErrors[0].field").value("cartIdList[0]"))
 			.andExpect(jsonPath("$.fieldErrors[0].message").value("장바구니 ID는 양수입니다."));
 	}
-	
+
 	@DisplayName("주문 상세내역을 조회한다.")
 	@Test
 	@WithMockUser(roles = "USER")
@@ -168,7 +168,6 @@ class OrderApiControllerTest extends RestDocsAndSecuritySupport {
 			.andExpect(jsonPath("$.code").value("OK"))
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(OrderDocumentation.findOrder());
-	    
 	}
 
 	@DisplayName("상품 목록 조회을 조회할 수 있다.")

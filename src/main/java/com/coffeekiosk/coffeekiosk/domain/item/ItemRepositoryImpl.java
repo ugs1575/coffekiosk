@@ -5,11 +5,11 @@ import static org.springframework.util.StringUtils.*;
 
 import java.util.List;
 
+import jakarta.persistence.EntityManager;
+
 import com.coffeekiosk.coffeekiosk.service.item.dto.request.ItemSearchServiceRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import jakarta.persistence.EntityManager;
 
 public class ItemRepositoryImpl implements ItemRepositoryCustom {
 
@@ -44,7 +44,6 @@ public class ItemRepositoryImpl implements ItemRepositoryCustom {
 	private BooleanExpression nameEq(String keyword) {
 		return hasText(keyword) ? item.name.contains(keyword) : null;
 	}
-
 
 	private BooleanExpression itemTypeEq(ItemType itemType) {
 		return itemType != null ? item.itemType.eq(itemType) : null;

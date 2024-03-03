@@ -507,6 +507,4 @@ class ItemApiControllerTest extends RestDocsAndSecuritySupport {
 			.andExpect(jsonPath("$.message").value("OK"))
 			.andDo(ItemDocumentation.findItem());
 	}
-
-
 }

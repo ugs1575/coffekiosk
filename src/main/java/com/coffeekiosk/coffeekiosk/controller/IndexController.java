@@ -28,7 +28,7 @@ public class IndexController {
 	}
 
 	@GetMapping("/access-denied")
-	public String accessDenied(){
+	public String accessDenied() {
 		return "error/accessDenied";
 	}
 }

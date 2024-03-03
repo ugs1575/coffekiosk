@@ -13,9 +13,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
-import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
+import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.domain.cart.Cart;
 import com.coffeekiosk.coffeekiosk.domain.cart.CartRepository;
 import com.coffeekiosk.coffeekiosk.domain.item.Item;
@@ -27,6 +26,7 @@ import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
+import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
 class OrderServiceTest extends IntegrationTestSupport {
@@ -58,11 +58,10 @@ class OrderServiceTest extends IntegrationTestSupport {
 		userRepository.deleteAllInBatch();
 	}
 
-
 	@DisplayName("상품을 주문한다.")
 	@Test
 	void createOrder() throws InterruptedException {
-	    //given
+		//given
 		LocalDateTime orderDateTime = LocalDateTime.of(2023, 11, 21, 0, 0);
 
 		User user = createUser(20000);
@@ -91,9 +90,7 @@ class OrderServiceTest extends IntegrationTestSupport {
 		List<User> users = userRepository.findAll();
 		assertThat(users).hasSize(1)
 			.extracting("id", "point")
-			.containsExactlyInAnyOrder(
-				tuple(savedUser.getId(), 6000)
-			);
+			.containsExactlyInAnyOrder(tuple(savedUser.getId(), 6000));
 
 		List<Cart> carts = cartRepository.findAll();
 		assertThat(carts).hasSize(0)

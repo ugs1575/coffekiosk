@@ -2,6 +2,8 @@ package com.coffeekiosk.coffeekiosk.config.auth;
 
 import java.util.Collections;
 
+import jakarta.servlet.http.HttpSession;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -16,7 +18,6 @@ import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
