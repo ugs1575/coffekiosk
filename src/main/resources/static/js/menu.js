@@ -51,19 +51,11 @@ var menu = {
                 contentType:'application/json; charset=utf-8',
                 data: JSON.stringify(data)
             }).done(function(response) {
-                if (response.code == "OK") {
-                    if (confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?")) {
-                        location.href = "/cart/list";
-                    }
-                } else {
-                    if (response.code == "OVER_MAX_ORDER_COUNT") {
-                        alert("최대 주문 수량은 20개 입니다. 장바구니를 정리해주세요");
-                    } else {
-                        alert("존재하지 않는 상품입니다.");
-                    }
+                if (confirm("장바구니에 추가되었습니다. 장바구니로 이동하시겠습니까?")) {
+                    location.href = "/cart/list";
                 }
             }).fail(function (error) {
-                alert(JSON.stringify(error));
+                alert(error.responseJSON.message);
             });
         })
     },
