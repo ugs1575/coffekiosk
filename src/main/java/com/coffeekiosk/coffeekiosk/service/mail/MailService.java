@@ -25,7 +25,7 @@ public class MailService {
 		Context context = new Context();
 		context.setVariable("order", order);
 		String subject = "[CoffeeKiosk] 고객님의 주문이 정상적으로 접수되었습니다.";
-		String body = templateEngine.process("/mail/order-success.html", context);
+		String body = templateEngine.process("mail/order-success", context);
 		sendMail(email, subject, body);
 	}
 
