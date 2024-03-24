@@ -34,6 +34,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.0.12'
     implementation 'org.springframework.session:spring-session-jdbc'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
     implementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1"

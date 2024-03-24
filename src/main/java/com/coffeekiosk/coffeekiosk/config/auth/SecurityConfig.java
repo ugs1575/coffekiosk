@@ -28,6 +28,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests()
 			.requestMatchers(
 				new AntPathRequestMatcher("/"),
+				new AntPathRequestMatcher("/docs/**"),
 				new AntPathRequestMatcher("/profile"),
 				new AntPathRequestMatcher("/notice/**", HttpMethod.GET.name()),
 				new AntPathRequestMatcher("/api/notice/**", HttpMethod.GET.name()),

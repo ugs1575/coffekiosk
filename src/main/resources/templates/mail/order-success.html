@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+    <form th:object="${order}">
+        <h1 style="margin-bottom:50px">주문 상세</h1>
+        <div class="form-group mx-sm-3 mb-2">
+            <p>총 주문 금액 : <span th:text="*{orderPrice}"></span></p>
+            <p>주문 일시 : <span th:text="${#temporals.format(order.orderDateTime, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">상품명</th>
+                <th scope="col">가격</th>
+                <th scope="col">수량</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="orderItem: *{orderItems.orderItems}">
+                <td th:text="${orderItem.item.name}">커피</td>
+                <td th:text="${orderItem.orderPrice}">1000</td>
+                <td th:text="${orderItem.orderCount}">1</td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+</body>
+</html>

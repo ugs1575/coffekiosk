@@ -3,6 +3,7 @@ package com.coffeekiosk.coffeekiosk.service.order;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +17,14 @@ import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItem;
 import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItems;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
+import com.coffeekiosk.coffeekiosk.event.OrderSuccessEvent;
 import com.coffeekiosk.coffeekiosk.exception.ErrorCode;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -29,6 +33,8 @@ public class OrderService {
 	private final UserRepository userRepository;
 	private final OrderRepository orderRepository;
 	private final CartRepository cartRepository;
+
+	private final ApplicationEventPublisher applicationEventPublisher;
 
 	public Long order(Long userId, OrderSaveServiceRequest request, LocalDateTime orderDateTime) {
 		User user = findUser(userId);
@@ -52,6 +58,8 @@ public class OrderService {
 		Order savedOrder = orderRepository.save(order);
 
 		cartRepository.deleteByIdIn(request.getCartIdList(), userId);
+
+		applicationEventPublisher.publishEvent(new OrderSuccessEvent(order, user));
 
 		return savedOrder.getId();
 	}

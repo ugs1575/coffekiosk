@@ -41,3 +41,6 @@ spy.log
 
 ### oauth ###
 application-oauth.properties
+
+### mail ###
+application-mail.properties
