@@ -12,6 +12,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.event.ApplicationEvents;
+import org.springframework.test.context.event.RecordApplicationEvents;
 
 import com.coffeekiosk.coffeekiosk.common.exception.BusinessException;
 import com.coffeekiosk.coffeekiosk.config.auth.dto.SessionUser;
@@ -25,10 +27,12 @@ import com.coffeekiosk.coffeekiosk.domain.orderitem.OrderItemRepository;
 import com.coffeekiosk.coffeekiosk.domain.user.Role;
 import com.coffeekiosk.coffeekiosk.domain.user.User;
 import com.coffeekiosk.coffeekiosk.domain.user.UserRepository;
+import com.coffeekiosk.coffeekiosk.event.OrderSuccessEvent;
 import com.coffeekiosk.coffeekiosk.facade.RedissonLockOrderFacade;
 import com.coffeekiosk.coffeekiosk.service.IntegrationTestSupport;
 import com.coffeekiosk.coffeekiosk.service.order.dto.request.OrderSaveServiceRequest;
 
+@RecordApplicationEvents
 class OrderServiceTest extends IntegrationTestSupport {
 
 	@Autowired
@@ -48,6 +52,9 @@ class OrderServiceTest extends IntegrationTestSupport {
 
 	@Autowired
 	private CartRepository cartRepository;
+
+	@Autowired
+	private ApplicationEvents events;
 
 	@AfterEach
 	void tearDown() {
@@ -95,6 +102,9 @@ class OrderServiceTest extends IntegrationTestSupport {
 		List<Cart> carts = cartRepository.findAll();
 		assertThat(carts).hasSize(0)
 			.isEmpty();
+
+		int count = (int)events.stream(OrderSuccessEvent.class).count();
+		assertThat(count).isEqualTo(1);
 	}
 
 	@DisplayName("주문 금액보다 보유 포인트가 클 경우 예외가 발생한다.")
